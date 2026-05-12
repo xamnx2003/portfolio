@@ -1,723 +1,1100 @@
 <!DOCTYPE html>
-<html lang="ar" dir="ltr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#080c10;
-  --bg2:#0d1117;
-  --bg3:#111820;
-  --surface:#141d27;
-  --surface2:#1a2535;
-  --accent:#00ff9d;
-  --accent2:#00c9ff;
-  --accent3:#ff4d6d;
-  --text:#e8edf2;
-  --text2:#8b9ab0;
-  --text3:#4a5568;
-  --border:rgba(0,255,157,0.12);
-  --border2:rgba(255,255,255,0.06);
-  --glow:0 0 40px rgba(0,255,157,0.08);
+  --bg:#06080b;
+  --bg2:#090d12;
+  --surface:#0e1520;
+  --surface2:#131e2e;
+  --surface3:#192435;
+  --accent:#00ffa3;
+  --accent2:#00cfff;
+  --accent3:#ff4060;
+  --accent4:#ffb800;
+  --text:#dde6f0;
+  --text2:#7a8fa8;
+  --text3:#3d5068;
+  --border:rgba(0,255,163,0.1);
+  --border2:rgba(255,255,255,0.05);
+  --border3:rgba(255,255,255,0.08);
+  --fs-xs:0.65rem;
+  --fs-sm:0.75rem;
+  --fs-md:0.875rem;
+  --fs-lg:1rem;
 }
+html{scroll-behavior:smooth}
 body{
   font-family:'JetBrains Mono',monospace;
   background:var(--bg);
   color:var(--text);
-  line-height:1.6;
   overflow-x:hidden;
-  min-height:100vh;
+  line-height:1.6;
+  cursor:none;
 }
-::selection{background:rgba(0,255,157,0.2)}
+::selection{background:rgba(0,255,163,0.2);color:#fff}
+
+/* CUSTOM CURSOR */
+#cursor{
+  position:fixed;width:10px;height:10px;
+  border-radius:50%;background:var(--accent);
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform 0.08s,width 0.2s,height 0.2s,opacity 0.2s;
+  mix-blend-mode:difference;
+}
+#cursor-ring{
+  position:fixed;width:36px;height:36px;
+  border-radius:50%;border:1px solid rgba(0,255,163,0.4);
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:all 0.15s ease;
+}
+#cursor.hovering{width:20px;height:20px}
+#cursor-ring.hovering{width:56px;height:56px;border-color:rgba(0,255,163,0.7)}
 
 /* NAV */
 nav{
-  position:sticky;top:0;z-index:100;
+  position:fixed;top:0;left:0;right:0;z-index:200;
   display:flex;align-items:center;justify-content:space-between;
-  padding:1rem 2rem;
-  background:rgba(8,12,16,0.85);
-  backdrop-filter:blur(12px);
+  padding:0 2rem;height:58px;
+  background:rgba(6,8,11,0.88);
+  backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border2);
 }
 .nav-logo{
-  font-family:'Syne',sans-serif;
-  font-size:1.1rem;font-weight:800;
-  color:var(--accent);
-  letter-spacing:0.05em;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.05rem;font-weight:700;
+  color:var(--accent);letter-spacing:0.04em;
 }
-.nav-links{display:flex;gap:1.5rem;list-style:none}
+.nav-links{display:flex;gap:0;list-style:none}
 .nav-links a{
-  font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;
+  display:block;padding:0.4rem 0.9rem;
+  font-size:var(--fs-xs);letter-spacing:0.15em;text-transform:uppercase;
   color:var(--text2);text-decoration:none;
   transition:color 0.2s;
+  border-right:1px solid var(--border2);
 }
+.nav-links a:first-child{border-left:1px solid var(--border2)}
 .nav-links a:hover{color:var(--accent)}
+.nav-menu{display:none;background:none;border:none;color:var(--accent);font-size:1.4rem;cursor:pointer}
 
 /* HERO */
 .hero{
   min-height:100vh;
-  display:flex;flex-direction:column;justify-content:center;
-  padding:4rem 2rem;
+  display:flex;align-items:center;
+  padding:80px 2rem 2rem;
   position:relative;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 70% 40%,rgba(0,207,255,0.04) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 60% at 20% 70%,rgba(0,255,163,0.04) 0%,transparent 70%);
 }
 .hero-grid{
   position:absolute;inset:0;
   background-image:
-    linear-gradient(rgba(0,255,157,0.03) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,255,157,0.03) 1px,transparent 1px);
-  background-size:48px 48px;
-  animation:gridMove 20s linear infinite;
+    linear-gradient(rgba(0,255,163,0.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,255,163,0.025) 1px,transparent 1px);
+  background-size:50px 50px;
+  animation:gridScroll 25s linear infinite;
 }
-@keyframes gridMove{0%{transform:translateY(0)}100%{transform:translateY(48px)}}
-.hero-scan{
-  position:absolute;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--accent),transparent);
-  animation:scan 4s ease-in-out infinite;
-  opacity:0.5;
-}
-@keyframes scan{0%,100%{top:0;opacity:0}50%{opacity:0.5}100%{top:100%}}
+@keyframes gridScroll{to{transform:translateY(50px)}}
 
-.hero-content{position:relative;z-index:1;max-width:900px}
-.hero-badge{
+.scanline{
+  position:absolute;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 0%,var(--accent) 50%,transparent 100%);
+  opacity:0;animation:scanAnim 6s ease-in-out 1s infinite;
+}
+@keyframes scanAnim{0%{top:-2px;opacity:0}10%{opacity:0.4}90%{opacity:0.4}100%{top:100%;opacity:0}}
+
+.hero-inner{position:relative;z-index:1;max-width:960px;width:100%}
+.status-pill{
   display:inline-flex;align-items:center;gap:0.5rem;
-  padding:0.35rem 0.9rem;
+  padding:0.3rem 0.85rem;
   border:1px solid var(--border);
-  border-radius:2px;
-  font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:2rem;
+  font-size:var(--fs-xs);letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:2.5rem;
 }
-.badge-dot{
-  width:6px;height:6px;border-radius:50%;
+.pulse-dot{
+  width:7px;height:7px;border-radius:50%;
   background:var(--accent);
-  animation:pulse 2s ease-in-out infinite;
+  animation:pulseDot 1.8s ease-in-out infinite;
 }
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.8)}}
+@keyframes pulseDot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,255,163,0.4)}60%{opacity:0.5;box-shadow:0 0 0 6px rgba(0,255,163,0)}}
 
 .hero-name{
-  font-family:'Syne',sans-serif;
-  font-size:clamp(2.5rem,8vw,5.5rem);
-  font-weight:800;
-  line-height:0.95;
-  letter-spacing:-0.02em;
-  color:var(--text);
-  margin-bottom:0.5rem;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(2.8rem,9vw,6rem);
+  font-weight:700;
+  line-height:0.92;
+  letter-spacing:-0.03em;
+  margin-bottom:1rem;
 }
-.hero-name span{color:var(--accent)}
-.hero-title{
-  font-size:clamp(0.85rem,2vw,1rem);
+.hero-name .line1{color:var(--text);display:block}
+.hero-name .line2{color:var(--text);display:block}
+.hero-name .line3{
+  display:block;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-sub{
+  font-size:clamp(0.75rem,2vw,0.85rem);
   color:var(--text2);
-  letter-spacing:0.08em;
-  text-transform:uppercase;
+  letter-spacing:0.12em;text-transform:uppercase;
   margin-bottom:2rem;
+  display:flex;align-items:center;gap:0.75rem;
 }
+.hero-sub::before{content:'';display:block;width:24px;height:1px;background:var(--accent)}
+
 .hero-desc{
-  font-family:'JetBrains Mono',monospace;
-  font-size:0.8rem;
+  font-size:var(--fs-sm);
   color:var(--text2);
-  max-width:520px;
-  line-height:1.8;
-  border-left:2px solid var(--accent);
+  max-width:500px;
+  line-height:1.9;
   padding-left:1rem;
+  border-left:2px solid rgba(0,255,163,0.4);
   margin-bottom:3rem;
 }
 .hero-stats{
-  display:flex;gap:3rem;
+  display:flex;gap:0;
   flex-wrap:wrap;
   margin-bottom:3rem;
+  border:1px solid var(--border2);
+  width:fit-content;
 }
-.stat{text-align:left}
-.stat-num{
-  font-family:'Syne',sans-serif;
-  font-size:2.2rem;font-weight:800;
+.stat-item{
+  padding:1rem 1.8rem;
+  border-right:1px solid var(--border2);
+  text-align:left;
+}
+.stat-item:last-child{border-right:none}
+.stat-val{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:2rem;font-weight:700;
   color:var(--accent);
-  line-height:1;
+  line-height:1;display:block;
 }
-.stat-label{
-  font-size:0.65rem;
-  letter-spacing:0.15em;
-  text-transform:uppercase;
-  color:var(--text3);
-  margin-top:0.25rem;
+.stat-lbl{
+  font-size:var(--fs-xs);
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--text3);margin-top:0.3rem;display:block;
 }
-.hero-cta{
-  display:flex;gap:1rem;flex-wrap:wrap;
-}
+.hero-btns{display:flex;gap:0.75rem;flex-wrap:wrap}
 .btn{
-  display:inline-flex;align-items:center;gap:0.5rem;
-  padding:0.7rem 1.5rem;
+  display:inline-flex;align-items:center;gap:0.45rem;
+  padding:0.65rem 1.4rem;
   font-family:'JetBrains Mono',monospace;
-  font-size:0.72rem;letter-spacing:0.1em;
-  text-transform:uppercase;
-  text-decoration:none;
-  border-radius:2px;
-  transition:all 0.2s;
-  cursor:pointer;border:none;
+  font-size:var(--fs-xs);letter-spacing:0.12em;text-transform:uppercase;
+  text-decoration:none;transition:all 0.2s;cursor:none;
 }
-.btn-primary{
-  background:var(--accent);
-  color:#000;font-weight:700;
-}
-.btn-primary:hover{background:#00cc7d;transform:translateY(-1px)}
-.btn-ghost{
-  background:transparent;
-  color:var(--accent);
-  border:1px solid var(--border);
-}
-.btn-ghost:hover{background:rgba(0,255,157,0.05);transform:translateY(-1px)}
+.btn-p{background:var(--accent);color:#000;font-weight:700}
+.btn-p:hover{background:#00cc80;transform:translateY(-2px)}
+.btn-g{background:transparent;color:var(--accent);border:1px solid var(--border)}
+.btn-g:hover{background:rgba(0,255,163,0.05);transform:translateY(-2px)}
 
-/* SECTION */
-section{padding:5rem 2rem;max-width:1000px;margin:0 auto}
-.section-header{
+/* SECTION COMMON */
+.sec{padding:6rem 2rem;max-width:1040px;margin:0 auto}
+.sec-top{
   display:flex;align-items:center;gap:1rem;
-  margin-bottom:3rem;
+  margin-bottom:0.6rem;
 }
-.section-tag{
-  font-size:0.6rem;
-  letter-spacing:0.2em;
-  text-transform:uppercase;
-  color:var(--accent);
+.sec-num{font-size:var(--fs-xs);letter-spacing:0.2em;text-transform:uppercase;color:var(--accent)}
+.sec-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
+.sec-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(1.5rem,4vw,2.2rem);
+  font-weight:700;letter-spacing:-0.02em;
+  margin-bottom:0.4rem;
 }
-.section-line{
-  flex:1;height:1px;
-  background:linear-gradient(90deg,var(--border),transparent);
+.sec-sub{font-size:var(--fs-sm);color:var(--text3);margin-bottom:3rem}
+.divider{border:none;border-top:1px solid var(--border2);margin:0}
+
+/* SCROLL REVEAL */
+.reveal{
+  opacity:0;transform:translateY(28px);
+  transition:opacity 0.7s ease,transform 0.7s ease;
 }
-.section-title{
-  font-family:'Syne',sans-serif;
-  font-size:2rem;font-weight:800;
-  color:var(--text);
-  margin-bottom:0.5rem;
-}
+.reveal.on{opacity:1;transform:none}
+.reveal-l{opacity:0;transform:translateX(-28px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal-l.on{opacity:1;transform:none}
+.delay-1{transition-delay:0.1s}
+.delay-2{transition-delay:0.2s}
+.delay-3{transition-delay:0.3s}
+.delay-4{transition-delay:0.4s}
+.delay-5{transition-delay:0.5s}
 
 /* SKILLS */
 .skills-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:1px;
-  background:var(--border2);
+  grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
   border:1px solid var(--border2);
+  gap:0;
 }
-.skill-card{
-  background:var(--surface);
-  padding:1.5rem;
-  position:relative;
-  overflow:hidden;
-  transition:background 0.2s;
+.sk-card{
+  padding:1.6rem;
+  border-right:1px solid var(--border2);
+  border-bottom:1px solid var(--border2);
+  position:relative;overflow:hidden;
+  transition:background 0.25s;
 }
-.skill-card:hover{background:var(--surface2)}
-.skill-card::before{
-  content:'';
-  position:absolute;top:0;left:0;
-  width:3px;height:0;
-  background:var(--accent);
-  transition:height 0.3s;
+.sk-card::after{
+  content:'';position:absolute;
+  left:0;top:0;width:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transition:width 0.4s ease;
 }
-.skill-card:hover::before{height:100%}
-.skill-icon{
-  font-size:1.4rem;
-  color:var(--accent);
-  margin-bottom:0.75rem;
-}
-.skill-name{
-  font-family:'Syne',sans-serif;
+.sk-card:hover::after{width:100%}
+.sk-card:hover{background:rgba(255,255,255,0.02)}
+.sk-ic{font-size:1.3rem;color:var(--accent);margin-bottom:0.8rem}
+.sk-name{
+  font-family:'Space Grotesk',sans-serif;
   font-size:0.9rem;font-weight:600;
-  color:var(--text);
-  margin-bottom:0.5rem;
+  color:var(--text);margin-bottom:0.4rem;
 }
-.skill-desc{
-  font-size:0.7rem;color:var(--text2);
-  line-height:1.6;margin-bottom:1rem;
-}
-.skill-bar{
-  height:2px;background:var(--surface2);
-  border-radius:0;
-}
-.skill-fill{
+.sk-desc{font-size:var(--fs-xs);color:var(--text2);line-height:1.65;margin-bottom:0.9rem}
+.sk-bar{height:1.5px;background:var(--surface3)}
+.sk-fill{
   height:100%;
   background:linear-gradient(90deg,var(--accent),var(--accent2));
-  border-radius:0;
-  width:0;
-  transition:width 1.2s cubic-bezier(0.4,0,0.2,1);
+  width:0;transition:width 1.4s cubic-bezier(0.16,1,0.3,1);
 }
-.skill-level{
+.sk-meta{
   display:flex;justify-content:space-between;
-  margin-top:0.4rem;
+  margin-top:0.35rem;
 }
-.skill-pct{font-size:0.6rem;color:var(--accent)}
-.skill-label{font-size:0.6rem;color:var(--text3)}
+.sk-pct{font-size:var(--fs-xs);color:var(--accent)}
+.sk-tag{font-size:var(--fs-xs);color:var(--text3)}
+.tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1.5rem}
+.tag{
+  padding:0.25rem 0.6rem;
+  font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;
+  border:1px solid var(--border3);color:var(--text2);
+  transition:all 0.2s;cursor:default;
+}
+.tag:hover{border-color:var(--accent);color:var(--accent)}
 
-/* TECH TAGS */
-.tech-grid{
-  display:flex;flex-wrap:wrap;gap:0.5rem;
-  margin-top:1rem;
+/* TIMELINE */
+.tl{position:relative;padding-left:2.2rem}
+.tl::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:1px;background:linear-gradient(180deg,var(--accent),transparent);
 }
-.tech-tag{
-  padding:0.3rem 0.7rem;
-  font-size:0.62rem;letter-spacing:0.1em;
-  text-transform:uppercase;
-  border:1px solid var(--border2);
-  color:var(--text2);
-  border-radius:2px;
-  transition:all 0.2s;
-  cursor:default;
-}
-.tech-tag:hover{
-  border-color:var(--accent);
-  color:var(--accent);
-  background:rgba(0,255,157,0.04);
-}
-
-/* EXPERIENCE */
-.timeline{position:relative;padding-left:2rem}
-.timeline::before{
-  content:'';
-  position:absolute;left:0;top:0;bottom:0;
-  width:1px;background:var(--border);
-}
-.timeline-item{
-  position:relative;margin-bottom:2.5rem;
-}
-.timeline-dot{
-  position:absolute;left:-2.37rem;top:0.3rem;
-  width:8px;height:8px;border-radius:50%;
+.tl-item{position:relative;margin-bottom:3rem}
+.tl-dot{
+  position:absolute;left:-2.54rem;top:0.25rem;
+  width:9px;height:9px;border-radius:50%;
   background:var(--accent);
-  box-shadow:0 0 10px var(--accent);
+  box-shadow:0 0 12px rgba(0,255,163,0.6);
 }
-.timeline-period{
-  font-size:0.65rem;letter-spacing:0.15em;
-  text-transform:uppercase;color:var(--accent);
-  margin-bottom:0.4rem;
+.tl-period{font-size:var(--fs-xs);letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:0.3rem}
+.tl-role{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.1rem;font-weight:600;margin-bottom:0.2rem;
 }
-.timeline-role{
-  font-family:'Syne',sans-serif;
-  font-size:1.1rem;font-weight:700;
-  color:var(--text);margin-bottom:0.2rem;
-}
-.timeline-org{font-size:0.75rem;color:var(--text2);margin-bottom:1rem}
-.timeline-points{list-style:none}
-.timeline-points li{
-  font-size:0.75rem;color:var(--text2);
+.tl-org{font-size:var(--fs-sm);color:var(--text2);margin-bottom:1rem}
+.tl-pts{list-style:none}
+.tl-pts li{
+  font-size:var(--fs-sm);color:var(--text2);
   padding:0.3rem 0;
   display:flex;gap:0.6rem;
   border-bottom:1px solid var(--border2);
 }
-.timeline-points li:last-child{border-bottom:none}
-.timeline-points li::before{
-  content:'›';color:var(--accent);flex-shrink:0;
+.tl-pts li:last-child{border:none}
+.tl-pts li::before{content:'›';color:var(--accent);flex-shrink:0}
+
+/* REPORTS SECTION */
+.reports-intro{
+  font-size:var(--fs-sm);color:var(--text2);
+  max-width:600px;line-height:1.8;margin-bottom:2.5rem;
+}
+.reports-filter{
+  display:flex;gap:0.5rem;flex-wrap:wrap;
+  margin-bottom:2.5rem;
+}
+.filter-btn{
+  padding:0.3rem 0.8rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:var(--fs-xs);letter-spacing:0.1em;text-transform:uppercase;
+  border:1px solid var(--border2);
+  background:transparent;color:var(--text2);
+  cursor:none;transition:all 0.2s;
+}
+.filter-btn.active,.filter-btn:hover{
+  border-color:var(--accent);color:var(--accent);
+  background:rgba(0,255,163,0.04);
+}
+.reports-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:1px;
+  background:var(--border2);
+}
+.report-card{
+  background:var(--surface);
+  padding:1.5rem;
+  position:relative;overflow:hidden;
+  transition:background 0.25s,transform 0.25s;
+  cursor:none;
+}
+.report-card::before{
+  content:'';position:absolute;
+  left:0;bottom:0;width:100%;height:0;
+  background:linear-gradient(180deg,transparent,rgba(0,255,163,0.03));
+  transition:height 0.4s;
+}
+.report-card:hover::before{height:100%}
+.report-card:hover{background:var(--surface2);transform:translateY(-2px)}
+.report-card.hidden{display:none}
+
+.r-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;gap:0.5rem}
+.r-num{
+  font-size:var(--fs-xs);letter-spacing:0.15em;
+  color:var(--text3);
+}
+.r-sev{
+  padding:0.2rem 0.55rem;
+  font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;
+  font-weight:700;flex-shrink:0;
+}
+.sev-critical{background:rgba(255,64,96,0.12);color:var(--accent3);border:1px solid rgba(255,64,96,0.2)}
+.sev-high{background:rgba(255,184,0,0.1);color:var(--accent4);border:1px solid rgba(255,184,0,0.2)}
+.sev-medium{background:rgba(0,207,255,0.1);color:var(--accent2);border:1px solid rgba(0,207,255,0.2)}
+
+.r-type-badge{
+  display:inline-flex;align-items:center;gap:0.35rem;
+  padding:0.18rem 0.55rem;
+  font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;
+  background:rgba(0,255,163,0.06);
+  color:var(--accent);border:1px solid rgba(0,255,163,0.15);
+  margin-bottom:0.7rem;
+}
+.r-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:0.92rem;font-weight:600;
+  color:var(--text);line-height:1.3;
+  margin-bottom:0.6rem;
+}
+.r-desc{
+  font-size:var(--fs-xs);
+  color:var(--text2);line-height:1.7;
+  margin-bottom:1rem;
+}
+.r-impact{
+  display:flex;align-items:flex-start;gap:0.5rem;
+  padding:0.6rem 0.75rem;
+  background:rgba(255,64,96,0.06);
+  border-left:2px solid var(--accent3);
+  margin-bottom:1rem;
+}
+.r-impact-label{font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent3);flex-shrink:0;margin-top:0.05rem}
+.r-impact-text{font-size:var(--fs-xs);color:var(--text2);line-height:1.6}
+.r-target{
+  display:flex;align-items:center;gap:0.4rem;
+  font-size:var(--fs-xs);color:var(--text3);
+}
+.r-target i{font-size:0.85rem;color:var(--text3)}
+.r-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:1rem;padding-top:0.8rem;
+  border-top:1px solid var(--border2);
+}
+.r-platform{font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3)}
+.r-expand{
+  font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--accent);background:none;border:none;cursor:none;
+  display:flex;align-items:center;gap:0.3rem;
+  transition:gap 0.2s;
+}
+.r-expand:hover{gap:0.6rem}
+
+/* MODAL */
+.modal-overlay{
+  display:none;
+  position:fixed;inset:0;z-index:500;
+  background:rgba(4,6,9,0.92);
+  backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;
+  padding:1rem;
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--surface);
+  border:1px solid var(--border2);
+  max-width:700px;width:100%;
+  max-height:90vh;overflow-y:auto;
+  position:relative;
+  animation:modalIn 0.25s ease;
+}
+@keyframes modalIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.modal-close{
+  position:absolute;top:1rem;right:1rem;
+  background:none;border:none;color:var(--text2);
+  font-size:1.3rem;cursor:none;
+  transition:color 0.2s;z-index:1;
+}
+.modal-close:hover{color:var(--accent)}
+.modal-header{
+  padding:1.8rem 2rem 1.2rem;
+  border-bottom:1px solid var(--border2);
+}
+.modal-body{padding:1.5rem 2rem 2rem}
+.modal-row{
+  display:flex;gap:1.5rem;flex-wrap:wrap;
+  margin-bottom:1.2rem;
+}
+.modal-field{flex:1;min-width:120px}
+.modal-field label{
+  display:block;
+  font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--text3);margin-bottom:0.3rem;
+}
+.modal-field span{font-size:var(--fs-sm);color:var(--text)}
+.modal-section{margin-bottom:1.5rem}
+.modal-section h4{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:0.8rem;font-weight:600;
+  color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;
+  margin-bottom:0.6rem;
+  display:flex;align-items:center;gap:0.4rem;
+}
+.modal-section p{font-size:var(--fs-sm);color:var(--text2);line-height:1.8}
+.modal-steps{list-style:none;counter-reset:steps}
+.modal-steps li{
+  counter-increment:steps;
+  display:flex;gap:0.8rem;
+  font-size:var(--fs-sm);color:var(--text2);
+  padding:0.5rem 0;
+  border-bottom:1px solid var(--border2);
+  line-height:1.6;
+}
+.modal-steps li:last-child{border:none}
+.modal-steps li::before{
+  content:counter(steps);
+  min-width:20px;height:20px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(0,255,163,0.08);
+  border:1px solid rgba(0,255,163,0.2);
+  font-size:0.6rem;color:var(--accent);
+  flex-shrink:0;margin-top:0.1rem;
+}
+.code-block{
+  background:var(--bg);
+  border:1px solid var(--border2);
+  padding:0.8rem 1rem;
+  font-size:0.65rem;color:var(--accent);
+  line-height:1.6;overflow-x:auto;
+  margin-top:0.5rem;word-break:break-all;
 }
 
 /* ACHIEVEMENTS */
-.achieve-grid{
+.ach-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
   gap:1rem;
 }
-.achieve-card{
+.ach-card{
   padding:1.5rem;
   border:1px solid var(--border2);
   background:var(--surface);
   position:relative;overflow:hidden;
-  transition:all 0.2s;
+  transition:border-color 0.25s,transform 0.25s;
 }
-.achieve-card:hover{
-  border-color:var(--border);
-  transform:translateY(-2px);
+.ach-card:hover{border-color:var(--border);transform:translateY(-3px)}
+.ach-num{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:2.4rem;font-weight:700;
+  color:var(--accent);line-height:1;margin-bottom:0.5rem;
 }
-.achieve-num{
-  font-family:'Syne',sans-serif;
-  font-size:2.5rem;font-weight:800;
-  color:var(--accent);line-height:1;
-  margin-bottom:0.5rem;
-}
-.achieve-text{
-  font-size:0.7rem;color:var(--text2);
-  line-height:1.5;
-}
-.achieve-icon{
+.ach-txt{font-size:var(--fs-xs);color:var(--text2);line-height:1.5}
+.ach-ico{
   position:absolute;bottom:1rem;right:1rem;
-  font-size:1.8rem;color:var(--border2);
+  font-size:1.8rem;color:rgba(0,255,163,0.06);
 }
 
 /* CERTS */
 .cert-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:1rem;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:0.75rem;
 }
 .cert-card{
-  display:flex;align-items:center;gap:1rem;
-  padding:1rem 1.2rem;
+  display:flex;align-items:center;gap:0.9rem;
+  padding:0.9rem 1.1rem;
   border:1px solid var(--border2);
   background:var(--surface);
-  transition:all 0.2s;
+  transition:border-color 0.2s;
 }
 .cert-card:hover{border-color:var(--border)}
-.cert-icon{
-  font-size:1.3rem;color:var(--accent);flex-shrink:0;
-}
-.cert-name{font-size:0.75rem;color:var(--text);font-weight:600}
-.cert-body{font-size:0.65rem;color:var(--text3);margin-top:0.1rem}
+.cert-card i{font-size:1.2rem;color:var(--accent);flex-shrink:0}
+.cert-name{font-size:var(--fs-sm);color:var(--text);font-weight:600}
+.cert-body{font-size:var(--fs-xs);color:var(--text3);margin-top:0.1rem}
 
 /* CONTACT */
 .contact-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:2rem;
+  gap:3rem;
+  align-items:start;
 }
-.contact-left p{
-  font-size:0.8rem;color:var(--text2);
-  line-height:1.8;margin-bottom:1.5rem;
-}
-.contact-links{display:flex;flex-direction:column;gap:0.7rem}
-.contact-link{
+.contact-desc{font-size:var(--fs-sm);color:var(--text2);line-height:1.9;margin-bottom:1.5rem}
+.contact-links{display:flex;flex-direction:column;gap:0.6rem}
+.c-link{
   display:flex;align-items:center;gap:0.8rem;
   padding:0.7rem 1rem;
   border:1px solid var(--border2);
   color:var(--text2);text-decoration:none;
-  font-size:0.72rem;
+  font-size:var(--fs-sm);
   transition:all 0.2s;
 }
-.contact-link:hover{border-color:var(--border);color:var(--accent)}
-.contact-link i{font-size:1rem;color:var(--accent)}
+.c-link:hover{border-color:var(--border);color:var(--accent)}
+.c-link i{font-size:1rem;color:var(--accent)}
 
 /* FOOTER */
 footer{
   border-top:1px solid var(--border2);
   padding:2rem;text-align:center;
-  font-size:0.65rem;letter-spacing:0.15em;
-  text-transform:uppercase;color:var(--text3);
+  font-size:var(--fs-xs);letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--text3);
 }
 footer span{color:var(--accent)}
 
-/* ANIMATE IN */
-.fade-in{opacity:0;transform:translateY(20px);transition:all 0.6s ease}
-.fade-in.visible{opacity:1;transform:none}
-
-@media(max-width:640px){
-  nav{padding:1rem}
+/* MOBILE */
+@media(max-width:768px){
+  nav{padding:0 1rem}
   .nav-links{display:none}
-  .hero{padding:2rem 1rem}
-  .hero-stats{gap:1.5rem}
+  .nav-menu{display:block}
+  .nav-links.open{
+    display:flex;flex-direction:column;
+    position:fixed;top:58px;left:0;right:0;
+    background:rgba(6,8,11,0.98);
+    border-bottom:1px solid var(--border2);
+    padding:1rem;gap:0;
+  }
+  .nav-links.open a{border:none;border-bottom:1px solid var(--border2);padding:0.7rem 0}
+  .hero-stats{flex-direction:column;width:100%}
+  .stat-item{border-right:none;border-bottom:1px solid var(--border2)}
+  .stat-item:last-child{border-bottom:none}
   .contact-grid{grid-template-columns:1fr}
-  section{padding:3rem 1rem}
+  .reports-grid{grid-template-columns:1fr}
+  .sec{padding:4rem 1.2rem}
+  .modal-body,.modal-header{padding:1.2rem}
+  .modal-row{flex-direction:column;gap:0.8rem}
+  #cursor,#cursor-ring{display:none}
+  body{cursor:auto}
+  .btn,.filter-btn,.report-card,.r-expand,.modal-close{cursor:pointer}
+}
+@media(max-width:480px){
+  .hero-name{font-size:2.4rem}
+  .ach-grid{grid-template-columns:1fr 1fr}
+  .cert-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
 <nav>
   <div class="nav-logo">AJ.sec</div>
-  <ul class="nav-links">
+  <ul class="nav-links" id="navLinks">
     <li><a href="#skills">Skills</a></li>
     <li><a href="#experience">Experience</a></li>
-    <li><a href="#achievements">Impact</a></li>
+    <li><a href="#reports">Bug Reports</a></li>
+    <li><a href="#impact">Impact</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <button class="nav-menu" id="navMenu" aria-label="Menu"><i class="ti ti-menu-2"></i></button>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
+  <div class="hero-bg"></div>
   <div class="hero-grid"></div>
-  <div class="hero-scan"></div>
-  <div class="hero-content">
-    <div class="hero-badge">
-      <div class="badge-dot"></div>
-      Available for engagements
+  <div class="scanline"></div>
+  <div class="hero-inner">
+    <div class="status-pill reveal">
+      <div class="pulse-dot"></div>
+      Available · Remote · Worldwide
     </div>
-    <h1 class="hero-name">Ayman<br>Mahmoud<br><span>Jasim</span></h1>
-    <p class="hero-title">Senior Penetration Tester & Offensive Security Specialist</p>
-    <p class="hero-desc">
-      6+ years breaking systems so defenders can build better ones. 
-      150+ assessments across web, network, and AD environments. 
-      Specialized in red team operations, exploit development, and adversary simulation.
+    <h1 class="hero-name reveal delay-1">
+      <span class="line1">Ayman</span>
+      <span class="line2">Mahmoud</span>
+      <span class="line3">Jasim</span>
+    </h1>
+    <div class="hero-sub reveal delay-2">Senior Penetration Tester & Offensive Security Specialist</div>
+    <p class="hero-desc reveal delay-3">
+      6+ years breaking enterprise systems. 150+ assessments across web, network, and Active Directory. Specialized in red team operations, exploit development, and full-scope adversary simulation.
     </p>
-    <div class="hero-stats">
-      <div class="stat">
-        <div class="stat-num" data-count="150">0</div>
-        <div class="stat-label">Pen Tests Delivered</div>
+    <div class="hero-stats reveal delay-4">
+      <div class="stat-item">
+        <span class="stat-val" data-count="150" data-suffix="+">0</span>
+        <span class="stat-lbl">Pen Tests</span>
       </div>
-      <div class="stat">
-        <div class="stat-num" data-count="6">0</div>
-        <div class="stat-label">Years of Experience</div>
+      <div class="stat-item">
+        <span class="stat-val" data-count="6" data-suffix="+">0</span>
+        <span class="stat-lbl">Years Exp.</span>
       </div>
-      <div class="stat">
-        <div class="stat-num" data-count="9">0</div>
-        <div class="stat-label">Certs & Credentials</div>
+      <div class="stat-item">
+        <span class="stat-val" data-count="10">0</span>
+        <span class="stat-lbl">Bug Reports</span>
       </div>
-      <div class="stat">
-        <div class="stat-num" data-suffix="%">~40</div>
-        <div class="stat-label">Efficiency Gain via Tooling</div>
+      <div class="stat-item">
+        <span class="stat-val" data-count="40" data-suffix="%">0</span>
+        <span class="stat-lbl">Efficiency ↑</span>
       </div>
     </div>
-    <div class="hero-cta">
-      <a class="btn btn-primary" href="#contact"><i class="ti ti-send"></i> Hire Me</a>
-      <a class="btn btn-ghost" href="#experience"><i class="ti ti-file-cv"></i> View Experience</a>
+    <div class="hero-btns reveal delay-5">
+      <a class="btn btn-p" href="#reports"><i class="ti ti-bug"></i> View Bug Reports</a>
+      <a class="btn btn-g" href="#contact"><i class="ti ti-send"></i> Hire Me</a>
     </div>
   </div>
 </div>
 
+<hr class="divider">
+
 <!-- SKILLS -->
-<section id="skills">
-  <div class="section-header">
-    <span class="section-tag">// 01</span>
-    <div class="section-line"></div>
+<section class="sec" id="skills">
+  <div class="sec-top reveal"><span class="sec-num">// 01</span><div class="sec-line"></div></div>
+  <h2 class="sec-title reveal">Core Competencies</h2>
+  <p class="sec-sub reveal">Technical depth across the full offensive security stack.</p>
+  <div class="skills-grid">
+    <div class="sk-card reveal"><div class="sk-ic"><i class="ti ti-world"></i></div><div class="sk-name">Web App Pentesting</div><div class="sk-desc">SQLi (blind/time-based/OOB), XSS variants, SSRF, XXE, IDOR, Deserialization, Auth Bypass — full OWASP Top 10 and beyond.</div><div class="sk-bar"><div class="sk-fill" data-w="95"></div></div><div class="sk-meta"><span class="sk-pct">95%</span><span class="sk-tag">Expert</span></div></div>
+    <div class="sk-card reveal delay-1"><div class="sk-ic"><i class="ti ti-topology-star-ring-3"></i></div><div class="sk-name">Active Directory Attacks</div><div class="sk-desc">Kerberoasting, AS-REP Roasting, Pass-the-Hash/Ticket, DCSync, BloodHound path mapping, full domain compromise.</div><div class="sk-bar"><div class="sk-fill" data-w="92"></div></div><div class="sk-meta"><span class="sk-pct">92%</span><span class="sk-tag">Expert</span></div></div>
+    <div class="sk-card reveal delay-2"><div class="sk-ic"><i class="ti ti-sword"></i></div><div class="sk-name">Red Team Operations</div><div class="sk-desc">Full APT-style simulation: recon → initial access → lateral movement → privilege escalation → domain compromise.</div><div class="sk-bar"><div class="sk-fill" data-w="90"></div></div><div class="sk-meta"><span class="sk-pct">90%</span><span class="sk-tag">Advanced</span></div></div>
+    <div class="sk-card reveal delay-1"><div class="sk-ic"><i class="ti ti-terminal-2"></i></div><div class="sk-name">Custom Tooling (Python/Bash)</div><div class="sk-desc">Recon automation, exploit scripts, post-exploitation utilities — reduced repetitive tasks by ~40%.</div><div class="sk-bar"><div class="sk-fill" data-w="88"></div></div><div class="sk-meta"><span class="sk-pct">88%</span><span class="sk-tag">Advanced</span></div></div>
+    <div class="sk-card reveal delay-2"><div class="sk-ic"><i class="ti ti-network"></i></div><div class="sk-name">Network & Infrastructure</div><div class="sk-desc">Service enumeration, firewall evasion, pivoting, tunneling, SMB relay, LLMNR poisoning, segmented networks.</div><div class="sk-bar"><div class="sk-fill" data-w="88"></div></div><div class="sk-meta"><span class="sk-pct">88%</span><span class="sk-tag">Advanced</span></div></div>
+    <div class="sk-card reveal delay-3"><div class="sk-ic"><i class="ti ti-bug"></i></div><div class="sk-name">Binary & Exploit Dev</div><div class="sk-desc">Buffer overflow, custom shellcode, ASLR/DEP awareness, binary analysis, AV/EDR evasion techniques.</div><div class="sk-bar"><div class="sk-fill" data-w="78"></div></div><div class="sk-meta"><span class="sk-pct">78%</span><span class="sk-tag">Proficient</span></div></div>
   </div>
-  <h2 class="section-title fade-in">Core Competencies</h2>
-
-  <div class="skills-grid fade-in">
-    <div class="skill-card">
-      <div class="skill-icon"><i class="ti ti-world"></i></div>
-      <div class="skill-name">Web App Pentesting</div>
-      <div class="skill-desc">SQL Injection, XSS, SSRF, XXE, IDOR, Deserialization, Auth Bypass — full OWASP Top 10 coverage and beyond.</div>
-      <div class="skill-bar"><div class="skill-fill" data-width="95"></div></div>
-      <div class="skill-level"><span class="skill-pct">95%</span><span class="skill-label">Expert</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-icon"><i class="ti ti-topology-star-ring-3"></i></div>
-      <div class="skill-name">Active Directory Attacks</div>
-      <div class="skill-desc">Kerberoasting, AS-REP Roasting, Pass-the-Hash/Ticket, DCSync, BloodHound path mapping, domain compromise.</div>
-      <div class="skill-bar"><div class="skill-fill" data-width="92"></div></div>
-      <div class="skill-level"><span class="skill-pct">92%</span><span class="skill-label">Expert</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-icon"><i class="ti ti-sword"></i></div>
-      <div class="skill-name">Red Team Operations</div>
-      <div class="skill-desc">Full APT-style simulation: recon → initial access → lateral movement → domain compromise → full debrief.</div>
-      <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      <div class="skill-level"><span class="skill-pct">90%</span><span class="skill-label">Advanced</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-icon"><i class="ti ti-terminal-2"></i></div>
-      <div class="skill-name">Custom Tooling (Python/Bash)</div>
-      <div class="skill-desc">Recon automation, exploit scripts, post-exploitation utilities — reduced repetitive tasks by ~40%.</div>
-      <div class="skill-bar"><div class="skill-fill" data-width="88"></div></div>
-      <div class="skill-level"><span class="skill-pct">88%</span><span class="skill-label">Advanced</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-icon"><i class="ti ti-network"></i></div>
-      <div class="skill-name">Network & Infrastructure</div>
-      <div class="skill-desc">Service enumeration, firewall evasion, pivoting, tunneling, SMB relay, LLMNR poisoning.</div>
-      <div class="skill-bar"><div class="skill-fill" data-width="88"></div></div>
-      <div class="skill-level"><span class="skill-pct">88%</span><span class="skill-label">Advanced</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-icon"><i class="ti ti-bug"></i></div>
-      <div class="skill-name">Binary & Exploit Dev</div>
-      <div class="skill-desc">Buffer overflow exploitation, custom shellcode, ASLR/DEP awareness, binary analysis in controlled environments.</div>
-      <div class="skill-bar"><div class="skill-fill" data-width="78"></div></div>
-      <div class="skill-level"><span class="skill-pct">78%</span><span class="skill-label">Proficient</span></div>
-    </div>
-  </div>
-
-  <div style="margin-top:2rem" class="fade-in">
-    <p style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-bottom:0.75rem">// Tools & Platforms</p>
-    <div class="tech-grid">
-      <span class="tech-tag">Burp Suite Pro</span>
-      <span class="tech-tag">Metasploit</span>
-      <span class="tech-tag">Nmap</span>
-      <span class="tech-tag">BloodHound</span>
-      <span class="tech-tag">Mimikatz</span>
-      <span class="tech-tag">CrackMapExec</span>
-      <span class="tech-tag">Evil-WinRM</span>
-      <span class="tech-tag">Impacket</span>
-      <span class="tech-tag">SQLmap</span>
-      <span class="tech-tag">ffuf</span>
-      <span class="tech-tag">Gobuster</span>
-      <span class="tech-tag">Nessus</span>
-      <span class="tech-tag">Wireshark</span>
-      <span class="tech-tag">Kali Linux</span>
-      <span class="tech-tag">Parrot OS</span>
-      <span class="tech-tag">Python</span>
-      <span class="tech-tag">Bash</span>
-      <span class="tech-tag">CVSS v3.1</span>
-    </div>
+  <div class="tags reveal" style="margin-top:1.5rem">
+    <span class="tag">Burp Suite Pro</span><span class="tag">Metasploit</span><span class="tag">Nmap</span><span class="tag">BloodHound</span><span class="tag">Mimikatz</span><span class="tag">CrackMapExec</span><span class="tag">Evil-WinRM</span><span class="tag">Impacket</span><span class="tag">SQLmap</span><span class="tag">ffuf</span><span class="tag">Gobuster</span><span class="tag">Nessus</span><span class="tag">Wireshark</span><span class="tag">Kali Linux</span><span class="tag">Parrot OS</span><span class="tag">Python</span><span class="tag">Bash</span><span class="tag">CVSS v3.1</span>
   </div>
 </section>
 
-<!-- EXPERIENCE -->
-<section id="experience" style="border-top:1px solid var(--border2)">
-  <div class="section-header">
-    <span class="section-tag">// 02</span>
-    <div class="section-line"></div>
-  </div>
-  <h2 class="section-title fade-in">Experience</h2>
+<hr class="divider">
 
-  <div class="timeline fade-in">
-    <div class="timeline-item">
-      <div class="timeline-dot"></div>
-      <div class="timeline-period">2018 – Present</div>
-      <div class="timeline-role">Senior Penetration Tester & Offensive Security Specialist</div>
-      <div class="timeline-org">Freelance / Independent Security Consultant — Remote, Iraq</div>
-      <ul class="timeline-points">
-        <li>Executed 150+ full-scope pen tests across web apps, APIs, networks, and enterprise AD environments</li>
-        <li>Advanced web attacks: SQLi (blind, time-based, OOB), XSS variants, SSRF, XXE, Deserialization, Auth Bypass</li>
-        <li>Full AD attack chains: Kerberoasting, Pass-the-Hash/Ticket, DCSync, BloodHound-guided domain compromise</li>
-        <li>Engineered Python & Bash automation tooling, cutting repetitive assessment overhead by ~40%</li>
-        <li>Delivered CVSS v3.1-scored executive and technical reports with PoC demos and remediation roadmaps</li>
+<!-- EXPERIENCE -->
+<section class="sec" id="experience">
+  <div class="sec-top reveal"><span class="sec-num">// 02</span><div class="sec-line"></div></div>
+  <h2 class="sec-title reveal">Experience</h2>
+  <p class="sec-sub reveal">6 years of full-scope offensive security work.</p>
+  <div class="tl reveal">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">2018 – Present</div>
+      <div class="tl-role">Senior Penetration Tester & Offensive Security Specialist</div>
+      <div class="tl-org">Freelance / Independent Security Consultant — Remote, Iraq</div>
+      <ul class="tl-pts">
+        <li>150+ full-scope pen tests across web apps, APIs, networks, and enterprise AD environments</li>
+        <li>Advanced web attacks: SQLi variants, XSS, SSRF, XXE, Deserialization, Auth Bypass</li>
+        <li>Full AD attack chains: Kerberoasting, Pass-the-Hash/Ticket, DCSync, domain compromise</li>
+        <li>Python & Bash automation tooling — cut repetitive overhead by ~40%</li>
+        <li>CVSS v3.1-scored executive and technical reports with PoC demos and remediation roadmaps</li>
         <li>Phishing simulations and social engineering as part of red team engagements</li>
-        <li>Buffer overflow exploitation with custom shellcode and memory protection bypass awareness</li>
+        <li>Buffer overflow exploitation with custom shellcode and memory protection bypass</li>
       </ul>
     </div>
   </div>
 </section>
 
-<!-- ACHIEVEMENTS -->
-<section id="achievements" style="border-top:1px solid var(--border2)">
-  <div class="section-header">
-    <span class="section-tag">// 03</span>
-    <div class="section-line"></div>
-  </div>
-  <h2 class="section-title fade-in">Measurable Impact</h2>
+<hr class="divider">
 
-  <div class="achieve-grid fade-in">
-    <div class="achieve-card">
-      <div class="achieve-num">150+</div>
-      <div class="achieve-text">Penetration tests delivered across web, API, network, and AD environments</div>
-      <i class="ti ti-shield-check achieve-icon"></i>
+<!-- BUG REPORTS -->
+<section class="sec" id="reports">
+  <div class="sec-top reveal"><span class="sec-num">// 03</span><div class="sec-line"></div></div>
+  <h2 class="sec-title reveal">Validated Bug Reports</h2>
+  <p class="reports-intro reveal">10 real security findings — responsibly disclosed across multiple platforms and programs. Each report includes full reproduction steps, impact analysis, and remediation guidance.</p>
+
+  <div class="reports-filter reveal">
+    <button class="filter-btn active" data-filter="all">All (10)</button>
+    <button class="filter-btn" data-filter="xss">XSS</button>
+    <button class="filter-btn" data-filter="sqli">SQL Injection</button>
+    <button class="filter-btn" data-filter="ssrf">SSRF / XXE</button>
+    <button class="filter-btn" data-filter="ato">Account Takeover</button>
+    <button class="filter-btn" data-filter="traversal">Path Traversal</button>
+  </div>
+
+  <div class="reports-grid reveal">
+
+    <!-- R1 -->
+    <div class="report-card" data-cats="xss ato" data-id="0">
+      <div class="r-header">
+        <span class="r-num">RPT-001</span>
+        <span class="r-sev sev-critical">Critical</span>
+      </div>
+      <div class="r-type-badge"><i class="ti ti-code" style="font-size:0.7rem"></i> DOM XSS → ATO</div>
+      <div class="r-title">DOM XSS via Import Filename → Full Account Takeover</div>
+      <div class="r-desc">Account import page renders selected filename using innerHTML instead of textContent, enabling HTML injection inside an authenticated form that already holds the victim's session and a valid CSRF token.</div>
+      <div class="r-impact">
+        <span class="r-impact-label">Impact</span>
+        <span class="r-impact-text">Full account takeover via email change to attacker-controlled mailbox. Also: write-scoped token creation, account deletion.</span>
+      </div>
+      <div class="r-footer">
+        <span class="r-platform">Basecamp / HackerOne</span>
+        <button class="r-expand" onclick="openModal(0)">Details <i class="ti ti-arrow-right" style="font-size:0.7rem"></i></button>
+      </div>
     </div>
-    <div class="achieve-card">
-      <div class="achieve-num">9.0+</div>
-      <div class="achieve-text">CVSS score findings discovered in production systems — critical severity, real breach prevention</div>
-      <i class="ti ti-alert-triangle achieve-icon"></i>
+
+    <!-- R2 -->
+    <div class="report-card" data-cats="ssrf" data-id="1">
+      <div class="r-header">
+        <span class="r-num">RPT-002</span>
+        <span class="r-sev sev-high">High</span>
+      </div>
+      <div class="r-type-badge"><i class="ti ti-server" style="font-size:0.7rem"></i> Blind SSRF</div>
+      <div class="r-title">Blind SSRF in Export Service via webhookUrl Parameter</div>
+      <div class="r-desc">The /exportservice/v3/exports/WEBHOOK/accounts endpoint accepts a webhookUrl parameter without validation. Providing a malicious URL causes the server to issue unauthorized HTTP requests to attacker-controlled systems.</div>
+      <div class="r-impact">
+        <span class="r-impact-label">Impact</span>
+        <span class="r-impact-text">Internal network access, port scanning, cloud metadata exfiltration, potential chained RCE via internal service exploitation.</span>
+      </div>
+      <div class="r-footer">
+        <span class="r-platform">REDACTED SaaS Platform</span>
+        <button class="r-expand" onclick="openModal(1)">Details <i class="ti ti-arrow-right" style="font-size:0.7rem"></i></button>
+      </div>
     </div>
-    <div class="achieve-card">
-      <div class="achieve-num">~40%</div>
-      <div class="achieve-text">Reduction in repetitive assessment tasks via custom Python automation tooling</div>
-      <i class="ti ti-rocket achieve-icon"></i>
+
+    <!-- R3 -->
+    <div class="report-card" data-cats="traversal" data-id="2">
+      <div class="r-header">
+        <span class="r-num">RPT-003</span>
+        <span class="r-sev sev-critical">Critical</span>
+      </div>
+      <div class="r-type-badge"><i class="ti ti-folder" style="font-size:0.7rem"></i> Path Traversal → RCE</div>
+      <div class="r-title">libcurl SFTP QUOTE Path Traversal → Arbitrary File Write & RCE</div>
+      <div class="r-desc">Curl_get_pathname in lib/vssh/curl_path.c fails to sanitize ../ sequences in user-provided SFTP QUOTE paths. An attacker with SFTP access can rename, delete, or write files outside their home directory.</div>
+      <div class="r-impact">
+        <span class="r-impact-label">Impact</span>
+        <span class="r-impact-text">Full server compromise via authorized_keys overwrite or system script replacement. Breaks SFTP directory restriction model entirely.</span>
+      </div>
+      <div class="r-footer">
+        <span class="r-platform">libcurl / curl 8.15.0</span>
+        <button class="r-expand" onclick="openModal(2)">Details <i class="ti ti-arrow-right" style="font-size:0.7rem"></i></button>
+      </div>
     </div>
-    <div class="achieve-card">
-      <div class="achieve-num">APT</div>
-      <div class="achieve-text">Full end-to-end adversary simulation from initial recon to domain compromise delivered</div>
-      <i class="ti ti-spy achieve-icon"></i>
+
+    <!-- R4 -->
+    <div class="report-card" data-cats="xss" data-id="3">
+      <div class="r-header">
+        <span class="r-num">RPT-004</span>
+        <span class="r-sev sev-high">High</span>
+      </div>
+      <div class="r-type-badge"><i class="ti ti-code" style="font-size:0.7rem"></i> Mutation XSS</div>
+      <div class="r-title">Mutation-Based Stored XSS in Trix Editor v2.1.8</div>
+      <div class="r-desc">Trix Editor 2.1.8 is vulnerable to mXSS via MathML mutation — a DOMPurify bypass vector. A crafted data-trix-attachment attribute containing HTML5 content type triggers JavaScript execution upon paste.</div>
+      <div class="r-impact">
+        <span class="r-impact-label">Impact</span>
+        <span class="r-impact-text">Arbitrary JavaScript execution in victim session context. Unauthorized actions, session hijacking, sensitive data disclosure.</span>
+      </div>
+      <div class="r-footer">
+        <span class="r-platform">Trix Editor / Open Source</span>
+        <button class="r-expand" onclick="openModal(3)">Details <i class="ti ti-arrow-right" style="font-size:0.7rem"></i></button>
+      </div>
+    </div>
+
+    <!-- R5 -->
+    <div class="report-card" data-cats="ato" data-id="4">
+      <div class="r-header">
+        <span class="r-num">RPT-005</span>
+        <span class="r-sev sev-high">High</span>
+      </div>
+      <div class="r-type-badge"><i class="ti ti-user" style="font-size:0.7rem"></i> IDOR</div>
+      <div class="r-title">IDOR Leads to Unauthorized User Profile Modification</div>
+      <div class="r-desc">POST /app/updateUser performs no authorization check on the target user ID. An attacker can substitute any victim's ID and email in the JSON body to overwrite their profile data.</div>
+      <div class="r-impact">
+        <span class="r-impact-label">Impact</span>
+        <span class="r-impact-text">Attacker can silently modify username, address, mobile number, company name, and company size of any account.</span>
+      </div>
+      <div class="r-footer">
+        <span class="r-platform">target.com.ng / HackerOne</span>
+        <button class="r-expand" onclick="openModal(4)">Details <i class="ti ti-arrow-right" style="font-size:0.7rem"></i></button>
+      </div>
+    </div>
+
+    <!-- R6 -->
+    <div class="report-card" data-cats="sqli" data-id="5">
+      <div class="r-header">
+        <span class="r-num">RPT-006</span>
+        <span class="r-sev sev-critical">Critical</span>
+      </div>
+      <div class="r-type-badge"><i class="ti ti-database" style="font-size:0.7rem"></i> SQL Injection</div>
+      <div class="r-title">SQL Injection in DoD .mil Application — 24 Databases Exposed</div>
+      <div class="r-desc">The selMajcom parameter in RequestAccess.asp is unsanitized and injectable. Automated via sqlmap, 24 internal databases were enumerated without authentication on a US Department of Defense asset.</div>
+      <div class="r-impact">
+        <span class="r-impact-label">Impact</span>
+        <span class="r-impact-text">Full database enumeration of 24 internal DoD databases including master, NAFRIS, W2DATA, ORCA. Unauthenticated access.</span>
+      </div>
+      <div class="r-footer">
+        <span class="r-platform">US DoD (.mil) / Bug Bounty</span>
+        <button class="r-expand" onclick="openModal(5)">Details <i class="ti ti-arrow-right" style="font-size:0.7rem"></i></button>
+      </div>
+    </div>
+
+    <!-- R7 -->
+    <div class="report-card" data-cats="ato" data-id="6">
+      <div class="r-header">
+        <span class="r-num">RPT-007</span>
+        <span class="r-sev sev-critical">Critical</span>
+      </div>
+      <div class="r-type-badge"><i class="ti ti-lock-open" style="font-size:0.7rem"></i> Auth Bypass → ATO</div>
+      <div class="r-title">Missing Auth Check Enables Password Reset on Any Account</div>
+      <div class="r-desc">The one-time password change flow in Login.aspx (.mil) applies no authentication check on the txtEMail parameter. Any attacker can submit a password change for any email address, resulting in full account takeover.</div>
+      <div class="r-impact">
+        <span class="r-impact-label">Impact</span>
+        <span class="r-impact-text">Full account takeover on any user of the .mil platform. No authentication required — attacker only needs a victim email address.</span>
+      </div>
+      <div class="r-footer">
+        <span class="r-platform">US DoD (.mil) / Bug Bounty</span>
+        <button class="r-expand" onclick="openModal(6)">Details <i class="ti ti-arrow-right" style="font-size:0.7rem"></i></button>
+      </div>
+    </div>
+
+    <!-- R8 -->
+    <div class="report-card" data-cats="ssrf" data-id="7">
+      <div class="r-header">
+        <span class="r-num">RPT-008</span>
+        <span class="r-sev sev-high">High</span>
+      </div>
+      <div class="r-type-badge"><i class="ti ti-search" style="font-size:0.7rem"></i> XXE</div>
+      <div class="r-title">XXE in Elastic Enterprise Search Web Crawler via Sitemap</div>
+      <div class="r-desc">The App Search web crawler parses sitemap.xml files without disabling external entity resolution. A malicious robots.txt pointing to an attacker-controlled sitemap triggers OOB XXE data exfiltration.</div>
+      <div class="r-impact">
+        <span class="r-impact-label">Impact</span>
+        <span class="r-impact-text">Hostname confirmed exfiltrated. Potential for credentials, AWS metadata, and arbitrary single-line file reads from the crawler host.</span>
+      </div>
+      <div class="r-footer">
+        <span class="r-platform">Elastic Enterprise Search</span>
+        <button class="r-expand" onclick="openModal(7)">Details <i class="ti ti-arrow-right" style="font-size:0.7rem"></i></button>
+      </div>
+    </div>
+
+    <!-- R9 -->
+    <div class="report-card" data-cats="sqli" data-id="8">
+      <div class="r-header">
+        <span class="r-num">RPT-009</span>
+        <span class="r-sev sev-high">High</span>
+      </div>
+      <div class="r-type-badge"><i class="ti ti-database" style="font-size:0.7rem"></i> Blind SQLi</div>
+      <div class="r-title">Blind SQL Injection in inDrive Prize Endpoint</div>
+      <div class="r-desc">The number_trips path segment in /api/ten-drives/custom-winners/ is passed unsanitized to a SQL query. Boolean-based injection (OR 1=1 vs OR 1=2) produces differential responses, confirming exploitability.</div>
+      <div class="r-impact">
+        <span class="r-impact-label">Impact</span>
+        <span class="r-impact-text">PostgreSQL 14.8 version confirmed. Full database enumeration, data tampering, and potential authentication bypass possible.</span>
+      </div>
+      <div class="r-footer">
+        <span class="r-platform">inDrive / Bug Bounty</span>
+        <button class="r-expand" onclick="openModal(8)">Details <i class="ti ti-arrow-right" style="font-size:0.7rem"></i></button>
+      </div>
+    </div>
+
+    <!-- R10 -->
+    <div class="report-card" data-cats="sqli" data-id="9">
+      <div class="r-header">
+        <span class="r-num">RPT-010</span>
+        <span class="r-sev sev-critical">Critical</span>
+      </div>
+      <div class="r-type-badge"><i class="ti ti-brand-python" style="font-size:0.7rem"></i> ORM SQLi</div>
+      <div class="r-title">SQL Injection via Django Q Object _connector Key</div>
+      <div class="r-desc">WhereNode.as_sql in Django's ORM uses unsafe string formatting for the connector value. When Q(**user_dict) pattern is used, an attacker-controlled _connector key injects raw SQL into the WHERE clause bypassing all ORM parameterization.</div>
+      <div class="r-impact">
+        <span class="r-impact-label">Impact</span>
+        <span class="r-impact-text">Access control bypass (OR 1=1), full table exfiltration of any model, DoS via complex queries. Admin users confirmed retrievable.</span>
+      </div>
+      <div class="r-footer">
+        <span class="r-platform">Django ORM / Open Source</span>
+        <button class="r-expand" onclick="openModal(9)">Details <i class="ti ti-arrow-right" style="font-size:0.7rem"></i></button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalBox">
+    <button class="modal-close" onclick="closeModalDirect()"><i class="ti ti-x"></i></button>
+    <div class="modal-header" id="modalHeader"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- IMPACT -->
+<section class="sec" id="impact">
+  <div class="sec-top reveal"><span class="sec-num">// 04</span><div class="sec-line"></div></div>
+  <h2 class="sec-title reveal">Measurable Impact</h2>
+  <p class="sec-sub reveal">Real numbers from real engagements.</p>
+  <div class="ach-grid">
+    <div class="ach-card reveal"><div class="ach-num" data-count="150" data-suffix="+">0</div><div class="ach-txt">Penetration tests delivered across web, API, network, and AD</div><i class="ti ti-shield-check ach-ico"></i></div>
+    <div class="ach-card reveal delay-1"><div class="ach-num" data-count="10">0</div><div class="ach-txt">Validated bug reports spanning XSS, SQLi, SSRF, ATO, Path Traversal</div><i class="ti ti-bug ach-ico"></i></div>
+    <div class="ach-card reveal delay-2"><div class="ach-num">9.0+</div><div class="ach-txt">CVSS score findings in production systems, preventing real breaches</div><i class="ti ti-alert-triangle ach-ico"></i></div>
+    <div class="ach-card reveal delay-3"><div class="ach-num" data-count="40" data-suffix="%">0</div><div class="ach-txt">Reduction in repetitive tasks via custom Python & Bash tooling</div><i class="ti ti-rocket ach-ico"></i></div>
+  </div>
+
+  <div style="margin-top:3rem">
+    <div class="sec-top reveal"><span style="font-size:var(--fs-xs);letter-spacing:0.15em;text-transform:uppercase;color:var(--accent)">// Certifications</span><div class="sec-line"></div></div>
+    <div class="cert-grid reveal">
+      <div class="cert-card"><i class="ti ti-certificate"></i><div><div class="cert-name">CRPO</div><div class="cert-body">Certified Red Team Professional Operator</div></div></div>
+      <div class="cert-card"><i class="ti ti-certificate"></i><div><div class="cert-name">CSCSO</div><div class="cert-body">Certified SOC & Cyber Security Operations</div></div></div>
+      <div class="cert-card"><i class="ti ti-certificate"></i><div><div class="cert-name">CCEP</div><div class="cert-body">Certified Cybersecurity Expert Practitioner</div></div></div>
+      <div class="cert-card"><i class="ti ti-certificate"></i><div><div class="cert-name">CCSC</div><div class="cert-body">Certified Cyber Security Consultant</div></div></div>
+      <div class="cert-card"><i class="ti ti-shield"></i><div><div class="cert-name">ISSA Member</div><div class="cert-body">Information Systems Security Association</div></div></div>
+      <div class="cert-card"><i class="ti ti-bug"></i><div><div class="cert-name">Bug Bounty Masterclass</div><div class="cert-body">Wiz — 2023</div></div></div>
     </div>
   </div>
 </section>
 
-<!-- CERTIFICATIONS -->
-<section style="border-top:1px solid var(--border2)">
-  <div class="section-header">
-    <span class="section-tag">// 04</span>
-    <div class="section-line"></div>
-  </div>
-  <h2 class="section-title fade-in">Certifications</h2>
-
-  <div class="cert-grid fade-in">
-    <div class="cert-card">
-      <i class="ti ti-certificate cert-icon"></i>
-      <div><div class="cert-name">CRPO</div><div class="cert-body">Certified Red Team Professional Operator</div></div>
-    </div>
-    <div class="cert-card">
-      <i class="ti ti-certificate cert-icon"></i>
-      <div><div class="cert-name">CSCSO</div><div class="cert-body">Certified SOC & Cyber Security Operations</div></div>
-    </div>
-    <div class="cert-card">
-      <i class="ti ti-certificate cert-icon"></i>
-      <div><div class="cert-name">CCEP</div><div class="cert-body">Certified Cybersecurity Expert Practitioner</div></div>
-    </div>
-    <div class="cert-card">
-      <i class="ti ti-certificate cert-icon"></i>
-      <div><div class="cert-name">CCSC</div><div class="cert-body">Certified Cyber Security Consultant</div></div>
-    </div>
-    <div class="cert-card">
-      <i class="ti ti-shield cert-icon"></i>
-      <div><div class="cert-name">ISSA Member</div><div class="cert-body">Information Systems Security Association</div></div>
-    </div>
-    <div class="cert-card">
-      <i class="ti ti-brand-mastercard cert-icon"></i>
-      <div><div class="cert-name">Mastercard Cyber</div><div class="cert-body">Cybersecurity Virtual Experience — Forage</div></div>
-    </div>
-    <div class="cert-card">
-      <i class="ti ti-bug cert-icon"></i>
-      <div><div class="cert-name">Bug Bounty Masterclass</div><div class="cert-body">Wiz — 2023</div></div>
-    </div>
-    <div class="cert-card">
-      <i class="ti ti-loader cert-icon"></i>
-      <div><div class="cert-name">In Progress</div><div class="cert-body">Advanced Exploitation & Red Team Labs</div></div>
-    </div>
-  </div>
-</section>
+<hr class="divider">
 
 <!-- CONTACT -->
-<section id="contact" style="border-top:1px solid var(--border2)">
-  <div class="section-header">
-    <span class="section-tag">// 05</span>
-    <div class="section-line"></div>
-  </div>
-  <h2 class="section-title fade-in">Contact</h2>
-
-  <div class="contact-grid fade-in">
-    <div class="contact-left">
-      <p>
-        Available for red team engagements, full-scope penetration tests, 
-        security assessments, and consulting. Based in Iraq — operating globally, remote-first.
-      </p>
-      <p>
-        Response within 24 hours. Engagements handled with full NDAs, 
-        scoped rules of engagement, and professional reporting standards.
-      </p>
+<section class="sec" id="contact">
+  <div class="sec-top reveal"><span class="sec-num">// 05</span><div class="sec-line"></div></div>
+  <h2 class="sec-title reveal">Contact</h2>
+  <div class="contact-grid">
+    <div class="reveal">
+      <p class="contact-desc">Available for red team engagements, full-scope penetration tests, security assessments, and consulting. Based in Iraq — operating globally, remote-first. Response within 24 hours. Full NDAs and scoped rules of engagement.</p>
     </div>
-    <div class="contact-links">
-      <a class="contact-link" href="mailto:ayman.mahmoudoffsec@gmail.com">
-        <i class="ti ti-mail"></i>
-        ayman.mahmoudoffsec@gmail.com
-      </a>
-      <a class="contact-link" href="tel:+9647877716669">
-        <i class="ti ti-phone"></i>
-        +964 787 771 6669
-      </a>
-      <a class="contact-link" href="#">
-        <i class="ti ti-map-pin"></i>
-        Iraq — Remote Worldwide
-      </a>
+    <div class="contact-links reveal delay-2">
+      <a class="c-link" href="mailto:ayman.mahmoudoffsec@gmail.com"><i class="ti ti-mail"></i>ayman.mahmoudoffsec@gmail.com</a>
+      <a class="c-link" href="tel:+9647877716669"><i class="ti ti-phone"></i>+964 787 771 6669</a>
+      <a class="c-link" href="#"><i class="ti ti-map-pin"></i>Iraq — Remote Worldwide</a>
     </div>
   </div>
 </section>
 
 <footer>
-  <p>Built for <span>Ayman Mahmoud Jasim</span> · Offensive Security Specialist · <span>2025</span></p>
-  <p style="margin-top:0.5rem">The best defense starts with understanding the offense.</p>
+  <p><span>Ayman Mahmoud Jasim</span> · Offensive Security Specialist · <span>2025</span></p>
+  <p style="margin-top:0.4rem;color:var(--text3)">The best defense starts with understanding the offense.</p>
 </footer>
 
 <script>
-document.querySelectorAll('.fade-in').forEach(el=>{
-  const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
-  },{threshold:0.1});
-  obs.observe(el);
-});
+const modalData=[
+  {num:"RPT-001",sev:"Critical",type:"DOM XSS → Account Takeover",title:"DOM XSS via Import Filename → Full Account Takeover",platform:"Basecamp (HackerOne #3608199)",cvss:"9.3",target:"app/javascript/controllers/upload_preview_controller.js",summary:"The account import page renders the selected local filename via innerHTML instead of textContent. A crafted .zip filename injects live HTML inside the authenticated form which already holds the victim session and a valid CSRF token.",steps:["Craft a .zip filename containing an injected HTML button with formaction pointing to /email_addresses endpoint","As logged-in victim, open /account/imports/new and select the malicious file","Preview renders the injected button instead of inert filename text","Victim clicks the button — browser submits an authenticated POST with the page's real CSRF token","Attacker receives email change confirmation link in their mailbox","Attacker redeems the link and obtains a fresh authenticated victim session"],impact:"Full victim account takeover. Also demonstrated: write-scoped personal access token creation and account deletion from the same XSS sink.",remediation:"Use textContent instead of innerHTML for filename preview. Implement strict CSP. Add secondary email confirmation delays."},
+  {num:"RPT-002",sev:"High",type:"Blind SSRF",title:"Blind SSRF in Export Service via webhookUrl Parameter",platform:"REDACTED SaaS Platform",cvss:"8.1",target:"/exportservice/v3/exports/WEBHOOK/accounts",summary:"The export webhook endpoint accepts a webhookUrl without URL validation or allowlisting. Providing a malicious URL causes the server to issue unauthorized outbound HTTP requests to attacker-controlled infrastructure.",steps:["Authenticate to the target application","Send a POST to /exportservice/v3/exports/WEBHOOK/accounts with a controlled ngrok URL as webhookUrl","Observe the incoming HTTP request from the server's IP on your ngrok listener","Server forwards the full POST body to the attacker URL"],impact:"Internal network enumeration, cloud metadata access (AWS IMDSv1), access to internal APIs, potential chaining to RCE via internal services.",remediation:"Validate webhookUrl against a strict allowlist of approved domains. Block private IP ranges (RFC1918). Implement SSRF-safe HTTP client configuration."},
+  {num:"RPT-003",sev:"Critical",type:"Path Traversal → RCE",title:"libcurl SFTP QUOTE Path Traversal → Arbitrary File Write & RCE",platform:"libcurl / curl 8.15.0",cvss:"9.1",target:"lib/vssh/curl_path.c — Curl_get_pathname()",summary:"The Curl_get_pathname function copies user-provided SFTP QUOTE command paths into an output buffer without sanitizing ../ traversal sequences. An attacker controlling QUOTE commands can perform file operations outside their intended directory.",steps:["Set up local OpenSSH server and create test user","Create target file in user home directory","Compile PoC C program using libcurl with malicious rename QUOTE command","Run ./poc.exe — curl connects to SFTP and issues: rename file_to_move.txt ../../tmp/attack_target/SUCCESS.txt","Verify SUCCESS.txt appears in C:\\tmp\\attack_target — outside the home directory"],impact:"Arbitrary file operations anywhere the OS user has permissions. Direct RCE path via overwriting ~/.ssh/authorized_keys, system scripts, or web-accessible directories.",remediation:"Sanitize all QUOTE command paths in Curl_get_pathname. Reject any path containing ../ sequences before processing."},
+  {num:"RPT-004",sev:"High",type:"Mutation XSS (mXSS)",title:"Mutation-Based Stored XSS in Trix Editor v2.1.8",platform:"Trix Editor — Open Source",cvss:"8.2",target:"Trix Editor 2.1.8 — data-trix-attachment content processing",summary:"Trix Editor 2.1.8 is vulnerable to mutation-based XSS via a MathML DOMPurify bypass. Crafted content with contentType text/html5 containing a math/mtext/table/mglyph/style chain bypasses sanitization and executes JavaScript on paste.",steps:["Create an HTML file with Trix Editor loaded","Write crafted data-trix-attachment div with math>mtext>table>mglyph>style>img onerror payload","Copy the rendered text from the page","Paste into any Trix editor instance","JavaScript alert fires — confirming XSS execution"],impact:"Stored XSS execution in any user's session that views the content. Can be used for session hijacking, credential theft, or unauthorized actions.",remediation:"Update Trix to a patched version. Implement server-side HTML sanitization as defense-in-depth. Disable contentType html5 in attachment processing."},
+  {num:"RPT-005",sev:"High",type:"IDOR",title:"IDOR Leads to Unauthorized User Profile Modification",platform:"target.com.ng / HackerOne",cvss:"7.5",target:"POST /app/updateUser",summary:"The profile update endpoint accepts user ID and email in a JSON body without verifying that the authenticated user is the same as the target user ID. An attacker can substitute any victim's credentials to silently modify their profile.",steps:["Create attacker and victim accounts","Capture attacker's profile update request in Burp Suite","Note attacker's id and email values","Log into victim account, capture their id and email","From attacker account, replay the update request substituting victim's id and email","Refresh victim profile — attacker has silently modified it"],impact:"Silent modification of any user's username, address, phone number, company name, and company size. No notification sent to victim.",remediation:"Validate server-side that the authenticated session's user ID matches the update target. Use non-guessable random UUIDs for user IDs."},
+  {num:"RPT-006",sev:"Critical",type:"SQL Injection",title:"SQL Injection in DoD .mil — 24 Databases Enumerated",platform:"US Department of Defense (.mil)",cvss:"9.8",target:"GET /mil/AFServices/RequestAccess.asp?selMajcom=",summary:"The selMajcom GET parameter in RequestAccess.asp is passed directly to a SQL query without sanitization. Automated exploitation via sqlmap enumerated 24 internal databases without any authentication.",steps:["Access the target .asp page and capture the GET request","Save request to file with selMajcom parameter marked with *","Run: python sqlmap.py -r dod.txt --dbs --level 3 --risk 3 -v3","SQLmap confirms injection and enumerates all available databases"],impact:"24 databases fully enumerated including: ActivityManager, W2DATA, NAFRIS, ORCA, master, EICSQL, and others. Full data exfiltration possible without authentication.",remediation:"Use parameterized queries / prepared statements. Remove direct parameter interpolation. Implement WAF rules for SQL metacharacters."},
+  {num:"RPT-007",sev:"Critical",type:"Auth Bypass → ATO",title:"Missing Auth Check Enables Password Reset on Any Account",platform:"US DoD (.mil) Platform",cvss:"9.8",target:"POST /Login.aspx — txtEMail + txtNewPassword parameters",summary:"The OTP-based password change flow in Login.aspx does not validate that the requesting session is authorized for the target email. Any attacker can submit a password reset for any victim email address by replaying the change request.",steps:["Sign up and receive OTP, then intercept the password change request in Burp","Note the txtEMail and txtNewPassword parameters","Log into victim account, note their email","From attacker session, replay the intercepted request substituting victim email and desired password","Log into victim account using the new attacker-chosen password"],impact:"Full account takeover on any platform user. Attacker only needs the victim's email address. No rate limiting or challenge validation present.",remediation:"Bind password change operations to the authenticated session. Require current password or OTP for any password change. Invalidate OTP immediately after first use."},
+  {num:"RPT-008",sev:"High",type:"XXE — Out-of-Band",title:"XXE in Elastic Enterprise Search Web Crawler via Sitemap",platform:"Elastic Enterprise Search / App Search",cvss:"7.7",target:"Web Crawler — sitemap.xml XML parser",summary:"The App Search web crawler parses sitemap.xml files following robots.txt directives without disabling external XML entity resolution. A malicious sitemap containing a DTD with out-of-band exfiltration entities causes the crawler to send sensitive data to an attacker server.",steps:["Set up a Sinatra server serving malicious robots.txt pointing to attacker-controlled sitemap.xml","sitemap.xml contains DOCTYPE with external DTD reference for OOB exfiltration","DTD defines entity that reads /etc/hostname and sends it via HTTP request to attacker server","In Enterprise Search, create a new engine and add your attacker server as the crawl domain","Start a crawl — observe incoming exfiltration request on your server logs"],impact:"Hostname confirmed exfiltrated in testing. Potential for multi-line file bypass to read credentials, private keys, and AWS metadata from crawler host.",remediation:"Disable external entity processing in the XML parser (set FEATURE_EXTERNAL_GENERAL_ENTITIES and FEATURE_EXTERNAL_PARAMETER_ENTITIES to false). Validate sitemap URLs against an allowlist."},
+  {num:"RPT-009",sev:"High",type:"Blind SQL Injection",title:"Blind SQL Injection in inDrive Prize Campaign Endpoint",platform:"inDrive (id.indrive.com)",cvss:"8.0",target:"GET /api/ten-drives/custom-winners/.../number_trips/{n}/{id}",summary:"The second numeric path segment in the number_trips endpoint is passed unsanitized to a SQL query. Boolean-based blind injection (OR 1=1 vs OR 1=2) produces differential server responses confirming exploitability. DB fingerprinted as PostgreSQL 14.8.",steps:["Send normal request to confirm valid response structure","Modify path to: .../number_trips/1/999%20or%201=1-- and observe non-empty response","Modify path to: .../number_trips/1/999%20or%201=2-- and observe empty response","Differential response confirms boolean-based blind SQLi","Chain with sqlmap for full extraction"],impact:"PostgreSQL 14.8 fingerprinted. Full database enumeration, user data exfiltration, and authentication bypass achievable via boolean-based extraction.",remediation:"Use parameterized queries for all path-derived values. Validate numeric path segments as strictly numeric before use in queries. Implement input allowlisting."},
+  {num:"RPT-010",sev:"Critical",type:"ORM SQL Injection",title:"SQL Injection via Django Q Object _connector — ORM Bypass",platform:"Django ORM Framework",cvss:"9.5",target:"django/db/models/sql/where.py — WhereNode.as_sql()",summary:"Django's WhereNode.as_sql() uses unsafe string formatting to inject the connector ('AND'/'OR') into raw SQL. When applications use Q(**user_dict) to unpack user-controlled dictionaries, a _connector key with a malicious payload bypasses all ORM parameterization.",steps:["Create a Django project with a model containing admin and non-admin users","Create a search endpoint that does Q(**request.json['filters'])","Send payload: {is_admin: false, username: nonexistent, _connector: ) OR 1=1 OR (}","Observe generated SQL: WHERE (NOT is_admin ) OR 1=1 OR ( username = 'nonexistent')","Admin user is returned despite the non-admin filter — access control fully bypassed"],impact:"Full access control bypass. All table records retrievable regardless of intended filters. Affects any Django app using Q(**user_dict) pattern with unvalidated input.",remediation:"Validate _connector against a strict allowlist ('AND', 'OR') before string formatting. Never unpack unvalidated user dictionaries directly into Q(). Patch proposed in where.py."}
+];
 
-function animateCount(el){
-  const target=parseInt(el.dataset.count||0);
-  const suffix=el.dataset.suffix||'+';
-  let current=0;
-  const step=target/60;
-  const timer=setInterval(()=>{
-    current=Math.min(current+step,target);
-    el.textContent=Math.floor(current)+(current>=target?suffix:'');
-    if(current>=target)clearInterval(timer);
-  },16);
+function openModal(id){
+  const d=modalData[id];
+  const sevColor=d.sev==='Critical'?'var(--accent3)':d.sev==='High'?'var(--accent4)':'var(--accent2)';
+  document.getElementById('modalHeader').innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap">
+      <div>
+        <div style="font-size:var(--fs-xs);letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-bottom:0.4rem">${d.num} · ${d.type}</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:600;line-height:1.3">${d.title}</div>
+      </div>
+      <span style="padding:0.25rem 0.7rem;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;color:${sevColor};border:1px solid ${sevColor};background:${sevColor}20;flex-shrink:0">${d.sev}</span>
+    </div>
+    <div class="modal-row" style="margin-top:1rem;margin-bottom:0">
+      <div class="modal-field"><label>Platform</label><span>${d.platform}</span></div>
+      <div class="modal-field"><label>CVSS v3.1</label><span style="color:${sevColor}">${d.cvss}</span></div>
+      <div class="modal-field" style="flex:2"><label>Affected Component</label><span style="color:var(--accent2);word-break:break-all">${d.target}</span></div>
+    </div>
+  `;
+  document.getElementById('modalBody').innerHTML=`
+    <div class="modal-section">
+      <h4><i class="ti ti-file-description"></i> Summary</h4>
+      <p>${d.summary}</p>
+    </div>
+    <div class="modal-section">
+      <h4><i class="ti ti-list-numbers"></i> Reproduction Steps</h4>
+      <ol class="modal-steps">${d.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
+    </div>
+    <div class="modal-section">
+      <h4><i class="ti ti-alert-triangle"></i> Demonstrated Impact</h4>
+      <p>${d.impact}</p>
+    </div>
+    <div class="modal-section">
+      <h4><i class="ti ti-shield-check"></i> Remediation</h4>
+      <p>${d.remediation}</p>
+    </div>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
 }
-document.querySelectorAll('[data-count]').forEach(el=>{
-  const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{if(e.isIntersecting){animateCount(e.target);obs.unobserve(e.target)}});
-  },{threshold:0.5});
-  obs.observe(el);
-});
+function closeModal(e){if(e.target===document.getElementById('modalOverlay'))closeModalDirect()}
+function closeModalDirect(){
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalDirect()});
 
-document.querySelectorAll('.skill-fill').forEach(bar=>{
-  const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        setTimeout(()=>{bar.style.width=bar.dataset.width+'%'},200);
-        obs.unobserve(e.target);
+// FILTER
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');
+    const f=this.dataset.filter;
+    document.querySelectorAll('.report-card').forEach(card=>{
+      if(f==='all'||card.dataset.cats.includes(f)){
+        card.classList.remove('hidden');
+      }else{
+        card.classList.add('hidden');
       }
     });
-  },{threshold:0.5});
-  obs.observe(bar);
+  });
 });
+
+// CURSOR
+const cur=document.getElementById('cursor');
+const ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=Math.round(rx)+'px';ring.style.top=Math.round(ry)+'px';requestAnimationFrame(animRing)}
+animRing();
+document.querySelectorAll('a,button,.report-card,.tag,.tech-tag,.filter-btn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.classList.add('hovering');ring.classList.add('hovering')});
+  el.addEventListener('mouseleave',()=>{cur.classList.remove('hovering');ring.classList.remove('hovering')});
+});
+
+// MOBILE NAV
+document.getElementById('navMenu').addEventListener('click',()=>{
+  document.getElementById('navLinks').classList.toggle('open');
+});
+
+// SCROLL REVEAL
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');observer.unobserve(e.target)}});
+},{threshold:0.08});
+document.querySelectorAll('.reveal,.reveal-l').forEach(el=>observer.observe(el));
+
+// COUNT ANIMATION
+function countUp(el){
+  if(el.dataset.animated)return;
+  el.dataset.animated=true;
+  const target=parseInt(el.dataset.count||0);
+  const suffix=el.dataset.suffix||'';
+  if(!el.dataset.count){return}
+  let cur=0;const step=target/55;
+  const t=setInterval(()=>{cur=Math.min(cur+step,target);el.textContent=Math.floor(cur)+suffix;if(cur>=target)clearInterval(t)},18);
+}
+const countObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)countUp(e.target)});
+},{threshold:0.5});
+document.querySelectorAll('[data-count]').forEach(el=>countObs.observe(el));
+
+// SKILL BARS
+const barObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){setTimeout(()=>{e.target.style.width=e.target.dataset.w+'%'},200);barObs.unobserve(e.target)}});
+},{threshold:0.3});
+document.querySelectorAll('.sk-fill').forEach(b=>barObs.observe(b));
 </script>
 </body>
 </html>
