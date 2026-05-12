@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080c10;
+  --bg2:#0d1117;
+  --bg3:#111820;
+  --surface:#141d27;
+  --surface2:#1a2535;
+  --accent:#00ff9d;
+  --accent2:#00c9ff;
+  --accent3:#ff4d6d;
+  --text:#e8edf2;
+  --text2:#8b9ab0;
+  --text3:#4a5568;
+  --border:rgba(0,255,157,0.12);
+  --border2:rgba(255,255,255,0.06);
+  --glow:0 0 40px rgba(0,255,157,0.08);
+}
+body{
+  font-family:'JetBrains Mono',monospace;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+::selection{background:rgba(0,255,157,0.2)}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 2rem;
+  background:rgba(8,12,16,0.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border2);
+}
+.nav-logo{
+  font-family:'Syne',sans-serif;
+  font-size:1.1rem;font-weight:800;
+  color:var(--accent);
+  letter-spacing:0.05em;
+}
+.nav-links{display:flex;gap:1.5rem;list-style:none}
+.nav-links a{
+  font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--text2);text-decoration:none;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--accent)}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:4rem 2rem;
+  position:relative;overflow:hidden;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,255,157,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,255,157,0.03) 1px,transparent 1px);
+  background-size:48px 48px;
+  animation:gridMove 20s linear infinite;
+}
+@keyframes gridMove{0%{transform:translateY(0)}100%{transform:translateY(48px)}}
+.hero-scan{
+  position:absolute;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  animation:scan 4s ease-in-out infinite;
+  opacity:0.5;
+}
+@keyframes scan{0%,100%{top:0;opacity:0}50%{opacity:0.5}100%{top:100%}}
+
+.hero-content{position:relative;z-index:1;max-width:900px}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  padding:0.35rem 0.9rem;
+  border:1px solid var(--border);
+  border-radius:2px;
+  font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:2rem;
+}
+.badge-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--accent);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.8)}}
+
+.hero-name{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(2.5rem,8vw,5.5rem);
+  font-weight:800;
+  line-height:0.95;
+  letter-spacing:-0.02em;
+  color:var(--text);
+  margin-bottom:0.5rem;
+}
+.hero-name span{color:var(--accent)}
+.hero-title{
+  font-size:clamp(0.85rem,2vw,1rem);
+  color:var(--text2);
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  margin-bottom:2rem;
+}
+.hero-desc{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.8rem;
+  color:var(--text2);
+  max-width:520px;
+  line-height:1.8;
+  border-left:2px solid var(--accent);
+  padding-left:1rem;
+  margin-bottom:3rem;
+}
+.hero-stats{
+  display:flex;gap:3rem;
+  flex-wrap:wrap;
+  margin-bottom:3rem;
+}
+.stat{text-align:left}
+.stat-num{
+  font-family:'Syne',sans-serif;
+  font-size:2.2rem;font-weight:800;
+  color:var(--accent);
+  line-height:1;
+}
+.stat-label{
+  font-size:0.65rem;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--text3);
+  margin-top:0.25rem;
+}
+.hero-cta{
+  display:flex;gap:1rem;flex-wrap:wrap;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  padding:0.7rem 1.5rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.72rem;letter-spacing:0.1em;
+  text-transform:uppercase;
+  text-decoration:none;
+  border-radius:2px;
+  transition:all 0.2s;
+  cursor:pointer;border:none;
+}
+.btn-primary{
+  background:var(--accent);
+  color:#000;font-weight:700;
+}
+.btn-primary:hover{background:#00cc7d;transform:translateY(-1px)}
+.btn-ghost{
+  background:transparent;
+  color:var(--accent);
+  border:1px solid var(--border);
+}
+.btn-ghost:hover{background:rgba(0,255,157,0.05);transform:translateY(-1px)}
+
+/* SECTION */
+section{padding:5rem 2rem;max-width:1000px;margin:0 auto}
+.section-header{
+  display:flex;align-items:center;gap:1rem;
+  margin-bottom:3rem;
+}
+.section-tag{
+  font-size:0.6rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--accent);
+}
+.section-line{
+  flex:1;height:1px;
+  background:linear-gradient(90deg,var(--border),transparent);
+}
+.section-title{
+  font-family:'Syne',sans-serif;
+  font-size:2rem;font-weight:800;
+  color:var(--text);
+  margin-bottom:0.5rem;
+}
+
+/* SKILLS */
+.skills-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1px;
+  background:var(--border2);
+  border:1px solid var(--border2);
+}
+.skill-card{
+  background:var(--surface);
+  padding:1.5rem;
+  position:relative;
+  overflow:hidden;
+  transition:background 0.2s;
+}
+.skill-card:hover{background:var(--surface2)}
+.skill-card::before{
+  content:'';
+  position:absolute;top:0;left:0;
+  width:3px;height:0;
+  background:var(--accent);
+  transition:height 0.3s;
+}
+.skill-card:hover::before{height:100%}
+.skill-icon{
+  font-size:1.4rem;
+  color:var(--accent);
+  margin-bottom:0.75rem;
+}
+.skill-name{
+  font-family:'Syne',sans-serif;
+  font-size:0.9rem;font-weight:600;
+  color:var(--text);
+  margin-bottom:0.5rem;
+}
+.skill-desc{
+  font-size:0.7rem;color:var(--text2);
+  line-height:1.6;margin-bottom:1rem;
+}
+.skill-bar{
+  height:2px;background:var(--surface2);
+  border-radius:0;
+}
+.skill-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-radius:0;
+  width:0;
+  transition:width 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+.skill-level{
+  display:flex;justify-content:space-between;
+  margin-top:0.4rem;
+}
+.skill-pct{font-size:0.6rem;color:var(--accent)}
+.skill-label{font-size:0.6rem;color:var(--text3)}
+
+/* TECH TAGS */
+.tech-grid{
+  display:flex;flex-wrap:wrap;gap:0.5rem;
+  margin-top:1rem;
+}
+.tech-tag{
+  padding:0.3rem 0.7rem;
+  font-size:0.62rem;letter-spacing:0.1em;
+  text-transform:uppercase;
+  border:1px solid var(--border2);
+  color:var(--text2);
+  border-radius:2px;
+  transition:all 0.2s;
+  cursor:default;
+}
+.tech-tag:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+  background:rgba(0,255,157,0.04);
+}
+
+/* EXPERIENCE */
+.timeline{position:relative;padding-left:2rem}
+.timeline::before{
+  content:'';
+  position:absolute;left:0;top:0;bottom:0;
+  width:1px;background:var(--border);
+}
+.timeline-item{
+  position:relative;margin-bottom:2.5rem;
+}
+.timeline-dot{
+  position:absolute;left:-2.37rem;top:0.3rem;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 10px var(--accent);
+}
+.timeline-period{
+  font-size:0.65rem;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--accent);
+  margin-bottom:0.4rem;
+}
+.timeline-role{
+  font-family:'Syne',sans-serif;
+  font-size:1.1rem;font-weight:700;
+  color:var(--text);margin-bottom:0.2rem;
+}
+.timeline-org{font-size:0.75rem;color:var(--text2);margin-bottom:1rem}
+.timeline-points{list-style:none}
+.timeline-points li{
+  font-size:0.75rem;color:var(--text2);
+  padding:0.3rem 0;
+  display:flex;gap:0.6rem;
+  border-bottom:1px solid var(--border2);
+}
+.timeline-points li:last-child{border-bottom:none}
+.timeline-points li::before{
+  content:'›';color:var(--accent);flex-shrink:0;
+}
+
+/* ACHIEVEMENTS */
+.achieve-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:1rem;
+}
+.achieve-card{
+  padding:1.5rem;
+  border:1px solid var(--border2);
+  background:var(--surface);
+  position:relative;overflow:hidden;
+  transition:all 0.2s;
+}
+.achieve-card:hover{
+  border-color:var(--border);
+  transform:translateY(-2px);
+}
+.achieve-num{
+  font-family:'Syne',sans-serif;
+  font-size:2.5rem;font-weight:800;
+  color:var(--accent);line-height:1;
+  margin-bottom:0.5rem;
+}
+.achieve-text{
+  font-size:0.7rem;color:var(--text2);
+  line-height:1.5;
+}
+.achieve-icon{
+  position:absolute;bottom:1rem;right:1rem;
+  font-size:1.8rem;color:var(--border2);
+}
+
+/* CERTS */
+.cert-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1rem;
+}
+.cert-card{
+  display:flex;align-items:center;gap:1rem;
+  padding:1rem 1.2rem;
+  border:1px solid var(--border2);
+  background:var(--surface);
+  transition:all 0.2s;
+}
+.cert-card:hover{border-color:var(--border)}
+.cert-icon{
+  font-size:1.3rem;color:var(--accent);flex-shrink:0;
+}
+.cert-name{font-size:0.75rem;color:var(--text);font-weight:600}
+.cert-body{font-size:0.65rem;color:var(--text3);margin-top:0.1rem}
+
+/* CONTACT */
+.contact-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2rem;
+}
+.contact-left p{
+  font-size:0.8rem;color:var(--text2);
+  line-height:1.8;margin-bottom:1.5rem;
+}
+.contact-links{display:flex;flex-direction:column;gap:0.7rem}
+.contact-link{
+  display:flex;align-items:center;gap:0.8rem;
+  padding:0.7rem 1rem;
+  border:1px solid var(--border2);
+  color:var(--text2);text-decoration:none;
+  font-size:0.72rem;
+  transition:all 0.2s;
+}
+.contact-link:hover{border-color:var(--border);color:var(--accent)}
+.contact-link i{font-size:1rem;color:var(--accent)}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border2);
+  padding:2rem;text-align:center;
+  font-size:0.65rem;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--text3);
+}
+footer span{color:var(--accent)}
+
+/* ANIMATE IN */
+.fade-in{opacity:0;transform:translateY(20px);transition:all 0.6s ease}
+.fade-in.visible{opacity:1;transform:none}
+
+@media(max-width:640px){
+  nav{padding:1rem}
+  .nav-links{display:none}
+  .hero{padding:2rem 1rem}
+  .hero-stats{gap:1.5rem}
+  .contact-grid{grid-template-columns:1fr}
+  section{padding:3rem 1rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">AJ.sec</div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#achievements">Impact</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-scan"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="badge-dot"></div>
+      Available for engagements
+    </div>
+    <h1 class="hero-name">Ayman<br>Mahmoud<br><span>Jasim</span></h1>
+    <p class="hero-title">Senior Penetration Tester & Offensive Security Specialist</p>
+    <p class="hero-desc">
+      6+ years breaking systems so defenders can build better ones. 
+      150+ assessments across web, network, and AD environments. 
+      Specialized in red team operations, exploit development, and adversary simulation.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num" data-count="150">0</div>
+        <div class="stat-label">Pen Tests Delivered</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" data-count="6">0</div>
+        <div class="stat-label">Years of Experience</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" data-count="9">0</div>
+        <div class="stat-label">Certs & Credentials</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" data-suffix="%">~40</div>
+        <div class="stat-label">Efficiency Gain via Tooling</div>
+      </div>
+    </div>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#contact"><i class="ti ti-send"></i> Hire Me</a>
+      <a class="btn btn-ghost" href="#experience"><i class="ti ti-file-cv"></i> View Experience</a>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header">
+    <span class="section-tag">// 01</span>
+    <div class="section-line"></div>
+  </div>
+  <h2 class="section-title fade-in">Core Competencies</h2>
+
+  <div class="skills-grid fade-in">
+    <div class="skill-card">
+      <div class="skill-icon"><i class="ti ti-world"></i></div>
+      <div class="skill-name">Web App Pentesting</div>
+      <div class="skill-desc">SQL Injection, XSS, SSRF, XXE, IDOR, Deserialization, Auth Bypass — full OWASP Top 10 coverage and beyond.</div>
+      <div class="skill-bar"><div class="skill-fill" data-width="95"></div></div>
+      <div class="skill-level"><span class="skill-pct">95%</span><span class="skill-label">Expert</span></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon"><i class="ti ti-topology-star-ring-3"></i></div>
+      <div class="skill-name">Active Directory Attacks</div>
+      <div class="skill-desc">Kerberoasting, AS-REP Roasting, Pass-the-Hash/Ticket, DCSync, BloodHound path mapping, domain compromise.</div>
+      <div class="skill-bar"><div class="skill-fill" data-width="92"></div></div>
+      <div class="skill-level"><span class="skill-pct">92%</span><span class="skill-label">Expert</span></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon"><i class="ti ti-sword"></i></div>
+      <div class="skill-name">Red Team Operations</div>
+      <div class="skill-desc">Full APT-style simulation: recon → initial access → lateral movement → domain compromise → full debrief.</div>
+      <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      <div class="skill-level"><span class="skill-pct">90%</span><span class="skill-label">Advanced</span></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon"><i class="ti ti-terminal-2"></i></div>
+      <div class="skill-name">Custom Tooling (Python/Bash)</div>
+      <div class="skill-desc">Recon automation, exploit scripts, post-exploitation utilities — reduced repetitive tasks by ~40%.</div>
+      <div class="skill-bar"><div class="skill-fill" data-width="88"></div></div>
+      <div class="skill-level"><span class="skill-pct">88%</span><span class="skill-label">Advanced</span></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon"><i class="ti ti-network"></i></div>
+      <div class="skill-name">Network & Infrastructure</div>
+      <div class="skill-desc">Service enumeration, firewall evasion, pivoting, tunneling, SMB relay, LLMNR poisoning.</div>
+      <div class="skill-bar"><div class="skill-fill" data-width="88"></div></div>
+      <div class="skill-level"><span class="skill-pct">88%</span><span class="skill-label">Advanced</span></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon"><i class="ti ti-bug"></i></div>
+      <div class="skill-name">Binary & Exploit Dev</div>
+      <div class="skill-desc">Buffer overflow exploitation, custom shellcode, ASLR/DEP awareness, binary analysis in controlled environments.</div>
+      <div class="skill-bar"><div class="skill-fill" data-width="78"></div></div>
+      <div class="skill-level"><span class="skill-pct">78%</span><span class="skill-label">Proficient</span></div>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem" class="fade-in">
+    <p style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-bottom:0.75rem">// Tools & Platforms</p>
+    <div class="tech-grid">
+      <span class="tech-tag">Burp Suite Pro</span>
+      <span class="tech-tag">Metasploit</span>
+      <span class="tech-tag">Nmap</span>
+      <span class="tech-tag">BloodHound</span>
+      <span class="tech-tag">Mimikatz</span>
+      <span class="tech-tag">CrackMapExec</span>
+      <span class="tech-tag">Evil-WinRM</span>
+      <span class="tech-tag">Impacket</span>
+      <span class="tech-tag">SQLmap</span>
+      <span class="tech-tag">ffuf</span>
+      <span class="tech-tag">Gobuster</span>
+      <span class="tech-tag">Nessus</span>
+      <span class="tech-tag">Wireshark</span>
+      <span class="tech-tag">Kali Linux</span>
+      <span class="tech-tag">Parrot OS</span>
+      <span class="tech-tag">Python</span>
+      <span class="tech-tag">Bash</span>
+      <span class="tech-tag">CVSS v3.1</span>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" style="border-top:1px solid var(--border2)">
+  <div class="section-header">
+    <span class="section-tag">// 02</span>
+    <div class="section-line"></div>
+  </div>
+  <h2 class="section-title fade-in">Experience</h2>
+
+  <div class="timeline fade-in">
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-period">2018 – Present</div>
+      <div class="timeline-role">Senior Penetration Tester & Offensive Security Specialist</div>
+      <div class="timeline-org">Freelance / Independent Security Consultant — Remote, Iraq</div>
+      <ul class="timeline-points">
+        <li>Executed 150+ full-scope pen tests across web apps, APIs, networks, and enterprise AD environments</li>
+        <li>Advanced web attacks: SQLi (blind, time-based, OOB), XSS variants, SSRF, XXE, Deserialization, Auth Bypass</li>
+        <li>Full AD attack chains: Kerberoasting, Pass-the-Hash/Ticket, DCSync, BloodHound-guided domain compromise</li>
+        <li>Engineered Python & Bash automation tooling, cutting repetitive assessment overhead by ~40%</li>
+        <li>Delivered CVSS v3.1-scored executive and technical reports with PoC demos and remediation roadmaps</li>
+        <li>Phishing simulations and social engineering as part of red team engagements</li>
+        <li>Buffer overflow exploitation with custom shellcode and memory protection bypass awareness</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements" style="border-top:1px solid var(--border2)">
+  <div class="section-header">
+    <span class="section-tag">// 03</span>
+    <div class="section-line"></div>
+  </div>
+  <h2 class="section-title fade-in">Measurable Impact</h2>
+
+  <div class="achieve-grid fade-in">
+    <div class="achieve-card">
+      <div class="achieve-num">150+</div>
+      <div class="achieve-text">Penetration tests delivered across web, API, network, and AD environments</div>
+      <i class="ti ti-shield-check achieve-icon"></i>
+    </div>
+    <div class="achieve-card">
+      <div class="achieve-num">9.0+</div>
+      <div class="achieve-text">CVSS score findings discovered in production systems — critical severity, real breach prevention</div>
+      <i class="ti ti-alert-triangle achieve-icon"></i>
+    </div>
+    <div class="achieve-card">
+      <div class="achieve-num">~40%</div>
+      <div class="achieve-text">Reduction in repetitive assessment tasks via custom Python automation tooling</div>
+      <i class="ti ti-rocket achieve-icon"></i>
+    </div>
+    <div class="achieve-card">
+      <div class="achieve-num">APT</div>
+      <div class="achieve-text">Full end-to-end adversary simulation from initial recon to domain compromise delivered</div>
+      <i class="ti ti-spy achieve-icon"></i>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section style="border-top:1px solid var(--border2)">
+  <div class="section-header">
+    <span class="section-tag">// 04</span>
+    <div class="section-line"></div>
+  </div>
+  <h2 class="section-title fade-in">Certifications</h2>
+
+  <div class="cert-grid fade-in">
+    <div class="cert-card">
+      <i class="ti ti-certificate cert-icon"></i>
+      <div><div class="cert-name">CRPO</div><div class="cert-body">Certified Red Team Professional Operator</div></div>
+    </div>
+    <div class="cert-card">
+      <i class="ti ti-certificate cert-icon"></i>
+      <div><div class="cert-name">CSCSO</div><div class="cert-body">Certified SOC & Cyber Security Operations</div></div>
+    </div>
+    <div class="cert-card">
+      <i class="ti ti-certificate cert-icon"></i>
+      <div><div class="cert-name">CCEP</div><div class="cert-body">Certified Cybersecurity Expert Practitioner</div></div>
+    </div>
+    <div class="cert-card">
+      <i class="ti ti-certificate cert-icon"></i>
+      <div><div class="cert-name">CCSC</div><div class="cert-body">Certified Cyber Security Consultant</div></div>
+    </div>
+    <div class="cert-card">
+      <i class="ti ti-shield cert-icon"></i>
+      <div><div class="cert-name">ISSA Member</div><div class="cert-body">Information Systems Security Association</div></div>
+    </div>
+    <div class="cert-card">
+      <i class="ti ti-brand-mastercard cert-icon"></i>
+      <div><div class="cert-name">Mastercard Cyber</div><div class="cert-body">Cybersecurity Virtual Experience — Forage</div></div>
+    </div>
+    <div class="cert-card">
+      <i class="ti ti-bug cert-icon"></i>
+      <div><div class="cert-name">Bug Bounty Masterclass</div><div class="cert-body">Wiz — 2023</div></div>
+    </div>
+    <div class="cert-card">
+      <i class="ti ti-loader cert-icon"></i>
+      <div><div class="cert-name">In Progress</div><div class="cert-body">Advanced Exploitation & Red Team Labs</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="border-top:1px solid var(--border2)">
+  <div class="section-header">
+    <span class="section-tag">// 05</span>
+    <div class="section-line"></div>
+  </div>
+  <h2 class="section-title fade-in">Contact</h2>
+
+  <div class="contact-grid fade-in">
+    <div class="contact-left">
+      <p>
+        Available for red team engagements, full-scope penetration tests, 
+        security assessments, and consulting. Based in Iraq — operating globally, remote-first.
+      </p>
+      <p>
+        Response within 24 hours. Engagements handled with full NDAs, 
+        scoped rules of engagement, and professional reporting standards.
+      </p>
+    </div>
+    <div class="contact-links">
+      <a class="contact-link" href="mailto:ayman.mahmoudoffsec@gmail.com">
+        <i class="ti ti-mail"></i>
+        ayman.mahmoudoffsec@gmail.com
+      </a>
+      <a class="contact-link" href="tel:+9647877716669">
+        <i class="ti ti-phone"></i>
+        +964 787 771 6669
+      </a>
+      <a class="contact-link" href="#">
+        <i class="ti ti-map-pin"></i>
+        Iraq — Remote Worldwide
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Built for <span>Ayman Mahmoud Jasim</span> · Offensive Security Specialist · <span>2025</span></p>
+  <p style="margin-top:0.5rem">The best defense starts with understanding the offense.</p>
+</footer>
+
+<script>
+document.querySelectorAll('.fade-in').forEach(el=>{
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+  },{threshold:0.1});
+  obs.observe(el);
+});
+
+function animateCount(el){
+  const target=parseInt(el.dataset.count||0);
+  const suffix=el.dataset.suffix||'+';
+  let current=0;
+  const step=target/60;
+  const timer=setInterval(()=>{
+    current=Math.min(current+step,target);
+    el.textContent=Math.floor(current)+(current>=target?suffix:'');
+    if(current>=target)clearInterval(timer);
+  },16);
+}
+document.querySelectorAll('[data-count]').forEach(el=>{
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){animateCount(e.target);obs.unobserve(e.target)}});
+  },{threshold:0.5});
+  obs.observe(el);
+});
+
+document.querySelectorAll('.skill-fill').forEach(bar=>{
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        setTimeout(()=>{bar.style.width=bar.dataset.width+'%'},200);
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:0.5});
+  obs.observe(bar);
+});
+</script>
+</body>
+</html>
