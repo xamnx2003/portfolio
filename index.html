@@ -1,531 +1,1125 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;600;700&display=swap" rel="stylesheet">
+<title>AMN Security — Ayman Mahmoud Jasim</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
+/* ═══════════════════════════════════════════
+   RESET & ROOT
+═══════════════════════════════════════════ */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#06080b;--surface:#0e1520;--surface2:#131e2e;--surface3:#192435;
-  --accent:#00ffa3;--accent2:#00cfff;--accent3:#ff4060;--accent4:#ffb800;
-  --text:#dde6f0;--text2:#7a8fa8;--text3:#3d5068;
-  --border:rgba(0,255,163,0.1);--border2:rgba(255,255,255,0.05);--border3:rgba(255,255,255,0.08);
+  --bg:#07090e;
+  --bg2:#0b0e15;
+  --bg3:#0f1219;
+  --surf:#131720;
+  --surf2:#181d28;
+  --surf3:#1e2435;
+
+  --accent:#00e5a0;
+  --accent-dim:rgba(0,229,160,0.12);
+  --accent-glow:rgba(0,229,160,0.06);
+  --blue:#3b82f6;
+  --blue-dim:rgba(59,130,246,0.12);
+  --red:#f04040;
+
+  --text:#e2e8f3;
+  --text2:#8494ab;
+  --text3:#3d4f63;
+  --border:rgba(255,255,255,0.055);
+  --border-acc:rgba(0,229,160,0.18);
+
+  --font:'Sora',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+  --ar:'Cairo',sans-serif;
+
+  --r4:4px;--r8:8px;--r12:12px;--r16:16px;
+  --trans:all 0.25s cubic-bezier(0.4,0,0.2,1);
 }
-html{scroll-behavior:smooth}
-body{font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6;cursor:none}
-::selection{background:rgba(0,255,163,0.2)}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  overflow-x:hidden;
+  cursor:none;
+}
+body.ar{font-family:var(--ar)}
+::selection{background:rgba(0,229,160,0.18);color:#fff}
 
-/* CURSOR */
-#cur{position:fixed;width:10px;height:10px;border-radius:50%;background:var(--accent);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference;transition:width .18s,height .18s}
-#cur-r{position:fixed;width:36px;height:36px;border-radius:50%;border:1px solid rgba(0,255,163,0.4);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .14s ease}
-#cur.h{width:22px;height:22px}
-#cur-r.h{width:58px;height:58px;border-color:rgba(0,255,163,0.65)}
+/* ═══════════════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════════════ */
+#csr{
+  position:fixed;width:8px;height:8px;
+  border-radius:50%;background:var(--accent);
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .18s,height .18s,opacity .18s;
+  mix-blend-mode:difference;
+}
+#csr-ring{
+  position:fixed;width:32px;height:32px;
+  border-radius:50%;
+  border:1px solid rgba(0,229,160,0.35);
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:width .14s ease,height .14s ease,border-color .14s ease;
+}
+#csr.big{width:18px;height:18px}
+#csr-ring.big{width:52px;height:52px;border-color:rgba(0,229,160,0.6)}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:58px;background:rgba(6,8,11,0.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--border2)}
-.nav-logo{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:700;color:var(--accent);letter-spacing:.04em}
-.nav-links{display:flex;list-style:none}
-.nav-links a{display:block;padding:.4rem .85rem;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text2);text-decoration:none;transition:color .2s;border-right:1px solid var(--border2)}
-.nav-links a:first-child{border-left:1px solid var(--border2)}
+/* ═══════════════════════════════════════════
+   NOISE OVERLAY
+═══════════════════════════════════════════ */
+.noise{
+  position:fixed;inset:0;pointer-events:none;z-index:1;
+  opacity:0.022;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;
+}
+
+/* ═══════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════ */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--surf3);border-radius:2px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+/* ═══════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2.5rem;height:62px;
+  background:rgba(7,9,14,0.82);
+  backdrop-filter:blur(20px) saturate(1.4);
+  border-bottom:1px solid var(--border);
+  transition:var(--trans);
+}
+nav.scrolled{background:rgba(7,9,14,0.95)}
+
+/* LOGO */
+.logo{
+  display:flex;align-items:center;gap:0.75rem;
+  text-decoration:none;
+}
+.logo-mark{
+  position:relative;width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+}
+.logo-hex{
+  width:36px;height:36px;
+  background:linear-gradient(135deg,var(--accent),#00b8ff);
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:flex;align-items:center;justify-content:center;
+  animation:hexSpin 12s linear infinite;
+}
+@keyframes hexSpin{0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(30deg)}}
+.logo-hex span{
+  font-family:var(--mono);
+  font-size:0.65rem;font-weight:500;
+  color:#000;letter-spacing:0;
+}
+.logo-text{
+  display:flex;flex-direction:column;gap:0;
+}
+.logo-name{
+  font-family:var(--font);
+  font-size:1rem;font-weight:700;
+  color:var(--text);letter-spacing:0.04em;
+  line-height:1.1;
+}
+.logo-name span{color:var(--accent)}
+.logo-tagline{
+  font-family:var(--mono);
+  font-size:0.5rem;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--text3);
+}
+
+.nav-links{display:flex;gap:0;list-style:none}
+.nav-links a{
+  display:block;padding:0.4rem 0.8rem;
+  font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--text2);text-decoration:none;
+  transition:color .2s;
+  border-right:1px solid var(--border);
+  cursor:none;
+}
+.nav-links a:first-child{border-left:1px solid var(--border)}
 .nav-links a:hover{color:var(--accent)}
-.nav-btn{display:none;background:none;border:none;color:var(--accent);font-size:1.4rem;cursor:pointer}
 
-/* HERO */
-.hero{min-height:100vh;display:flex;align-items:center;padding:80px 2rem 2rem;position:relative;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 70% 40%,rgba(0,207,255,.04),transparent 70%),radial-gradient(ellipse 40% 60% at 20% 70%,rgba(0,255,163,.04),transparent 70%)}
-.hgrid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,163,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,163,.022) 1px,transparent 1px);background-size:50px 50px;animation:gs 25s linear infinite}
-@keyframes gs{to{transform:translateY(50px)}}
-.scanl{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;animation:sc 7s ease-in-out 1s infinite}
-@keyframes sc{0%{top:-2px;opacity:0}10%{opacity:.35}90%{opacity:.35}100%{top:100%;opacity:0}}
+.nav-right{display:flex;align-items:center;gap:0.6rem}
+.lang-sw{
+  display:flex;border:1px solid var(--border);overflow:hidden;border-radius:var(--r4);
+}
+.lbtn{
+  padding:0.3rem 0.65rem;
+  font-family:var(--mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;
+  background:transparent;color:var(--text3);border:none;cursor:none;transition:all .2s;
+}
+.lbtn.on{background:var(--accent);color:#000;font-weight:500}
+.hire-btn{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  padding:0.38rem 0.9rem;
+  border:1px solid var(--border-acc);
+  background:var(--accent-dim);
+  color:var(--accent);
+  font-family:var(--mono);font-size:0.57rem;letter-spacing:0.1em;text-transform:uppercase;
+  text-decoration:none;border-radius:var(--r4);transition:var(--trans);cursor:none;
+}
+.hire-btn:hover{background:rgba(0,229,160,0.2);transform:translateY(-1px)}
+.nav-burger{display:none;background:none;border:none;color:var(--text2);font-size:1.3rem;cursor:pointer}
 
-.hi{position:relative;z-index:1;max-width:960px;width:100%}
-.spill{display:inline-flex;align-items:center;gap:.5rem;padding:.28rem .85rem;border:1px solid var(--border);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:2.5rem}
-.pdot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pd 1.8s ease-in-out infinite}
-@keyframes pd{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,255,163,.4)}60%{opacity:.45;box-shadow:0 0 0 7px rgba(0,255,163,0)}}
-.hname{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.8rem,9vw,6rem);font-weight:700;line-height:.92;letter-spacing:-.03em;margin-bottom:1rem}
-.hname .l1,.hname .l2{color:var(--text);display:block}
-.hname .l3{display:block;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hsub{font-size:clamp(.72rem,2vw,.82rem);color:var(--text2);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.8rem;display:flex;align-items:center;gap:.75rem}
-.hsub::before{content:'';width:24px;height:1px;background:var(--accent)}
-.hdesc{font-size:.73rem;color:var(--text2);max-width:520px;line-height:1.95;padding-left:1rem;border-left:2px solid rgba(0,255,163,.35);margin-bottom:3rem}
-.hstats{display:flex;flex-wrap:wrap;border:1px solid var(--border2);width:fit-content;margin-bottom:3rem}
-.si{padding:1rem 1.8rem;border-right:1px solid var(--border2);text-align:left}
-.si:last-child{border-right:none}
-.sv{font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:700;color:var(--accent);line-height:1;display:block}
-.sl{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-top:.3rem;display:block}
-.hbtns{display:flex;gap:.75rem;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:.45rem;padding:.65rem 1.4rem;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;transition:all .2s;cursor:none}
-.bp{background:var(--accent);color:#000;font-weight:700}.bp:hover{background:#00cc80;transform:translateY(-2px)}
-.bg_{background:transparent;color:var(--accent);border:1px solid var(--border)}.bg_:hover{background:rgba(0,255,163,.05);transform:translateY(-2px)}
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hero{
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:80px 2.5rem 2rem;
+  position:relative;overflow:hidden;
+}
+/* Animated grid bg */
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,229,160,0.028) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,229,160,0.028) 1px,transparent 1px);
+  background-size:56px 56px;
+  animation:gridDrift 30s linear infinite;
+  mask-image:radial-gradient(ellipse 70% 80% at 50% 50%,black,transparent);
+}
+@keyframes gridDrift{to{transform:translate(56px,56px)}}
 
-/* SECTIONS */
-.sec{padding:6rem 2rem;max-width:1060px;margin:0 auto}
-.stop{display:flex;align-items:center;gap:1rem;margin-bottom:.6rem}
-.snum{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
-.sline{flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
-.stitle{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;letter-spacing:-.02em;margin-bottom:.4rem}
-.ssub{font-size:.7rem;color:var(--text3);margin-bottom:2.5rem}
-.divider{border:none;border-top:1px solid var(--border2)}
+/* Scanline */
+.hero-scan{
+  position:absolute;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 0%,var(--accent) 40%,transparent 100%);
+  animation:scanDown 8s ease-in-out 0.5s infinite;
+  opacity:0;
+}
+@keyframes scanDown{0%{top:0;opacity:0}5%{opacity:0.3}95%{opacity:0.3}100%{top:100%;opacity:0}}
 
-/* REVEAL */
+/* Radial glow */
+.hero-glow{
+  position:absolute;
+  top:30%;left:55%;
+  width:600px;height:600px;
+  background:radial-gradient(ellipse,rgba(0,229,160,0.05) 0%,transparent 65%);
+  transform:translate(-50%,-50%);
+  animation:glowPulse 5s ease-in-out infinite alternate;
+}
+@keyframes glowPulse{0%{opacity:0.5;transform:translate(-50%,-50%) scale(1)}100%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}}
+
+.hero-inner{position:relative;z-index:1;max-width:980px;width:100%}
+
+/* Status pill */
+.status-pill{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  padding:0.3rem 0.9rem;
+  border:1px solid var(--border-acc);
+  background:var(--accent-glow);
+  border-radius:100px;
+  font-family:var(--mono);
+  font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:2rem;
+}
+.pulse{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--accent);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,229,160,0.4)}60%{opacity:0.5;box-shadow:0 0 0 7px rgba(0,229,160,0)}}
+
+/* Name */
+.hero-name{
+  font-family:var(--font);
+  font-size:clamp(3rem,9vw,7rem);
+  font-weight:800;
+  line-height:0.9;
+  letter-spacing:-0.03em;
+  margin-bottom:1.2rem;
+  position:relative;
+}
+.hero-name .line{display:block;overflow:hidden}
+.hero-name .line-inner{display:block;transform:translateY(100%);animation:lineUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards}
+.hero-name .l1 .line-inner{animation-delay:0.1s}
+.hero-name .l2 .line-inner{animation-delay:0.2s}
+.hero-name .l3 .line-inner{
+  animation-delay:0.3s;
+  background:linear-gradient(135deg,var(--accent) 0%,#00b8ff 60%,var(--accent) 100%);
+  background-size:200% 100%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:lineUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.3s forwards, shimmer 4s linear 1s infinite;
+}
+@keyframes lineUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes shimmer{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+
+.hero-role{
+  font-family:var(--mono);
+  font-size:clamp(0.7rem,1.8vw,0.82rem);
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--text2);margin-bottom:1.8rem;
+  display:flex;align-items:center;gap:0.75rem;
+}
+.hero-role::before{content:'';width:28px;height:1px;background:var(--accent)}
+body.ar .hero-role::before{display:none}
+body.ar .hero-role::after{content:'';width:28px;height:1px;background:var(--accent)}
+
+.hero-desc{
+  font-size:clamp(0.78rem,1.5vw,0.88rem);
+  color:var(--text2);
+  max-width:540px;
+  line-height:1.9;
+  padding-left:1.1rem;
+  border-left:2px solid rgba(0,229,160,0.35);
+  margin-bottom:3rem;
+}
+body.ar .hero-desc{padding-left:0;padding-right:1.1rem;border-left:none;border-right:2px solid rgba(0,229,160,0.35)}
+
+/* Stats */
+.hero-stats{
+  display:flex;flex-wrap:wrap;gap:0;
+  border:1px solid var(--border);
+  width:fit-content;margin-bottom:3rem;
+  border-radius:var(--r8);overflow:hidden;
+}
+.hstat{
+  padding:1.1rem 2rem;
+  border-right:1px solid var(--border);
+  position:relative;overflow:hidden;
+  transition:background .25s;
+}
+.hstat:last-child{border-right:none}
+.hstat:hover{background:var(--accent-glow)}
+.hstat-val{
+  font-family:var(--font);font-size:2rem;font-weight:800;
+  color:var(--accent);line-height:1;display:block;
+}
+.hstat-lbl{
+  font-family:var(--mono);font-size:0.52rem;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--text3);margin-top:0.3rem;display:block;
+}
+
+.hero-btns{display:flex;gap:0.75rem;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  padding:0.7rem 1.5rem;
+  font-family:var(--mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;
+  text-decoration:none;border-radius:var(--r8);transition:var(--trans);cursor:none;border:none;
+}
+.btn-p{background:var(--accent);color:#000;font-weight:600}
+.btn-p:hover{background:#00cc8c;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,229,160,0.2)}
+.btn-g{background:transparent;color:var(--accent);border:1px solid var(--border-acc)}
+.btn-g:hover{background:var(--accent-dim);transform:translateY(-2px)}
+
+/* ═══════════════════════════════════════════
+   STICKY HIRE BTN (floating)
+═══════════════════════════════════════════ */
+.float-hire{
+  position:fixed;bottom:2rem;right:2rem;z-index:150;
+  display:flex;align-items:center;gap:0.5rem;
+  padding:0.65rem 1.2rem;
+  background:var(--accent);color:#000;
+  font-family:var(--mono);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;
+  border-radius:100px;
+  box-shadow:0 4px 24px rgba(0,229,160,0.25);
+  text-decoration:none;cursor:none;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .4s ease,transform .4s ease,background .2s;
+}
+.float-hire.show{opacity:1;transform:translateY(0)}
+.float-hire:hover{background:#00cc8c;box-shadow:0 6px 30px rgba(0,229,160,0.35)}
+.float-hire i{font-size:0.9rem}
+
+/* ═══════════════════════════════════════════
+   DIVIDER
+═══════════════════════════════════════════ */
+.div{border:none;border-top:1px solid var(--border);margin:0}
+
+/* ═══════════════════════════════════════════
+   SECTION COMMONS
+═══════════════════════════════════════════ */
+.sec{padding:6rem 2.5rem;max-width:1060px;margin:0 auto}
+.sec-head{margin-bottom:3rem}
+.sec-eyebrow{
+  display:flex;align-items:center;gap:0.75rem;
+  margin-bottom:0.5rem;
+}
+.sec-num{
+  font-family:var(--mono);font-size:0.58rem;
+  letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--accent);
+}
+.sec-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border-acc),transparent)}
+.sec-title{
+  font-family:var(--font);
+  font-size:clamp(1.6rem,4vw,2.4rem);
+  font-weight:700;letter-spacing:-0.02em;
+  color:var(--text);
+}
+.sec-sub{
+  font-family:var(--mono);
+  font-size:0.68rem;color:var(--text3);
+  margin-top:0.4rem;letter-spacing:0.04em;
+}
+
+/* ═══════════════════════════════════════════
+   REVEAL ANIMATIONS
+═══════════════════════════════════════════ */
 .rv{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
 .rv.on{opacity:1;transform:none}
-.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
+.rv-l{opacity:0;transform:translateX(-22px);transition:opacity .65s ease,transform .65s ease}
+.rv-l.on{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+.d4{transition-delay:.32s}.d5{transition-delay:.4s}.d6{transition-delay:.48s}
 
-/* SKILLS */
-.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));border:1px solid var(--border2)}
-.skc{padding:1.5rem;border-right:1px solid var(--border2);border-bottom:1px solid var(--border2);position:relative;overflow:hidden;transition:background .22s}
-.skc::after{content:'';position:absolute;left:0;top:0;width:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .38s ease}
-.skc:hover::after{width:100%}
-.skc:hover{background:rgba(255,255,255,.018)}
-.skic{font-size:1.25rem;color:var(--accent);margin-bottom:.75rem}
-.skn{font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:.35rem}
-.skd{font-size:.63rem;color:var(--text2);line-height:1.65;margin-bottom:.85rem}
-.skbar{height:1.5px;background:var(--surface3)}
-.skfill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:width 1.4s cubic-bezier(.16,1,.3,1)}
-.skmeta{display:flex;justify-content:space-between;margin-top:.32rem}
-.skp{font-size:.58rem;color:var(--accent)}.skt{font-size:.58rem;color:var(--text3)}
-.tags{display:flex;flex-wrap:wrap;gap:.38rem;margin-top:1.4rem}
-.tag{padding:.22rem .58rem;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--border3);color:var(--text2);transition:all .2s;cursor:default}
-.tag:hover{border-color:var(--accent);color:var(--accent)}
+/* ═══════════════════════════════════════════
+   SERVICES SECTION
+═══════════════════════════════════════════ */
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+  border-radius:var(--r12);
+  overflow:hidden;
+}
+.svc-card{
+  background:var(--surf);
+  padding:2rem;
+  position:relative;
+  overflow:hidden;
+  transition:background .25s;
+}
+.svc-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.svc-card:hover::before{opacity:1}
+.svc-card:hover{background:var(--surf2)}
+.svc-num{
+  font-family:var(--mono);font-size:0.55rem;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--text3);margin-bottom:1rem;
+}
+.svc-icon{
+  width:40px;height:40px;
+  border:1px solid var(--border-acc);
+  border-radius:var(--r8);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1rem;
+  background:var(--accent-dim);
+  font-size:1.1rem;color:var(--accent);
+  transition:var(--trans);
+}
+.svc-card:hover .svc-icon{background:rgba(0,229,160,0.2);transform:translateY(-2px)}
+.svc-name{
+  font-family:var(--font);
+  font-size:1.05rem;font-weight:700;
+  color:var(--text);margin-bottom:0.6rem;
+  line-height:1.25;
+}
+.svc-desc{
+  font-size:0.75rem;color:var(--text2);
+  line-height:1.8;margin-bottom:1.2rem;
+}
+.svc-tags{display:flex;flex-wrap:wrap;gap:0.3rem}
+.svc-tag{
+  font-family:var(--mono);
+  font-size:0.54rem;letter-spacing:0.08em;
+  padding:0.2rem 0.5rem;
+  border:1px solid var(--border);
+  color:var(--text3);border-radius:var(--r4);
+  transition:all .2s;
+}
+.svc-card:hover .svc-tag{border-color:var(--border-acc);color:var(--accent)}
 
-/* METHODOLOGY */
-.meth-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--border2);border:1px solid var(--border2)}
-.meth-card{background:var(--surface);padding:1.4rem;position:relative;overflow:hidden;transition:background .22s}
-.meth-card:hover{background:var(--surface2)}
-.meth-card::before{content:'';position:absolute;left:0;bottom:0;width:100%;height:0;background:linear-gradient(0deg,rgba(0,255,163,.04),transparent);transition:height .35s}
-.meth-card:hover::before{height:100%}
-.meth-step{font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem}
-.meth-name{font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:.4rem}
-.meth-desc{font-size:.62rem;color:var(--text2);line-height:1.65}
-.meth-num{position:absolute;right:1rem;bottom:.8rem;font-family:'Space Grotesk',sans-serif;font-size:2.5rem;font-weight:700;color:rgba(0,255,163,.04);line-height:1}
+/* ═══════════════════════════════════════════
+   METHODOLOGY
+═══════════════════════════════════════════ */
+.meth-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:0;
+  background:var(--border);
+  border:1px solid var(--border);
+  border-radius:var(--r12);overflow:hidden;
+}
+.meth-card{
+  background:var(--surf);padding:1.5rem;
+  position:relative;overflow:hidden;transition:background .22s;
+}
+.meth-card:hover{background:var(--surf2)}
+.meth-card::after{
+  content:'';position:absolute;left:0;bottom:0;width:0;height:2px;
+  background:var(--accent);transition:width .35s ease;
+}
+.meth-card:hover::after{width:100%}
+.meth-step{
+  font-family:var(--mono);font-size:0.55rem;
+  letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:0.6rem;
+}
+.meth-name{
+  font-family:var(--font);font-size:0.88rem;font-weight:600;
+  color:var(--text);margin-bottom:0.4rem;
+}
+.meth-desc{font-size:0.65rem;color:var(--text2);line-height:1.65}
+.meth-bg{
+  position:absolute;right:0.8rem;bottom:0.5rem;
+  font-family:var(--font);font-size:3rem;font-weight:800;
+  color:rgba(0,229,160,0.035);line-height:1;
+  pointer-events:none;
+}
 
-/* OPSTACK */
-.ops-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem}
-.ops-card{padding:1.1rem 1.2rem;border:1px solid var(--border2);background:var(--surface);transition:border-color .2s,transform .2s}
-.ops-card:hover{border-color:var(--border);transform:translateY(-2px)}
-.ops-ic{font-size:1.1rem;color:var(--accent);margin-bottom:.5rem}
-.ops-tool{font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:.25rem}
-.ops-use{font-size:.6rem;color:var(--text2);line-height:1.55}
+/* ═══════════════════════════════════════════
+   OPSTACK
+═══════════════════════════════════════════ */
+.ops-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(195px,1fr));
+  gap:0.75rem;
+}
+.ops-card{
+  padding:1.1rem 1.2rem;
+  border:1px solid var(--border);
+  background:var(--surf);
+  border-radius:var(--r8);
+  transition:var(--trans);
+}
+.ops-card:hover{border-color:var(--border-acc);transform:translateY(-2px);background:var(--surf2)}
+.ops-ic{font-size:1.1rem;color:var(--accent);margin-bottom:0.5rem}
+.ops-tool{font-family:var(--font);font-size:0.82rem;font-weight:600;color:var(--text);margin-bottom:0.22rem}
+.ops-use{font-size:0.62rem;color:var(--text2);line-height:1.55}
 
-/* RESEARCH */
-.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
-.res-card{padding:1.3rem;border:1px solid var(--border2);background:var(--surface);position:relative;overflow:hidden;transition:border-color .2s}
-.res-card:hover{border-color:var(--border)}
-.res-card::after{content:'ACTIVE';position:absolute;top:.7rem;right:.8rem;font-size:.48rem;letter-spacing:.15em;padding:.15rem .4rem;border:1px solid rgba(0,255,163,.2);color:var(--accent);background:rgba(0,255,163,.06)}
-.res-ic{font-size:1.1rem;color:var(--accent2);margin-bottom:.6rem}
-.res-name{font-family:'Space Grotesk',sans-serif;font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.3rem}
-.res-desc{font-size:.62rem;color:var(--text2);line-height:1.6}
+/* ═══════════════════════════════════════════
+   SKILLS
+═══════════════════════════════════════════ */
+.skills-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:0;background:var(--border);
+  border:1px solid var(--border);
+  border-radius:var(--r12);overflow:hidden;
+}
+.sk-card{
+  background:var(--surf);padding:1.6rem;
+  position:relative;overflow:hidden;transition:background .22s;
+}
+.sk-card::after{content:'';position:absolute;top:0;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--accent),#00b8ff);transition:width .4s ease}
+.sk-card:hover::after{width:100%}
+.sk-card:hover{background:var(--surf2)}
+.sk-ic{font-size:1.3rem;color:var(--accent);margin-bottom:0.8rem}
+.sk-nm{font-family:var(--font);font-size:0.9rem;font-weight:600;color:var(--text);margin-bottom:0.35rem}
+.sk-desc{font-size:0.65rem;color:var(--text2);line-height:1.65;margin-bottom:0.9rem}
+.sk-bar{height:1.5px;background:var(--surf3)}
+.sk-fill{height:100%;background:linear-gradient(90deg,var(--accent),#00b8ff);width:0;transition:width 1.4s cubic-bezier(.16,1,.3,1)}
+.sk-meta{display:flex;justify-content:space-between;margin-top:0.35rem}
+.sk-pct{font-family:var(--mono);font-size:0.58rem;color:var(--accent)}
+.sk-lbl{font-family:var(--mono);font-size:0.58rem;color:var(--text3)}
+.tags-row{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:1.4rem}
+.tag{
+  font-family:var(--mono);font-size:0.54rem;letter-spacing:0.08em;
+  padding:0.2rem 0.55rem;border:1px solid var(--border);
+  color:var(--text2);border-radius:var(--r4);transition:all .18s;cursor:default;
+}
+.tag:hover{border-color:var(--border-acc);color:var(--accent)}
 
-/* TIMELINE */
+/* ═══════════════════════════════════════════
+   EXPERIENCE TIMELINE
+═══════════════════════════════════════════ */
 .tl{position:relative;padding-left:2.2rem}
 .tl::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,var(--accent),transparent)}
-.tli{position:relative;margin-bottom:2.8rem}
-.tld{position:absolute;left:-2.54rem;top:.25rem;width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px rgba(0,255,163,.55)}
-.tlp{font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem}
-.tlr{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:600;margin-bottom:.2rem}
-.tlo{font-size:.72rem;color:var(--text2);margin-bottom:.9rem}
-.tlpts{list-style:none}
-.tlpts li{font-size:.72rem;color:var(--text2);padding:.28rem 0;display:flex;gap:.55rem;border-bottom:1px solid var(--border2)}
-.tlpts li:last-child{border:none}
-.tlpts li::before{content:'›';color:var(--accent);flex-shrink:0}
-
-/* ── FINDINGS SECTION ── */
-.findings-disclaimer{
-  display:flex;align-items:flex-start;gap:1.2rem;
-  padding:1.1rem 1.4rem;
-  border:1px solid rgba(0,255,163,.12);
-  background:rgba(0,255,163,.025);
-  margin-bottom:2.5rem;
+body.ar .tl{padding-left:0;padding-right:2.2rem}
+body.ar .tl::before{left:auto;right:0}
+.tl-item{position:relative;margin-bottom:2.8rem}
+.tl-dot{
+  position:absolute;left:-2.57rem;top:0.28rem;
+  width:9px;height:9px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 14px rgba(0,229,160,0.5);
 }
-.findings-disclaimer i{font-size:1.1rem;color:var(--accent);flex-shrink:0;margin-top:.1rem}
-.findings-disclaimer p{font-size:.68rem;color:var(--text2);line-height:1.85}
-.findings-disclaimer strong{color:var(--accent)}
+body.ar .tl-dot{left:auto;right:-2.57rem}
+.tl-period{font-family:var(--mono);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:0.3rem}
+.tl-role{font-family:var(--font);font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:0.2rem}
+.tl-org{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.07em;color:var(--text2);margin-bottom:0.9rem}
+.tl-pts{list-style:none}
+.tl-pts li{font-size:0.75rem;color:var(--text2);padding:0.25rem 0 0.25rem 1rem;display:flex;gap:0.55rem;border-bottom:1px solid var(--border);line-height:1.65}
+.tl-pts li:last-child{border:none}
+.tl-pts li::before{content:'›';color:var(--accent);flex-shrink:0;font-size:1rem;line-height:1.4}
+body.ar .tl-pts li{padding:.25rem 1rem .25rem 0}
+body.ar .tl-pts li::before{display:none}
+body.ar .tl-pts li::after{content:'›';color:var(--accent);flex-shrink:0;font-size:1rem;line-height:1.4;order:-1}
 
-.filter-row{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:2rem}
-.fbtn{padding:.28rem .75rem;font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:none;transition:all .2s}
-.fbtn.on,.fbtn:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,255,163,.04)}
+/* ═══════════════════════════════════════════
+   FINDINGS
+═══════════════════════════════════════════ */
+.findings-note{
+  display:flex;align-items:flex-start;gap:1rem;
+  padding:1rem 1.2rem;
+  border:1px solid var(--border-acc);
+  background:var(--accent-glow);
+  border-radius:var(--r8);
+  margin-bottom:2rem;
+}
+.findings-note i{color:var(--accent);font-size:1rem;flex-shrink:0;margin-top:0.05rem}
+.findings-note p{font-family:var(--mono);font-size:0.65rem;color:var(--text2);line-height:1.8}
+.findings-note p strong{color:var(--accent)}
+body.ar .findings-note p{font-family:var(--ar)}
 
-/* Findings table */
-.ftable{width:100%;border-collapse:collapse;border:1px solid var(--border2)}
-.ftable thead tr{border-bottom:1px solid var(--border2)}
-.ftable th{font-size:.56rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);padding:.6rem 1rem;text-align:left;font-weight:400;background:var(--surface)}
-.ftable th.c0{width:75px}.ftable th.c1{width:85px}.ftable th.c2{width:120px}.ftable th.c3{width:90px}.ftable th.cact{width:75px;text-align:right}
-.frow{border-bottom:1px solid var(--border2);transition:background .18s;cursor:none}
+.filter-row{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:1.8rem}
+.fbtn{
+  padding:0.28rem 0.72rem;
+  font-family:var(--mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;
+  border:1px solid var(--border);background:transparent;color:var(--text2);
+  cursor:none;transition:all .2s;border-radius:var(--r4);
+}
+.fbtn.on,.fbtn:hover{border-color:var(--border-acc);color:var(--accent);background:var(--accent-dim)}
+
+.ftable{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:var(--r8);overflow:hidden}
+.ftable thead tr{border-bottom:1px solid var(--border)}
+.ftable th{
+  font-family:var(--mono);font-size:0.54rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--text3);padding:0.6rem 1rem;text-align:left;font-weight:400;background:var(--surf);
+}
+.frow{border-bottom:1px solid var(--border);transition:background .18s;cursor:default}
 .frow:last-child{border:none}
-.frow:hover{background:var(--surface2)}
-.frow td{padding:.85rem 1rem;vertical-align:top}
-.fnum{font-size:.58rem;letter-spacing:.1em;color:var(--text3)}
-.fsev{display:inline-block;padding:.16rem .48rem;font-size:.53rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700}
-.sc{background:rgba(255,64,96,.1);color:var(--accent3);border:1px solid rgba(255,64,96,.2)}
-.sh{background:rgba(255,184,0,.09);color:var(--accent4);border:1px solid rgba(255,184,0,.2)}
-.ftype{display:inline-flex;align-items:center;gap:.28rem;padding:.14rem .48rem;font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(0,255,163,.05);color:var(--accent);border:1px solid rgba(0,255,163,.12)}
-.fenv{display:inline-block;margin-top:.3rem;font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);padding:.1rem .4rem;border:1px solid var(--border2)}
-.ftitle{font-family:'Space Grotesk',sans-serif;font-size:.83rem;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:.28rem}
-.fshort{font-size:.62rem;color:var(--text2);line-height:1.65}
-.fmeta{display:flex;align-items:center;gap:.6rem;margin-top:.35rem;flex-wrap:wrap}
-.fplatform{font-size:.57rem;color:var(--text3);display:flex;align-items:center;gap:.25rem}
-.fstatus{font-size:.52rem;letter-spacing:.09em;text-transform:uppercase;padding:.1rem .4rem}
-.fs-rem{color:#00ffa3;border:1px solid rgba(0,255,163,.2);background:rgba(0,255,163,.06)}
-.fs-mit{color:var(--accent4);border:1px solid rgba(255,184,0,.2);background:rgba(255,184,0,.06)}
-.fdbtn{background:none;border:none;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:.57rem;letter-spacing:.07em;cursor:none;display:flex;align-items:center;gap:.28rem;padding:0;transition:gap .18s;white-space:nowrap}
-.fdbtn:hover{gap:.52rem}
+.frow:hover{background:var(--surf2)}
+.frow td{padding:0.85rem 1rem;vertical-align:top}
 .frow.hid{display:none}
+.fref{font-family:var(--mono);font-size:0.56rem;letter-spacing:0.1em;color:var(--text3)}
+.fsev{display:inline-block;padding:0.15rem 0.45rem;font-family:var(--mono);font-size:0.5rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:600}
+.sc{background:rgba(240,64,64,0.1);color:var(--red);border:1px solid rgba(240,64,64,0.2)}
+.sh{background:rgba(59,130,246,0.1);color:var(--blue);border:1px solid rgba(59,130,246,0.2)}
+.ftype{
+  display:inline-flex;align-items:center;gap:0.28rem;
+  padding:0.14rem 0.48rem;font-family:var(--mono);font-size:0.52rem;letter-spacing:0.08em;text-transform:uppercase;
+  background:var(--accent-dim);color:var(--accent);border:1px solid var(--border-acc);
+  border-radius:var(--r4);margin-top:0.3rem;
+}
+.fenv{
+  display:inline-block;margin-top:0.25rem;
+  font-family:var(--mono);font-size:0.5rem;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--text3);padding:0.1rem 0.4rem;border:1px solid var(--border);border-radius:var(--r4);
+}
+.ftitle{font-family:var(--font);font-size:0.83rem;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:0.28rem}
+.fshort{font-size:0.63rem;color:var(--text2);line-height:1.65}
+.fmeta{display:flex;align-items:center;gap:0.5rem;margin-top:0.32rem;flex-wrap:wrap}
+.fplatform{font-family:var(--mono);font-size:0.56rem;color:var(--text3);display:flex;align-items:center;gap:0.25rem}
+.fstat{font-family:var(--mono);font-size:0.5rem;letter-spacing:0.08em;text-transform:uppercase;padding:0.1rem 0.38rem;border-radius:var(--r4)}
+.fs-r{background:rgba(0,200,100,0.07);color:#00c864;border:1px solid rgba(0,200,100,0.18)}
+.fs-m{background:rgba(255,184,0,0.07);color:#e6a800;border:1px solid rgba(255,184,0,0.18)}
+.cvss-w{display:flex;align-items:center;gap:0.42rem;margin-top:0.32rem}
+.cvss-t{width:50px;height:1.5px;background:var(--surf3)}
+.cvss-f{height:100%;transition:width 1.1s ease}
+.cvss-v{font-family:var(--mono);font-size:0.54rem;color:var(--text2)}
+.fdbtn{
+  background:none;border:none;color:var(--accent);
+  font-family:var(--mono);font-size:0.56rem;letter-spacing:0.07em;
+  cursor:none;display:flex;align-items:center;gap:0.28rem;padding:0;
+  transition:gap .18s;white-space:nowrap;
+}
+.fdbtn:hover{gap:0.52rem}
 
-/* CVSS mini */
-.cvss-w{display:flex;align-items:center;gap:.45rem;margin-top:.35rem}
-.cvss-t{width:52px;height:1.5px;background:var(--surface3)}
-.cvss-f{height:100%;transition:width 1s ease}
-.cvss-v{font-size:.56rem;color:var(--text2)}
-
-/* MODAL */
-.mover{display:none;position:fixed;inset:0;z-index:500;background:rgba(4,6,9,.92);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:1rem}
+/* ═══════════════════════════════════════════
+   MODAL
+═══════════════════════════════════════════ */
+.mover{
+  display:none;position:fixed;inset:0;z-index:500;
+  background:rgba(4,6,10,0.88);backdrop-filter:blur(12px);
+  align-items:center;justify-content:center;padding:1rem;
+}
 .mover.open{display:flex}
-.mbox{background:var(--surface);border:1px solid var(--border2);max-width:720px;width:100%;max-height:90vh;overflow-y:auto;position:relative;animation:mi .22s ease}
-@keyframes mi{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.mclose{position:absolute;top:.9rem;right:.9rem;background:none;border:none;color:var(--text2);font-size:1.25rem;cursor:none;transition:color .2s;z-index:1}
+.mbox{
+  background:var(--surf);border:1px solid var(--border);
+  border-radius:var(--r12);max-width:720px;width:100%;
+  max-height:90vh;overflow-y:auto;position:relative;
+  animation:mIn .22s ease;
+}
+@keyframes mIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.mclose{
+  position:absolute;top:1rem;right:1rem;
+  background:none;border:none;color:var(--text2);
+  font-size:1.2rem;cursor:none;transition:color .2s;z-index:1;
+}
 .mclose:hover{color:var(--accent)}
-.mhdr{padding:1.7rem 2rem 1.1rem;border-bottom:1px solid var(--border2)}
+.mhdr{padding:1.8rem 2rem 1.2rem;border-bottom:1px solid var(--border)}
 .mbdy{padding:1.4rem 2rem 2rem}
-.mrow{display:flex;gap:1.4rem;flex-wrap:wrap;margin-bottom:1rem}
+.mrow{display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:1rem}
 .mf{flex:1;min-width:110px}
-.mf label{display:block;font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:.28rem}
-.mf span{font-size:.72rem;color:var(--text)}
+.mf label{display:block;font-family:var(--mono);font-size:0.54rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-bottom:0.25rem}
+.mf span{font-size:0.72rem;color:var(--text)}
 .msec{margin-bottom:1.4rem}
-.msec h4{font-family:'Space Grotesk',sans-serif;font-size:.72rem;font-weight:600;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.55rem;display:flex;align-items:center;gap:.38rem}
-.msec p{font-size:.72rem;color:var(--text2);line-height:1.85}
+.msec h4{
+  font-family:var(--font);font-size:0.72rem;font-weight:600;
+  color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;
+  margin-bottom:0.55rem;display:flex;align-items:center;gap:0.38rem;
+}
+.msec p{font-size:0.73rem;color:var(--text2);line-height:1.85}
 .msteps{list-style:none;counter-reset:st}
-.msteps li{counter-increment:st;display:flex;gap:.75rem;font-size:.72rem;color:var(--text2);padding:.45rem 0;border-bottom:1px solid var(--border2);line-height:1.65}
+.msteps li{
+  counter-increment:st;display:flex;gap:0.7rem;
+  font-size:0.73rem;color:var(--text2);
+  padding:0.44rem 0;border-bottom:1px solid var(--border);line-height:1.65;
+}
 .msteps li:last-child{border:none}
-.msteps li::before{content:counter(st);min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;background:rgba(0,255,163,.07);border:1px solid rgba(0,255,163,.18);font-size:.56rem;color:var(--accent);flex-shrink:0;margin-top:.1rem}
+.msteps li::before{
+  content:counter(st);min-width:20px;height:20px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--accent-dim);border:1px solid var(--border-acc);
+  font-family:var(--mono);font-size:0.56rem;color:var(--accent);flex-shrink:0;margin-top:0.1rem;
+  border-radius:var(--r4);
+}
 
-/* ACHIEVEMENTS */
-.agrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:1rem}
-.ac{padding:1.4rem;border:1px solid var(--border2);background:var(--surface);position:relative;overflow:hidden;transition:border-color .22s,transform .22s}
-.ac:hover{border-color:var(--border);transform:translateY(-2px)}
-.anum{font-family:'Space Grotesk',sans-serif;font-size:2.3rem;font-weight:700;color:var(--accent);line-height:1;margin-bottom:.45rem}
-.atxt{font-size:.62rem;color:var(--text2);line-height:1.5}
-.aic{position:absolute;bottom:.9rem;right:.9rem;font-size:1.7rem;color:rgba(0,255,163,.05)}
+/* ═══════════════════════════════════════════
+   RESEARCH
+═══════════════════════════════════════════ */
+.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.75rem}
+.res-card{
+  padding:1.3rem;border:1px solid var(--border);background:var(--surf);
+  border-radius:var(--r8);position:relative;overflow:hidden;transition:var(--trans);
+}
+.res-card:hover{border-color:var(--border-acc);transform:translateY(-2px);background:var(--surf2)}
+.res-card::after{
+  content:'ACTIVE';position:absolute;top:0.7rem;right:0.8rem;
+  font-family:var(--mono);font-size:0.46rem;letter-spacing:0.14em;
+  padding:0.14rem 0.38rem;border:1px solid var(--border-acc);
+  color:var(--accent);background:var(--accent-dim);border-radius:var(--r4);
+}
+.res-ic{font-size:1.1rem;color:#00b8ff;margin-bottom:0.6rem}
+.res-nm{font-family:var(--font);font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:0.3rem}
+.res-desc{font-size:0.63rem;color:var(--text2);line-height:1.6}
 
-/* CERTS */
-.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:.7rem}
-.cc{display:flex;align-items:center;gap:.85rem;padding:.85rem 1.05rem;border:1px solid var(--border2);background:var(--surface);transition:border-color .2s}
-.cc:hover{border-color:var(--border)}
+/* ═══════════════════════════════════════════
+   ACHIEVEMENTS
+═══════════════════════════════════════════ */
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:0.75rem}
+.ach-card{
+  padding:1.5rem;border:1px solid var(--border);background:var(--surf);
+  border-radius:var(--r8);position:relative;overflow:hidden;transition:var(--trans);
+}
+.ach-card:hover{border-color:var(--border-acc);transform:translateY(-3px)}
+.ach-num{font-family:var(--font);font-size:2.3rem;font-weight:800;color:var(--accent);line-height:1;margin-bottom:0.45rem}
+.ach-txt{font-size:0.64rem;color:var(--text2);line-height:1.55}
+.ach-ico{position:absolute;bottom:0.9rem;right:0.9rem;font-size:1.8rem;color:rgba(0,229,160,0.05)}
+
+/* ═══════════════════════════════════════════
+   CERTS
+═══════════════════════════════════════════ */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:0.65rem}
+.cc{
+  display:flex;align-items:center;gap:0.85rem;
+  padding:0.85rem 1.05rem;border:1px solid var(--border);background:var(--surf);
+  border-radius:var(--r8);transition:var(--trans);
+}
+.cc:hover{border-color:var(--border-acc);background:var(--surf2)}
 .cc i{font-size:1.1rem;color:var(--accent);flex-shrink:0}
-.ccn{font-size:.72rem;color:var(--text);font-weight:600}
-.ccb{font-size:.6rem;color:var(--text3);margin-top:.08rem}
+.cc-nm{font-size:0.72rem;font-weight:600;color:var(--text)}
+.cc-sub{font-family:var(--mono);font-size:0.56rem;color:var(--text3);margin-top:0.08rem}
 
-/* CONTACT */
-.cgrid2{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
-.cdesc{font-size:.72rem;color:var(--text2);line-height:1.95;margin-bottom:1.4rem}
-.clinks{display:flex;flex-direction:column;gap:.55rem}
-.clink{display:flex;align-items:center;gap:.75rem;padding:.65rem .95rem;border:1px solid var(--border2);color:var(--text2);text-decoration:none;font-size:.72rem;transition:all .2s}
-.clink:hover{border-color:var(--border);color:var(--accent)}
-.clink i{font-size:.95rem;color:var(--accent)}
+/* ═══════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════ */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.contact-desc{font-size:0.76rem;color:var(--text2);line-height:1.95;margin-bottom:1.5rem}
+.clinks{display:flex;flex-direction:column;gap:0.55rem}
+.clink{
+  display:flex;align-items:center;gap:0.8rem;
+  padding:0.7rem 1rem;border:1px solid var(--border);
+  color:var(--text2);text-decoration:none;font-size:0.73rem;
+  transition:var(--trans);border-radius:var(--r8);
+}
+.clink:hover{border-color:var(--border-acc);color:var(--accent);background:var(--accent-glow);transform:translateX(4px)}
+body.ar .clink:hover{transform:translateX(-4px)}
+.clink i{font-size:0.95rem;color:var(--accent)}
 
-footer{border-top:1px solid var(--border2);padding:2rem;text-align:center;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text3)}
-footer span{color:var(--accent)}
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer{
+  border-top:1px solid var(--border);
+  padding:2rem 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:1rem;
+}
+.fl{font-family:var(--mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3)}
+.fl span{color:var(--accent)}
+body.ar .fl{font-family:var(--ar);letter-spacing:0;text-transform:none;font-size:0.65rem}
+.f-links{display:flex;gap:1rem}
+.f-links a{font-family:var(--mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);text-decoration:none;transition:color .2s;cursor:none}
+.f-links a:hover{color:var(--accent)}
 
+/* ═══════════════════════════════════════════
+   MOBILE
+═══════════════════════════════════════════ */
 @media(max-width:768px){
-  nav{padding:0 1rem}.nav-links{display:none}.nav-btn{display:block}
-  .nav-links.open{display:flex;flex-direction:column;position:fixed;top:58px;left:0;right:0;background:rgba(6,8,11,.98);border-bottom:1px solid var(--border2);padding:1rem}
-  .nav-links.open a{border:none;border-bottom:1px solid var(--border2);padding:.65rem 0}
-  .hstats{flex-direction:column;width:100%}.si{border-right:none;border-bottom:1px solid var(--border2)}.si:last-child{border:none}
-  .cgrid2{grid-template-columns:1fr}.sec{padding:4rem 1.1rem}
-  .mhdr,.mbdy{padding:1.1rem}.mrow{flex-direction:column;gap:.75rem}
-  #cur,#cur-r{display:none}body{cursor:auto}
-  .btn,.fbtn,.frow,.fdbtn,.mclose{cursor:pointer}
+  nav{padding:0 1.2rem}
+  .nav-links{display:none}
+  .nav-links.open{
+    display:flex;flex-direction:column;
+    position:fixed;top:62px;left:0;right:0;
+    background:rgba(7,9,14,0.98);backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);padding:1rem;gap:0;
+  }
+  .nav-links.open a{border:none;border-bottom:1px solid var(--border);padding:0.7rem 0}
+  .nav-burger{display:block}
+  .hero{padding:80px 1.2rem 2rem}
+  .hero-stats{flex-direction:column;width:100%}
+  .hstat{border-right:none;border-bottom:1px solid var(--border)}
+  .hstat:last-child{border:none}
+  .sec{padding:4rem 1.2rem}
+  .contact-grid{grid-template-columns:1fr}
+  .mhdr,.mbdy{padding:1.2rem}
+  .mrow{flex-direction:column;gap:0.7rem}
+  .float-hire{bottom:1.2rem;right:1.2rem}
+  #csr,#csr-ring{display:none}
+  body{cursor:auto}
+  .btn,.fbtn,.frow,.fdbtn,.mclose,.lbtn,.hire-btn,.lang-sw{cursor:pointer}
   .ftable{display:block;overflow-x:auto}
   .ftable thead{display:none}
-  .frow{display:block;padding:.7rem 0;border-bottom:1px solid var(--border2)}
-  .frow td{display:block;padding:.18rem .9rem}
+  .frow{display:block;padding:0.7rem 0;border-bottom:1px solid var(--border)}
+  .frow td{display:block;padding:0.18rem 0.9rem}
+  .logo-tagline{display:none}
+  footer{flex-direction:column;align-items:flex-start;padding:2rem 1.2rem}
 }
 </style>
 </head>
 <body>
-<div id="cur"></div><div id="cur-r"></div>
+<div class="noise"></div>
+<div id="csr"></div>
+<div id="csr-ring"></div>
 
-<nav>
-  <div class="nav-logo">AJ.sec</div>
-  <ul class="nav-links" id="nl">
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#methodology">Methodology</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#findings">Findings</a></li>
-    <li><a href="#research">Research</a></li>
-    <li><a href="#contact">Contact</a></li>
+<!-- FLOATING HIRE -->
+<a class="float-hire" id="floatHire" href="#contact">
+  <i class="ti ti-send"></i>
+  <span id="fh-txt">Hire Me</span>
+</a>
+
+<!-- ═══ NAV ═══ -->
+<nav id="mainNav">
+  <a class="logo" href="#">
+    <div class="logo-mark">
+      <div class="logo-hex"><span>AMN</span></div>
+    </div>
+    <div class="logo-text">
+      <span class="logo-name">AMN <span>Security</span></span>
+      <span class="logo-tagline" id="logo-tag">Offensive Security Consultancy</span>
+    </div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#services" id="nl-svc">Services</a></li>
+    <li><a href="#methodology" id="nl-meth">Methodology</a></li>
+    <li><a href="#experience" id="nl-exp">Experience</a></li>
+    <li><a href="#findings" id="nl-find">Findings</a></li>
+    <li><a href="#research" id="nl-res">Research</a></li>
+    <li><a href="#contact" id="nl-con">Contact</a></li>
   </ul>
-  <button class="nav-btn" id="nb"><i class="ti ti-menu-2"></i></button>
+  <div class="nav-right">
+    <div class="lang-sw">
+      <button class="lbtn on" id="btn-en" onclick="setLang('en')">EN</button>
+      <button class="lbtn" id="btn-ar" onclick="setLang('ar')">AR</button>
+    </div>
+    <a class="hire-btn" href="#contact" id="nav-hire"><i class="ti ti-send"></i> <span id="nav-hire-txt">Hire Me</span></a>
+    <button class="nav-burger" id="navBurger"><i class="ti ti-menu-2"></i></button>
+  </div>
 </nav>
 
-<!-- HERO -->
+<!-- ═══ HERO ═══ -->
 <div class="hero">
-  <div class="hero-bg"></div><div class="hgrid"></div><div class="scanl"></div>
-  <div class="hi">
-    <div class="spill rv"><div class="pdot"></div>Available for Enterprise Engagements</div>
-    <h1 class="hname rv d1"><span class="l1">Ayman</span><span class="l2">Mahmoud</span><span class="l3">Jasim</span></h1>
-    <div class="hsub rv d2">Senior Penetration Tester & Offensive Security Consultant</div>
-    <p class="hdesc rv d3">6+ years conducting authorized offensive security assessments for enterprise clients across the globe. Specializing in red team operations, active directory attacks, exploit development, and adversary simulation under strict NDA-protected engagements.</p>
-    <div class="hstats rv d4">
-      <div class="si"><span class="sv" data-count="150" data-suffix="+">0</span><span class="sl">Clients Worldwide</span></div>
-      <div class="si"><span class="sv" data-count="6" data-suffix="+">0</span><span class="sl">Years Experience</span></div>
-      <div class="si"><span class="sv" data-count="300" data-suffix="+">0</span><span class="sl">Findings Reported</span></div>
-      <div class="si"><span class="sv" data-count="40" data-suffix="%">0</span><span class="sl">Efficiency Gain</span></div>
+  <div class="hero-grid"></div>
+  <div class="hero-scan"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="status-pill rv">
+      <div class="pulse"></div>
+      <span id="status-txt">Available for Enterprise Engagements</span>
     </div>
-    <div class="hbtns rv d5">
-      <a class="btn bp" href="#findings"><i class="ti ti-clipboard-list"></i>Assessment Findings</a>
-      <a class="btn bg_" href="#contact"><i class="ti ti-send"></i>Engage My Services</a>
+    <h1 class="hero-name">
+      <span class="line l1"><span class="line-inner">Ayman</span></span>
+      <span class="line l2"><span class="line-inner">Mahmoud</span></span>
+      <span class="line l3"><span class="line-inner">Jasim</span></span>
+    </h1>
+    <div class="hero-role rv d1" id="hero-role">Senior Penetration Tester & Offensive Security Consultant</div>
+    <p class="hero-desc rv d2" id="hero-desc">6+ years conducting authorized offensive security assessments for enterprise clients worldwide. Specializing in red team operations, Active Directory attacks, exploit development, and full-scope adversary simulation under strict NDA-protected engagements.</p>
+    <div class="hero-stats rv d3">
+      <div class="hstat"><span class="hstat-val" data-count="150" data-suf="+">0</span><span class="hstat-lbl" id="hs1">Clients Worldwide</span></div>
+      <div class="hstat"><span class="hstat-val" data-count="6" data-suf="+">0</span><span class="hstat-lbl" id="hs2">Years Experience</span></div>
+      <div class="hstat"><span class="hstat-val" data-count="300" data-suf="+">0</span><span class="hstat-lbl" id="hs3">Findings Reported</span></div>
+      <div class="hstat"><span class="hstat-val" data-count="40" data-suf="%">0</span><span class="hstat-lbl" id="hs4">Efficiency Gain</span></div>
+    </div>
+    <div class="hero-btns rv d4">
+      <a class="btn btn-p" href="#findings"><i class="ti ti-clipboard-list"></i> <span id="btn1-txt">Assessment Findings</span></a>
+      <a class="btn btn-g" href="#contact"><i class="ti ti-send"></i> <span id="btn2-txt">Engage Services</span></a>
     </div>
   </div>
 </div>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- SKILLS -->
-<section class="sec" id="skills">
-  <div class="stop rv"><span class="snum">// 01</span><div class="sline"></div></div>
-  <h2 class="stitle rv">Core Competencies</h2>
-  <p class="ssub rv">Full-spectrum offensive security capabilities across web, network, and enterprise AD environments.</p>
-  <div class="sgrid">
-    <div class="skc rv"><div class="skic"><i class="ti ti-world"></i></div><div class="skn">Web Application Testing</div><div class="skd">SQLi (blind/time-based/OOB), XSS variants, SSRF, XXE, IDOR, Deserialization, Auth Bypass — full OWASP Top 10 and beyond, including API and GraphQL surfaces.</div><div class="skbar"><div class="skfill" data-w="95"></div></div><div class="skmeta"><span class="skp">95%</span><span class="skt">Expert</span></div></div>
-    <div class="skc rv d1"><div class="skic"><i class="ti ti-topology-star-ring-3"></i></div><div class="skn">Active Directory Attacks</div><div class="skd">Kerberoasting, AS-REP Roasting, Pass-the-Hash/Ticket, DCSync, BloodHound-guided attack path mapping, domain privilege escalation to full compromise.</div><div class="skbar"><div class="skfill" data-w="92"></div></div><div class="skmeta"><span class="skp">92%</span><span class="skt">Expert</span></div></div>
-    <div class="skc rv d2"><div class="skic"><i class="ti ti-sword"></i></div><div class="skn">Red Team Operations</div><div class="skd">Full APT-style simulation: recon → initial access → lateral movement → privilege escalation → data exfiltration → domain compromise. Adversary emulation under NDA.</div><div class="skbar"><div class="skfill" data-w="90"></div></div><div class="skmeta"><span class="skp">90%</span><span class="skt">Advanced</span></div></div>
-    <div class="skc rv d1"><div class="skic"><i class="ti ti-terminal-2"></i></div><div class="skn">Custom Tooling & Automation</div><div class="skd">Recon automation, exploit scripts, post-exploitation utilities in Python and Bash. Reduced repetitive assessment overhead by ~40% across engagements.</div><div class="skbar"><div class="skfill" data-w="88"></div></div><div class="skmeta"><span class="skp">88%</span><span class="skt">Advanced</span></div></div>
-    <div class="skc rv d2"><div class="skic"><i class="ti ti-network"></i></div><div class="skn">Network & Infrastructure</div><div class="skd">Service enumeration, firewall evasion, pivoting through segmented networks, tunneling, SMB relay, LLMNR poisoning in enterprise internal environments.</div><div class="skbar"><div class="skfill" data-w="88"></div></div><div class="skmeta"><span class="skp">88%</span><span class="skt">Advanced</span></div></div>
-    <div class="skc rv d3"><div class="skic"><i class="ti ti-bug"></i></div><div class="skn">Binary & Exploit Development</div><div class="skd">Buffer overflow, custom shellcode development, ASLR/DEP awareness, binary analysis with Ghidra, AV/EDR evasion in controlled assessment environments.</div><div class="skbar"><div class="skfill" data-w="78"></div></div><div class="skmeta"><span class="skp">78%</span><span class="skt">Proficient</span></div></div>
+<!-- ═══ SERVICES ═══ -->
+<section class="sec" id="services">
+  <div class="sec-head">
+    <div class="sec-eyebrow rv"><span class="sec-num">// 01</span><div class="sec-line"></div></div>
+    <h2 class="sec-title rv" id="sec-svc-title">Services</h2>
+    <p class="sec-sub rv" id="sec-svc-sub">Enterprise-grade offensive security services delivered under formal NDA and rules of engagement.</p>
   </div>
-  <div class="tags rv" style="margin-top:1.4rem">
-    <span class="tag">Burp Suite Pro</span><span class="tag">Metasploit</span><span class="tag">Nmap</span><span class="tag">BloodHound</span><span class="tag">Mimikatz</span><span class="tag">CrackMapExec</span><span class="tag">Evil-WinRM</span><span class="tag">Impacket</span><span class="tag">SQLmap</span><span class="tag">ffuf</span><span class="tag">Gobuster</span><span class="tag">Nessus</span><span class="tag">Wireshark</span><span class="tag">Ghidra</span><span class="tag">Kali Linux</span><span class="tag">Parrot OS</span><span class="tag">Python</span><span class="tag">Bash</span><span class="tag">CVSS v3.1</span>
-  </div>
-</section>
-
-<hr class="divider">
-
-<!-- METHODOLOGY -->
-<section class="sec" id="methodology">
-  <div class="stop rv"><span class="snum">// 02</span><div class="sline"></div></div>
-  <h2 class="stitle rv">Assessment Methodology</h2>
-  <p class="ssub rv">A structured, repeatable offensive security process aligned with PTES, OSSTMM, and MITRE ATT&CK frameworks.</p>
-  <div class="meth-grid">
-    <div class="meth-card rv"><div class="meth-step">Phase 01</div><div class="meth-name">Reconnaissance</div><div class="meth-desc">Passive and active OSINT collection. Asset enumeration, DNS mapping, technology fingerprinting, employee profiling, and attack surface scoping prior to active engagement.</div><div class="meth-num">01</div></div>
-    <div class="meth-card rv d1"><div class="meth-step">Phase 02</div><div class="meth-name">Attack Surface Mapping</div><div class="meth-desc">Full port scanning, service fingerprinting, web directory enumeration, API endpoint discovery, and cloud asset identification. Scope confirmation with client before proceeding.</div><div class="meth-num">02</div></div>
-    <div class="meth-card rv d2"><div class="meth-step">Phase 03</div><div class="meth-name">Vulnerability Discovery</div><div class="meth-desc">Manual and tool-assisted vulnerability identification. Authentication testing, input validation analysis, configuration review, and logic flaw identification across all surfaces.</div><div class="meth-num">03</div></div>
-    <div class="meth-card rv d3"><div class="meth-step">Phase 04</div><div class="meth-name">Exploitation</div><div class="meth-desc">Controlled exploitation of confirmed vulnerabilities within authorized scope. Custom PoC development where required. Evidence capture with minimal operational footprint.</div><div class="meth-num">04</div></div>
-    <div class="meth-card rv d1"><div class="meth-step">Phase 05</div><div class="meth-name">Post-Exploitation</div><div class="meth-desc">Privilege escalation, lateral movement, persistence demonstration, credential harvesting, and data exfiltration simulation to demonstrate full business impact.</div><div class="meth-num">05</div></div>
-    <div class="meth-card rv d2"><div class="meth-step">Phase 06</div><div class="meth-name">Reporting & Remediation</div><div class="meth-desc">Executive and technical report delivery. CVSS v3.1 scoring, risk prioritization, PoC screenshots, step-by-step reproduction, and actionable remediation guidance per finding.</div><div class="meth-num">06</div></div>
-    <div class="meth-card rv d3"><div class="meth-step">Phase 07</div><div class="meth-name">Verification & Re-test</div><div class="meth-desc">Post-remediation re-testing to confirm fixes are effective and no regressions were introduced. Issue tracking until full verified closure for all critical and high findings.</div><div class="meth-num">07</div></div>
-    <div class="meth-card rv"><div class="meth-step">Phase 08</div><div class="meth-name">Debrief & Handoff</div><div class="meth-desc">Technical debrief session with client security team. Knowledge transfer, remediation prioritization workshop, and strategic recommendations for long-term security posture improvement.</div><div class="meth-num">08</div></div>
-  </div>
-
-  <!-- OPSTACK -->
-  <div style="margin-top:3rem">
-    <div class="stop rv"><span style="font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)">// Operational Stack</span><div class="sline"></div></div>
-    <p class="ssub rv" style="margin-bottom:1.5rem">Primary tools used across offensive security engagements — each selected for precision and reliability.</p>
-    <div class="ops-grid rv">
-      <div class="ops-card"><div class="ops-ic"><i class="ti ti-bug"></i></div><div class="ops-tool">Burp Suite Pro</div><div class="ops-use">Full web application assessment, manual testing, custom extension development, active scanning</div></div>
-      <div class="ops-card"><div class="ops-ic"><i class="ti ti-topology-star-ring-3"></i></div><div class="ops-tool">BloodHound / SharpHound</div><div class="ops-use">Active Directory attack path visualization, privilege escalation chain mapping, domain analysis</div></div>
-      <div class="ops-card"><div class="ops-ic"><i class="ti ti-shield-lock"></i></div><div class="ops-tool">Impacket Suite</div><div class="ops-use">SMB relay, DCSync, Pass-the-Hash/Ticket, AS-REP roasting, Kerberos-based AD attacks</div></div>
-      <div class="ops-card"><div class="ops-ic"><i class="ti ti-search"></i></div><div class="ops-tool">ffuf / Gobuster</div><div class="ops-use">Fuzzing web directories, virtual hosts, API endpoints, parameter discovery at scale</div></div>
-      <div class="ops-card"><div class="ops-ic"><i class="ti ti-radar"></i></div><div class="ops-tool">Nmap / Nessus</div><div class="ops-use">Network discovery, service fingerprinting, infrastructure vulnerability scanning and enumeration</div></div>
-      <div class="ops-card"><div class="ops-ic"><i class="ti ti-code"></i></div><div class="ops-tool">Python Automation</div><div class="ops-use">Custom exploit development, recon automation, post-exploitation scripting, tooling integration</div></div>
-      <div class="ops-card"><div class="ops-ic"><i class="ti ti-cpu"></i></div><div class="ops-tool">Ghidra</div><div class="ops-use">Binary reverse engineering, vulnerability analysis in compiled targets, custom shellcode validation</div></div>
-      <div class="ops-card"><div class="ops-ic"><i class="ti ti-cloud"></i></div><div class="ops-tool">Cloud Attack Tools</div><div class="ops-use">AWS, Azure, and GCP privilege escalation, IAM misconfigurations, cloud storage enumeration</div></div>
+  <div class="services-grid">
+    <div class="svc-card rv">
+      <div class="svc-num" id="s1n">01 / Web & API</div>
+      <div class="svc-icon"><i class="ti ti-world"></i></div>
+      <div class="svc-name" id="s1name">Web Application & API Penetration Testing</div>
+      <div class="svc-desc" id="s1desc">Full-scope assessment of web applications and REST/GraphQL APIs covering authentication flaws, injection vulnerabilities, IDOR, business logic issues, and all OWASP Top 10 categories in production and staging environments.</div>
+      <div class="svc-tags"><span class="svc-tag">OWASP Top 10</span><span class="svc-tag">API Security</span><span class="svc-tag">Auth Testing</span><span class="svc-tag">Business Logic</span></div>
+    </div>
+    <div class="svc-card rv d1">
+      <div class="svc-num" id="s2n">02 / Red Team</div>
+      <div class="svc-icon"><i class="ti ti-sword"></i></div>
+      <div class="svc-name" id="s2name">Red Team Operations</div>
+      <div class="svc-desc" id="s2desc">Full APT-style adversary simulation from initial reconnaissance through lateral movement, privilege escalation, and domain compromise. Delivered under formal rules of engagement with comprehensive debrief and reporting.</div>
+      <div class="svc-tags"><span class="svc-tag">APT Simulation</span><span class="svc-tag">Lateral Movement</span><span class="svc-tag">C2 Operations</span><span class="svc-tag">Evasion</span></div>
+    </div>
+    <div class="svc-card rv d2">
+      <div class="svc-num" id="s3n">03 / Active Directory</div>
+      <div class="svc-icon"><i class="ti ti-topology-star-ring-3"></i></div>
+      <div class="svc-name" id="s3name">Active Directory Security Assessment</div>
+      <div class="svc-desc" id="s3desc">Comprehensive AD attack chains including Kerberoasting, AS-REP Roasting, Pass-the-Hash/Ticket, DCSync, and BloodHound-guided privilege escalation mapping. From misconfiguration discovery to full Domain Admin compromise.</div>
+      <div class="svc-tags"><span class="svc-tag">Kerberoasting</span><span class="svc-tag">BloodHound</span><span class="svc-tag">DCSync</span><span class="svc-tag">Domain Audit</span></div>
+    </div>
+    <div class="svc-card rv d1">
+      <div class="svc-num" id="s4n">04 / Network</div>
+      <div class="svc-icon"><i class="ti ti-network"></i></div>
+      <div class="svc-name" id="s4name">Network & Infrastructure Penetration Testing</div>
+      <div class="svc-desc" id="s4desc">Internal and external network assessments covering service enumeration, firewall evasion, SMB relay, LLMNR poisoning, pivoting through segmented environments, and tunneling across isolated network zones.</div>
+      <div class="svc-tags"><span class="svc-tag">Internal Network</span><span class="svc-tag">Firewall Evasion</span><span class="svc-tag">Pivoting</span><span class="svc-tag">SMB Relay</span></div>
+    </div>
+    <div class="svc-card rv d2">
+      <div class="svc-num" id="s5n">05 / Cloud</div>
+      <div class="svc-icon"><i class="ti ti-cloud-lock"></i></div>
+      <div class="svc-name" id="s5name">Cloud Security Assessment</div>
+      <div class="svc-desc" id="s5desc">AWS, Azure, and GCP security assessments covering IAM misconfiguration exploitation, storage enumeration, privilege escalation chains, cross-account pivot techniques, and cloud-native attack path analysis.</div>
+      <div class="svc-tags"><span class="svc-tag">AWS / Azure / GCP</span><span class="svc-tag">IAM Abuse</span><span class="svc-tag">Cloud Privesc</span><span class="svc-tag">SSRF→Metadata</span></div>
+    </div>
+    <div class="svc-card rv d3">
+      <div class="svc-num" id="s6n">06 / Social Engineering</div>
+      <div class="svc-icon"><i class="ti ti-user-scan"></i></div>
+      <div class="svc-name" id="s6name">Social Engineering & Phishing Simulation</div>
+      <div class="svc-desc" id="s6desc">Targeted phishing campaigns, pretexting simulations, and vishing engagements to measure organizational security awareness maturity. Full campaign metrics delivered with behavioral analysis and awareness recommendations.</div>
+      <div class="svc-tags"><span class="svc-tag">Phishing Campaign</span><span class="svc-tag">Vishing</span><span class="svc-tag">Pretexting</span><span class="svc-tag">Awareness Metrics</span></div>
     </div>
   </div>
 </section>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- EXPERIENCE -->
+<!-- ═══ METHODOLOGY ═══ -->
+<section class="sec" id="methodology">
+  <div class="sec-head">
+    <div class="sec-eyebrow rv"><span class="sec-num">// 02</span><div class="sec-line"></div></div>
+    <h2 class="sec-title rv" id="sec-meth-title">Assessment Methodology</h2>
+    <p class="sec-sub rv" id="sec-meth-sub">Structured offensive security process aligned with PTES, OSSTMM, and MITRE ATT&CK frameworks.</p>
+  </div>
+  <div class="meth-grid rv">
+    <div class="meth-card"><div class="meth-step" id="ms1p">Phase 01</div><div class="meth-name" id="ms1n">Reconnaissance & OSINT</div><div class="meth-desc" id="ms1d">Passive and active intelligence gathering. Asset enumeration, DNS mapping, technology fingerprinting, and attack surface scoping.</div><div class="meth-bg">01</div></div>
+    <div class="meth-card"><div class="meth-step" id="ms2p">Phase 02</div><div class="meth-name" id="ms2n">Attack Surface Mapping</div><div class="meth-desc" id="ms2d">Port scanning, service fingerprinting, web directory enumeration, API endpoint discovery, and cloud asset identification.</div><div class="meth-bg">02</div></div>
+    <div class="meth-card"><div class="meth-step" id="ms3p">Phase 03</div><div class="meth-name" id="ms3n">Vulnerability Discovery</div><div class="meth-desc" id="ms3d">Manual and tool-assisted vulnerability identification across all attack surfaces within the authorized scope.</div><div class="meth-bg">03</div></div>
+    <div class="meth-card"><div class="meth-step" id="ms4p">Phase 04</div><div class="meth-name" id="ms4n">Controlled Exploitation</div><div class="meth-desc" id="ms4d">Safe exploitation of confirmed vulnerabilities within authorized scope with full evidence capture and minimal operational footprint.</div><div class="meth-bg">04</div></div>
+    <div class="meth-card"><div class="meth-step" id="ms5p">Phase 05</div><div class="meth-name" id="ms5n">Post-Exploitation</div><div class="meth-desc" id="ms5d">Privilege escalation, lateral movement, persistence demonstration, and data exfiltration simulation to prove full business impact.</div><div class="meth-bg">05</div></div>
+    <div class="meth-card"><div class="meth-step" id="ms6p">Phase 06</div><div class="meth-name" id="ms6n">Reporting</div><div class="meth-desc" id="ms6d">Executive and technical reports with CVSS v3.1 scoring, PoC evidence, risk prioritization, and structured remediation roadmaps.</div><div class="meth-bg">06</div></div>
+    <div class="meth-card"><div class="meth-step" id="ms7p">Phase 07</div><div class="meth-name" id="ms7n">Verification & Re-test</div><div class="meth-desc" id="ms7d">Post-remediation testing to confirm effective fixes with no regressions. Tracked until full verified closure of critical findings.</div><div class="meth-bg">07</div></div>
+    <div class="meth-card"><div class="meth-step" id="ms8p">Phase 08</div><div class="meth-name" id="ms8n">Debrief & Handoff</div><div class="meth-desc" id="ms8d">Technical debrief with client security team, knowledge transfer, and long-term remediation prioritization workshop.</div><div class="meth-bg">08</div></div>
+  </div>
+
+  <!-- OPSTACK -->
+  <div style="margin-top:3rem">
+    <div class="sec-eyebrow rv" style="margin-bottom:1.2rem"><span class="sec-num" id="ops-label">// Operational Stack</span><div class="sec-line"></div></div>
+    <div class="ops-grid rv">
+      <div class="ops-card"><div class="ops-ic"><i class="ti ti-bug"></i></div><div class="ops-tool">Burp Suite Pro</div><div class="ops-use" id="op1">Web application assessment, manual testing, active scanning, custom extension development</div></div>
+      <div class="ops-card"><div class="ops-ic"><i class="ti ti-topology-star-ring-3"></i></div><div class="ops-tool">BloodHound / SharpHound</div><div class="ops-use" id="op2">AD attack path visualization, privilege escalation chain mapping, domain analysis</div></div>
+      <div class="ops-card"><div class="ops-ic"><i class="ti ti-shield-lock"></i></div><div class="ops-tool">Impacket Suite</div><div class="ops-use" id="op3">SMB relay, DCSync, Pass-the-Hash/Ticket, AS-REP roasting, Kerberos-based AD attacks</div></div>
+      <div class="ops-card"><div class="ops-ic"><i class="ti ti-search"></i></div><div class="ops-tool">ffuf / Gobuster</div><div class="ops-use" id="op4">Fuzzing web directories, virtual hosts, API endpoints, parameter discovery at scale</div></div>
+      <div class="ops-card"><div class="ops-ic"><i class="ti ti-radar"></i></div><div class="ops-tool">Nmap / Nessus</div><div class="ops-use" id="op5">Network discovery, service fingerprinting, infrastructure vulnerability scanning</div></div>
+      <div class="ops-card"><div class="ops-ic"><i class="ti ti-code"></i></div><div class="ops-tool">Python Automation</div><div class="ops-use" id="op6">Custom exploit development, recon automation, post-exploitation scripting</div></div>
+      <div class="ops-card"><div class="ops-ic"><i class="ti ti-cpu"></i></div><div class="ops-tool">Ghidra</div><div class="ops-use" id="op7">Binary reverse engineering, vulnerability analysis, custom shellcode validation</div></div>
+      <div class="ops-card"><div class="ops-ic"><i class="ti ti-cloud"></i></div><div class="ops-tool">Cloud Attack Tools</div><div class="ops-use" id="op8">AWS, Azure, GCP privilege escalation, IAM misconfigurations, metadata service exploitation</div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ═══ SKILLS ═══ -->
+<section class="sec" id="skills">
+  <div class="sec-head">
+    <div class="sec-eyebrow rv"><span class="sec-num">// 03</span><div class="sec-line"></div></div>
+    <h2 class="sec-title rv" id="sec-sk-title">Core Competencies</h2>
+    <p class="sec-sub rv" id="sec-sk-sub">Technical depth across the full offensive security stack.</p>
+  </div>
+  <div class="skills-grid rv">
+    <div class="sk-card"><div class="sk-ic"><i class="ti ti-world"></i></div><div class="sk-nm" id="sk1">Web App Pentesting</div><div class="sk-desc" id="sk1d">SQLi variants, XSS, SSRF, XXE, IDOR, Deserialization, Auth Bypass — OWASP Top 10 and beyond including API and GraphQL.</div><div class="sk-bar"><div class="sk-fill" data-w="95"></div></div><div class="sk-meta"><span class="sk-pct">95%</span><span class="sk-lbl" id="sk1l">Expert</span></div></div>
+    <div class="sk-card"><div class="sk-ic"><i class="ti ti-topology-star-ring-3"></i></div><div class="sk-nm" id="sk2">Active Directory Attacks</div><div class="sk-desc" id="sk2d">Kerberoasting, AS-REP Roasting, Pass-the-Hash/Ticket, DCSync, BloodHound path mapping, full domain compromise.</div><div class="sk-bar"><div class="sk-fill" data-w="92"></div></div><div class="sk-meta"><span class="sk-pct">92%</span><span class="sk-lbl" id="sk2l">Expert</span></div></div>
+    <div class="sk-card"><div class="sk-ic"><i class="ti ti-sword"></i></div><div class="sk-nm" id="sk3">Red Team Operations</div><div class="sk-desc" id="sk3d">Full APT-style simulation: recon → initial access → lateral movement → privilege escalation → domain compromise.</div><div class="sk-bar"><div class="sk-fill" data-w="90"></div></div><div class="sk-meta"><span class="sk-pct">90%</span><span class="sk-lbl" id="sk3l">Advanced</span></div></div>
+    <div class="sk-card"><div class="sk-ic"><i class="ti ti-terminal-2"></i></div><div class="sk-nm" id="sk4">Custom Tooling & Automation</div><div class="sk-desc" id="sk4d">Python and Bash automation for recon, exploitation, and post-exploitation. Reduced repetitive overhead by ~40%.</div><div class="sk-bar"><div class="sk-fill" data-w="88"></div></div><div class="sk-meta"><span class="sk-pct">88%</span><span class="sk-lbl" id="sk4l">Advanced</span></div></div>
+    <div class="sk-card"><div class="sk-ic"><i class="ti ti-network"></i></div><div class="sk-nm" id="sk5">Network & Infrastructure</div><div class="sk-desc" id="sk5d">Service enumeration, firewall evasion, pivoting, tunneling, SMB relay, LLMNR poisoning in segmented networks.</div><div class="sk-bar"><div class="sk-fill" data-w="88"></div></div><div class="sk-meta"><span class="sk-pct">88%</span><span class="sk-lbl" id="sk5l">Advanced</span></div></div>
+    <div class="sk-card"><div class="sk-ic"><i class="ti ti-bug"></i></div><div class="sk-nm" id="sk6">Binary & Exploit Dev</div><div class="sk-desc" id="sk6d">Buffer overflow, custom shellcode, ASLR/DEP awareness, Ghidra analysis, AV/EDR evasion in assessment environments.</div><div class="sk-bar"><div class="sk-fill" data-w="78"></div></div><div class="sk-meta"><span class="sk-pct">78%</span><span class="sk-lbl" id="sk6l">Proficient</span></div></div>
+  </div>
+  <div class="tags-row rv" style="margin-top:1.4rem">
+    <span class="tag">Burp Suite Pro</span><span class="tag">Metasploit</span><span class="tag">Nmap</span><span class="tag">BloodHound</span><span class="tag">Mimikatz</span><span class="tag">CrackMapExec</span><span class="tag">Evil-WinRM</span><span class="tag">Impacket</span><span class="tag">SQLmap</span><span class="tag">ffuf</span><span class="tag">Gobuster</span><span class="tag">Nessus</span><span class="tag">Wireshark</span><span class="tag">Ghidra</span><span class="tag">Kali Linux</span><span class="tag">Python</span><span class="tag">Bash</span><span class="tag">CVSS v3.1</span>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ═══ EXPERIENCE ═══ -->
 <section class="sec" id="experience">
-  <div class="stop rv"><span class="snum">// 03</span><div class="sline"></div></div>
-  <h2 class="stitle rv">Professional Experience</h2>
-  <p class="ssub rv">Enterprise-grade offensive security consulting under NDA across multiple industry verticals.</p>
+  <div class="sec-head">
+    <div class="sec-eyebrow rv"><span class="sec-num">// 04</span><div class="sec-line"></div></div>
+    <h2 class="sec-title rv" id="sec-exp-title">Professional Experience</h2>
+    <p class="sec-sub rv" id="sec-exp-sub">Enterprise offensive security consulting under NDA across multiple industry verticals.</p>
+  </div>
   <div class="tl rv">
-    <div class="tli">
-      <div class="tld"></div>
-      <div class="tlp">2018 – Present</div>
-      <div class="tlr">Senior Penetration Tester & Offensive Security Consultant</div>
-      <div class="tlo">Independent Security Consultant — Remote · Worldwide Clients</div>
-      <ul class="tlpts">
-        <li>Conducted 150+ authorized security assessments for enterprise clients across finance, healthcare, government, and technology sectors</li>
-        <li>Delivered full-scope red team operations simulating advanced persistent threat (APT) actors from initial recon to domain compromise</li>
-        <li>Performed comprehensive Active Directory attack chains in enterprise environments: Kerberoasting, DCSync, BloodHound-guided path exploitation</li>
-        <li>Executed web application and API assessments covering OWASP Top 10 and business logic flaws across production systems</li>
-        <li>Engineered custom Python and Bash automation tooling that reduced repetitive assessment overhead by ~40%</li>
-        <li>Delivered executive and technical reports with CVSS v3.1 scoring, PoC evidence, and risk-prioritized remediation roadmaps</li>
-        <li>Conducted social engineering and phishing simulation campaigns to measure organizational security awareness maturity</li>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">2018 — Present</div>
+      <div class="tl-role" id="exp-role">Senior Penetration Tester & Offensive Security Consultant</div>
+      <div class="tl-org" id="exp-org">Independent Security Consultant · Remote · Worldwide Clients</div>
+      <ul class="tl-pts" id="exp-pts">
+        <li>Conducted <strong>150+ authorized security assessments</strong> for enterprise clients across finance, government, healthcare, and technology sectors globally under formal NDA and rules of engagement</li>
+        <li>Delivered full-scope <strong>red team operations</strong> simulating APT actors — from initial reconnaissance through lateral movement to full domain compromise</li>
+        <li>Executed comprehensive <strong>Active Directory attack chains</strong>: Kerberoasting, DCSync, BloodHound-guided privilege escalation to Domain Admin in enterprise environments</li>
+        <li>Performed advanced web and API assessments covering OWASP Top 10, GraphQL security, OAuth abuse, JWT attacks, and business logic flaws in production SaaS environments</li>
+        <li>Identified <strong>multiple CVSS 9.0–9.8 findings</strong> in production systems, preventing real data breaches and significant business disruption</li>
+        <li>Engineered custom <strong>Python and Bash automation tooling</strong> reducing assessment overhead by ~40% across engagements</li>
+        <li>Delivered executive-level and technical reports with <strong>CVSS v3.1 scoring</strong>, PoC evidence, and risk-prioritized remediation roadmaps for C-suite and technical audiences</li>
+        <li>Conducted phishing simulations and social engineering campaigns measuring organizational security awareness maturity</li>
       </ul>
     </div>
   </div>
 </section>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- FINDINGS -->
+<!-- ═══ FINDINGS ═══ -->
 <section class="sec" id="findings">
-  <div class="stop rv"><span class="snum">// 04</span><div class="sline"></div></div>
-  <h2 class="stitle rv">Sanitized Assessment Findings</h2>
-
-  <div class="findings-disclaimer rv">
+  <div class="sec-head">
+    <div class="sec-eyebrow rv"><span class="sec-num">// 05</span><div class="sec-line"></div></div>
+    <h2 class="sec-title rv" id="sec-find-title">Sanitized Assessment Findings</h2>
+    <p class="sec-sub rv" id="sec-find-sub">A curated sample from 300+ findings across authorized engagements worldwide.</p>
+  </div>
+  <div class="findings-note rv">
     <i class="ti ti-lock"></i>
-    <p>The findings below represent <strong>a curated sample</strong> of real-world security vulnerabilities identified during <strong>authorized penetration testing engagements</strong>. All client identities, infrastructure details, and sensitive data have been fully sanitized and redacted in compliance with confidentiality agreements. <strong>The complete engagement portfolio is available under NDA upon formal request.</strong></p>
+    <p id="find-note">The findings below represent <strong>a curated sample</strong> from real-world authorized penetration testing engagements. All client identities, infrastructure details, and sensitive data have been fully sanitized per confidentiality agreements. <strong>Full portfolio available under NDA upon formal request.</strong></p>
   </div>
-
   <div class="filter-row rv">
-    <button class="fbtn on" data-f="all">All Findings (10)</button>
-    <button class="fbtn" data-f="webapp">Web App</button>
-    <button class="fbtn" data-f="network">Network</button>
-    <button class="fbtn" data-f="ad">Active Directory</button>
-    <button class="fbtn" data-f="api">API / Service</button>
+    <button class="fbtn on" data-f="all" id="fb-all">All (10)</button>
+    <button class="fbtn" data-f="webapp" id="fb-w">Web App</button>
+    <button class="fbtn" data-f="network" id="fb-n">Network</button>
+    <button class="fbtn" data-f="ad" id="fb-ad">Active Directory</button>
+    <button class="fbtn" data-f="api" id="fb-api">API / Service</button>
   </div>
-
   <div class="rv">
   <table class="ftable" id="ftable">
-    <thead>
-      <tr>
-        <th class="c0">Ref</th>
-        <th class="c1">Risk</th>
-        <th class="c2">Vuln Class</th>
-        <th class="c3">Engagement</th>
-        <th>Finding & Business Impact</th>
-        <th class="cact"></th>
-      </tr>
-    </thead>
+    <thead><tr>
+      <th style="width:75px">Ref</th>
+      <th style="width:88px">Risk</th>
+      <th style="width:125px">Type</th>
+      <th style="width:90px">Scope</th>
+      <th>Finding</th>
+      <th style="width:72px;text-align:right"></th>
+    </tr></thead>
     <tbody>
-
       <tr class="frow" data-cats="webapp api" data-id="0">
-        <td><div class="fnum">ASF-001</div></td>
-        <td><span class="fsev sc">Critical</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="9.3" style="background:var(--accent3)"></div></div><span class="cvss-v">9.3</span></div></td>
-        <td><span class="ftype"><i class="ti ti-code" style="font-size:.6rem"></i>DOM XSS → ATO</span><div class="fenv">Web App · Prod</div></td>
-        <td><div style="font-size:.6rem;color:var(--text2)">External<br>Assessment</div></td>
-        <td>
-          <div class="ftitle">Authenticated DOM XSS Leading to Full Account Takeover</div>
-          <div class="fshort">File import interface renders user-supplied input via innerHTML sink. Crafted filename injects a live form submission control inside the authenticated session, bypassing CSRF protections and triggering a full account ownership transfer to the attacker.</div>
-          <div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Enterprise SaaS Platform</span><span class="fstatus fs-rem">Remediated</span></div>
-        </td>
+        <td><div class="fref">ASF-001</div></td>
+        <td><span class="fsev sc">Critical</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="9.3" style="background:var(--red)"></div></div><span class="cvss-v">9.3</span></div></td>
+        <td><span class="ftype"><i class="ti ti-code" style="font-size:.6rem"></i>DOM XSS→ATO</span><div class="fenv">Web · Prod</div></td>
+        <td><div style="font-size:.58rem;color:var(--text2);font-family:var(--mono)">External<br>Web App</div></td>
+        <td><div class="ftitle">Authenticated DOM XSS Leading to Full Account Takeover</div><div class="fshort">innerHTML sink in file import interface injects live HTML inside authenticated form, bypassing CSRF and triggering full account ownership transfer.</div><div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Enterprise SaaS Platform</span><span class="fstat fs-r">Remediated</span></div></td>
         <td><button class="fdbtn" onclick="openModal(0)">View <i class="ti ti-arrow-right" style="font-size:.6rem"></i></button></td>
       </tr>
-
-      <tr class="frow" data-cats="api network" data-id="1">
-        <td><div class="fnum">ASF-002</div></td>
-        <td><span class="fsev sh">High</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="8.1" style="background:var(--accent4)"></div></div><span class="cvss-v">8.1</span></div></td>
-        <td><span class="ftype"><i class="ti ti-server" style="font-size:.6rem"></i>Blind SSRF</span><div class="fenv">API · Prod</div></td>
-        <td><div style="font-size:.6rem;color:var(--text2)">External<br>API Audit</div></td>
-        <td>
-          <div class="ftitle">Blind SSRF via Webhook Parameter Enabling Internal Network Pivot</div>
-          <div class="fshort">Export service webhook endpoint accepts an unvalidated URL parameter. The application server initiates outbound HTTP requests to attacker-controlled infrastructure, enabling enumeration of internal cloud metadata services and non-public API endpoints.</div>
-          <div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Cloud SaaS Platform</span><span class="fstatus fs-rem">Remediated</span></div>
-        </td>
+      <tr class="frow" data-cats="webapp network" data-id="1">
+        <td><div class="fref">ASF-002</div></td>
+        <td><span class="fsev sc">Critical</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="9.8" style="background:var(--red)"></div></div><span class="cvss-v">9.8</span></div></td>
+        <td><span class="ftype"><i class="ti ti-database" style="font-size:.6rem"></i>SQLi Unauth</span><div class="fenv">Web · Prod</div></td>
+        <td><div style="font-size:.58rem;color:var(--text2);font-family:var(--mono)">External<br>Web App</div></td>
+        <td><div class="ftitle">Unauthenticated SQL Injection — 24 Internal Databases Exposed</div><div class="fshort">URL parameter passed directly to SQL query without parameterization. Automated extraction confirmed 24 internal databases without any authentication.</div><div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Government Sector Client</span><span class="fstat fs-r">Remediated</span></div></td>
         <td><button class="fdbtn" onclick="openModal(1)">View <i class="ti ti-arrow-right" style="font-size:.6rem"></i></button></td>
       </tr>
-
-      <tr class="frow" data-cats="network" data-id="2">
-        <td><div class="fnum">ASF-003</div></td>
-        <td><span class="fsev sc">Critical</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="9.1" style="background:var(--accent3)"></div></div><span class="cvss-v">9.1</span></div></td>
-        <td><span class="ftype"><i class="ti ti-folder" style="font-size:.6rem"></i>Path Traversal → RCE</span><div class="fenv">Infrastructure · Lab</div></td>
-        <td><div style="font-size:.6rem;color:var(--text2)">Internal<br>Infra Assessment</div></td>
-        <td>
-          <div class="ftitle">SFTP Path Traversal in Transfer Utility Leading to Remote Code Execution</div>
-          <div class="fshort">File transfer library fails to sanitize directory traversal sequences in protocol-level command arguments. An authenticated SFTP user can write arbitrary files outside their designated directory, enabling persistent backdoor installation via SSH key injection.</div>
-          <div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Enterprise Infrastructure</span><span class="fstatus fs-mit">Mitigated</span></div>
-        </td>
+      <tr class="frow" data-cats="webapp" data-id="2">
+        <td><div class="fref">ASF-003</div></td>
+        <td><span class="fsev sc">Critical</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="9.8" style="background:var(--red)"></div></div><span class="cvss-v">9.8</span></div></td>
+        <td><span class="ftype"><i class="ti ti-lock-open" style="font-size:.6rem"></i>Auth Bypass</span><div class="fenv">Web · Prod</div></td>
+        <td><div style="font-size:.58rem;color:var(--text2);font-family:var(--mono)">External<br>Web App</div></td>
+        <td><div class="ftitle">Auth Bypass Enabling Mass Account Takeover via Password Reset</div><div class="fshort">Password reset workflow performs no session binding. Attacker can reset credentials for any account using only a known email address, enabling mass ATO at scale.</div><div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Government Sector Client</span><span class="fstat fs-r">Remediated</span></div></td>
         <td><button class="fdbtn" onclick="openModal(2)">View <i class="ti ti-arrow-right" style="font-size:.6rem"></i></button></td>
       </tr>
-
-      <tr class="frow" data-cats="webapp" data-id="3">
-        <td><div class="fnum">ASF-004</div></td>
-        <td><span class="fsev sh">High</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="8.2" style="background:var(--accent4)"></div></div><span class="cvss-v">8.2</span></div></td>
-        <td><span class="ftype"><i class="ti ti-code" style="font-size:.6rem"></i>Mutation XSS</span><div class="fenv">Web App · Prod</div></td>
-        <td><div style="font-size:.6rem;color:var(--text2)">External<br>Web Assessment</div></td>
-        <td>
-          <div class="ftitle">Stored Mutation XSS via Rich Text Editor Bypassing Client-Side Sanitization</div>
-          <div class="fshort">Rich text editor component is susceptible to mutation-based XSS through a MathML DOM traversal chain that circumvents the integrated HTML sanitization library. Malicious content persists in the database and executes in every viewer's session context.</div>
-          <div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Enterprise CMS Platform</span><span class="fstatus fs-rem">Remediated</span></div>
-        </td>
+      <tr class="frow" data-cats="api" data-id="3">
+        <td><div class="fref">ASF-004</div></td>
+        <td><span class="fsev sc">Critical</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="9.5" style="background:var(--red)"></div></div><span class="cvss-v">9.5</span></div></td>
+        <td><span class="ftype"><i class="ti ti-brand-python" style="font-size:.6rem"></i>ORM SQLi</span><div class="fenv">API · Prod</div></td>
+        <td><div style="font-size:.58rem;color:var(--text2);font-family:var(--mono)">Internal<br>Code Review</div></td>
+        <td><div class="ftitle">ORM SQL Injection — Complete Access Control Bypass</div><div class="fshort">ORM query assembly uses unsafe string formatting for connector. User-controlled _connector key injects raw SQL bypassing all access control filters and returning privileged records.</div><div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Enterprise Web Application</span><span class="fstat fs-m">Mitigated</span></div></td>
         <td><button class="fdbtn" onclick="openModal(3)">View <i class="ti ti-arrow-right" style="font-size:.6rem"></i></button></td>
       </tr>
-
-      <tr class="frow" data-cats="webapp api" data-id="4">
-        <td><div class="fnum">ASF-005</div></td>
-        <td><span class="fsev sh">High</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="7.5" style="background:var(--accent4)"></div></div><span class="cvss-v">7.5</span></div></td>
-        <td><span class="ftype"><i class="ti ti-user" style="font-size:.6rem"></i>IDOR</span><div class="fenv">API · Prod</div></td>
-        <td><div style="font-size:.6rem;color:var(--text2)">External<br>API Audit</div></td>
-        <td>
-          <div class="ftitle">Broken Object-Level Authorization Enabling Cross-Account Profile Manipulation</div>
-          <div class="fshort">Account management API endpoint accepts a user identifier in the request body without server-side ownership validation. Any authenticated user can modify the profile data of arbitrary accounts within the platform by substituting the target object identifier.</div>
-          <div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>B2B SaaS Platform</span><span class="fstatus fs-rem">Remediated</span></div>
-        </td>
+      <tr class="frow" data-cats="network" data-id="4">
+        <td><div class="fref">ASF-005</div></td>
+        <td><span class="fsev sc">Critical</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="9.1" style="background:var(--red)"></div></div><span class="cvss-v">9.1</span></div></td>
+        <td><span class="ftype"><i class="ti ti-folder" style="font-size:.6rem"></i>Path Traversal</span><div class="fenv">Infra · Prod</div></td>
+        <td><div style="font-size:.58rem;color:var(--text2);font-family:var(--mono)">Internal<br>Infra</div></td>
+        <td><div class="ftitle">SFTP Path Traversal → Arbitrary File Write & Remote Code Execution</div><div class="fshort">File transfer library fails to sanitize ../ sequences in SFTP QUOTE paths. Authenticated user writes arbitrary files outside home directory, enabling SSH key injection and persistent RCE.</div><div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Enterprise Infrastructure</span><span class="fstat fs-m">Mitigated</span></div></td>
         <td><button class="fdbtn" onclick="openModal(4)">View <i class="ti ti-arrow-right" style="font-size:.6rem"></i></button></td>
       </tr>
-
-      <tr class="frow" data-cats="network" data-id="5">
-        <td><div class="fnum">ASF-006</div></td>
-        <td><span class="fsev sc">Critical</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="9.8" style="background:var(--accent3)"></div></div><span class="cvss-v">9.8</span></div></td>
-        <td><span class="ftype"><i class="ti ti-database" style="font-size:.6rem"></i>SQL Injection</span><div class="fenv">Web App · Prod</div></td>
-        <td><div style="font-size:.6rem;color:var(--text2)">External<br>Web Assessment</div></td>
-        <td>
-          <div class="ftitle">Unauthenticated SQL Injection with Full Database Enumeration</div>
-          <div class="fshort">URL parameter passed directly into a SQL query without parameterization. Fully automated extraction confirmed 24 internal databases accessible without authentication, including sensitive administrative and operational data stores with direct business exposure.</div>
-          <div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Government-Sector Client</span><span class="fstatus fs-rem">Remediated</span></div>
-        </td>
+      <tr class="frow" data-cats="webapp" data-id="5">
+        <td><div class="fref">ASF-006</div></td>
+        <td><span class="fsev sh">High</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="8.2" style="background:var(--blue)"></div></div><span class="cvss-v">8.2</span></div></td>
+        <td><span class="ftype"><i class="ti ti-code" style="font-size:.6rem"></i>Mutation XSS</span><div class="fenv">Web · Prod</div></td>
+        <td><div style="font-size:.58rem;color:var(--text2);font-family:var(--mono)">External<br>Web App</div></td>
+        <td><div class="ftitle">Stored Mutation XSS Bypassing Client-Side HTML Sanitization</div><div class="fshort">Rich text editor vulnerable to MathML mutation chain bypassing DOMPurify. Malicious content stored in DB executes in every viewer's browser session context.</div><div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Enterprise CMS Platform</span><span class="fstat fs-r">Remediated</span></div></td>
         <td><button class="fdbtn" onclick="openModal(5)">View <i class="ti ti-arrow-right" style="font-size:.6rem"></i></button></td>
       </tr>
-
-      <tr class="frow" data-cats="webapp" data-id="6">
-        <td><div class="fnum">ASF-007</div></td>
-        <td><span class="fsev sc">Critical</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="9.8" style="background:var(--accent3)"></div></div><span class="cvss-v">9.8</span></div></td>
-        <td><span class="ftype"><i class="ti ti-lock-open" style="font-size:.6rem"></i>Auth Bypass → ATO</span><div class="fenv">Web App · Prod</div></td>
-        <td><div style="font-size:.6rem;color:var(--text2)">External<br>Web Assessment</div></td>
-        <td>
-          <div class="ftitle">Authentication Bypass Enabling Unauthenticated Password Reset on Any Account</div>
-          <div class="fshort">Password reset workflow performs no session binding or ownership verification on the target account parameter. An attacker can issue a credential reset for any registered account without authentication, achieving full takeover at scale using only a known email address.</div>
-          <div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Government-Sector Client</span><span class="fstatus fs-rem">Remediated</span></div>
-        </td>
+      <tr class="frow" data-cats="api network" data-id="6">
+        <td><div class="fref">ASF-007</div></td>
+        <td><span class="fsev sh">High</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="8.1" style="background:var(--blue)"></div></div><span class="cvss-v">8.1</span></div></td>
+        <td><span class="ftype"><i class="ti ti-server" style="font-size:.6rem"></i>Blind SSRF</span><div class="fenv">API · Prod</div></td>
+        <td><div style="font-size:.58rem;color:var(--text2);font-family:var(--mono)">External<br>API Audit</div></td>
+        <td><div class="ftitle">Blind SSRF via Webhook Parameter Enabling Internal Network Pivot</div><div class="fshort">Export endpoint accepts unvalidated webhookUrl. Server issues unauthorized requests to attacker infrastructure, enabling internal service enumeration and cloud metadata access.</div><div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Cloud SaaS Platform</span><span class="fstat fs-r">Remediated</span></div></td>
         <td><button class="fdbtn" onclick="openModal(6)">View <i class="ti ti-arrow-right" style="font-size:.6rem"></i></button></td>
       </tr>
-
-      <tr class="frow" data-cats="api network" data-id="7">
-        <td><div class="fnum">ASF-008</div></td>
-        <td><span class="fsev sh">High</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="7.7" style="background:var(--accent4)"></div></div><span class="cvss-v">7.7</span></div></td>
-        <td><span class="ftype"><i class="ti ti-search" style="font-size:.6rem"></i>XXE — OOB</span><div class="fenv">Service · Prod</div></td>
-        <td><div style="font-size:.6rem;color:var(--text2)">Internal<br>Service Audit</div></td>
-        <td>
-          <div class="ftitle">Out-of-Band XXE in Data Ingestion Service Exposing Internal Host Information</div>
-          <div class="fshort">XML-based data ingestion pipeline processes external documents without disabling entity resolution. Attacker-supplied DTD triggers out-of-band HTTP requests from the server, enabling exfiltration of internal host identifiers and potential access to cloud instance metadata.</div>
-          <div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Enterprise Search Platform</span><span class="fstatus fs-rem">Remediated</span></div>
-        </td>
+      <tr class="frow" data-cats="api" data-id="7">
+        <td><div class="fref">ASF-008</div></td>
+        <td><span class="fsev sh">High</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="8.0" style="background:var(--blue)"></div></div><span class="cvss-v">8.0</span></div></td>
+        <td><span class="ftype"><i class="ti ti-database" style="font-size:.6rem"></i>Blind SQLi</span><div class="fenv">API · Prod</div></td>
+        <td><div style="font-size:.58rem;color:var(--text2);font-family:var(--mono)">External<br>API Audit</div></td>
+        <td><div class="ftitle">Boolean-Based Blind SQL Injection in REST API Path Parameter</div><div class="fshort">Path segment passed unsanitized to SQL query. Boolean differential responses confirm injection. DB fingerprinted. Full extraction without authentication via automated enumeration.</div><div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Mobility Tech Platform</span><span class="fstat fs-r">Remediated</span></div></td>
         <td><button class="fdbtn" onclick="openModal(7)">View <i class="ti ti-arrow-right" style="font-size:.6rem"></i></button></td>
       </tr>
-
-      <tr class="frow" data-cats="api webapp" data-id="8">
-        <td><div class="fnum">ASF-009</div></td>
-        <td><span class="fsev sh">High</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="8.0" style="background:var(--accent4)"></div></div><span class="cvss-v">8.0</span></div></td>
-        <td><span class="ftype"><i class="ti ti-database" style="font-size:.6rem"></i>Blind SQLi</span><div class="fenv">API · Prod</div></td>
-        <td><div style="font-size:.6rem;color:var(--text2)">External<br>API Audit</div></td>
-        <td>
-          <div class="ftitle">Boolean-Based Blind SQL Injection in REST API Path Parameter</div>
-          <div class="fshort">URL path segment passed unsanitized into a database query. Boolean differential responses confirmed injection. Database engine and version fingerprinted. Full extraction of user records achievable through automated boolean-based enumeration without authentication.</div>
-          <div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Mobility Tech Platform</span><span class="fstatus fs-rem">Remediated</span></div>
-        </td>
+      <tr class="frow" data-cats="api network" data-id="8">
+        <td><div class="fref">ASF-009</div></td>
+        <td><span class="fsev sh">High</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="7.7" style="background:var(--blue)"></div></div><span class="cvss-v">7.7</span></div></td>
+        <td><span class="ftype"><i class="ti ti-search" style="font-size:.6rem"></i>XXE — OOB</span><div class="fenv">Service · Prod</div></td>
+        <td><div style="font-size:.58rem;color:var(--text2);font-family:var(--mono)">Internal<br>Service Audit</div></td>
+        <td><div class="ftitle">Out-of-Band XXE in Data Ingestion Service Exposing Internal Infrastructure</div><div class="fshort">XML pipeline processes external documents without disabling entity resolution. OOB DTD chain exfiltrates internal host data and provides access to cloud instance metadata.</div><div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Enterprise Search Platform</span><span class="fstat fs-r">Remediated</span></div></td>
         <td><button class="fdbtn" onclick="openModal(8)">View <i class="ti ti-arrow-right" style="font-size:.6rem"></i></button></td>
       </tr>
-
-      <tr class="frow" data-cats="api" data-id="9">
-        <td><div class="fnum">ASF-010</div></td>
-        <td><span class="fsev sc">Critical</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="9.5" style="background:var(--accent3)"></div></div><span class="cvss-v">9.5</span></div></td>
-        <td><span class="ftype"><i class="ti ti-brand-python" style="font-size:.6rem"></i>ORM SQLi</span><div class="fenv">API · Prod</div></td>
-        <td><div style="font-size:.6rem;color:var(--text2)">Internal<br>Code Review + Test</div></td>
-        <td>
-          <div class="ftitle">SQL Injection via ORM Query Builder — Complete Access Control Bypass</div>
-          <div class="fshort">Application ORM's query assembly method uses unsafe string interpolation for logical connector values. Attacker-controlled API filter input injects raw SQL into the WHERE clause, bypassing all intended access control filters and returning unauthorized records including privileged user data.</div>
-          <div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>Enterprise Web Application</span><span class="fstatus fs-mit">Mitigated</span></div>
-        </td>
+      <tr class="frow" data-cats="api webapp" data-id="9">
+        <td><div class="fref">ASF-010</div></td>
+        <td><span class="fsev sh">High</span><div class="cvss-w"><div class="cvss-t"><div class="cvss-f" data-cvss="7.5" style="background:var(--blue)"></div></div><span class="cvss-v">7.5</span></div></td>
+        <td><span class="ftype"><i class="ti ti-user" style="font-size:.6rem"></i>BOLA / IDOR</span><div class="fenv">API · Prod</div></td>
+        <td><div style="font-size:.58rem;color:var(--text2);font-family:var(--mono)">External<br>API Audit</div></td>
+        <td><div class="ftitle">BOLA Enabling Cross-Account Profile Manipulation via API</div><div class="fshort">Account management endpoint accepts user identifier without server-side ownership verification. Any authenticated session modifies arbitrary accounts by substituting target identifier.</div><div class="fmeta"><span class="fplatform"><i class="ti ti-building" style="font-size:.65rem"></i>B2B SaaS Platform</span><span class="fstat fs-r">Remediated</span></div></td>
         <td><button class="fdbtn" onclick="openModal(9)">View <i class="ti ti-arrow-right" style="font-size:.6rem"></i></button></td>
       </tr>
-
     </tbody>
   </table>
   </div>
@@ -539,115 +1133,242 @@ footer span{color:var(--accent)}
   </div>
 </div>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- RESEARCH -->
+<!-- ═══ RESEARCH ═══ -->
 <section class="sec" id="research">
-  <div class="stop rv"><span class="snum">// 05</span><div class="sline"></div></div>
-  <h2 class="stitle rv">Research & Lab Environment</h2>
-  <p class="ssub rv">Active offensive security research and self-maintained lab infrastructure for continuous capability development.</p>
-
-  <div class="res-grid rv">
-    <div class="res-card"><div class="res-ic"><i class="ti ti-topology-star-ring-3"></i></div><div class="res-name">Active Directory Labs</div><div class="res-desc">Multi-domain AD environments with realistic enterprise configurations. Used for AD attack chain development, testing BloodHound paths, and validating post-exploitation techniques.</div></div>
-    <div class="res-card rv d1"><div class="res-ic"><i class="ti ti-cloud"></i></div><div class="res-name">Cloud Attack Simulations</div><div class="res-desc">AWS and Azure attack lab environments for IAM misconfiguration exploitation, S3 enumeration, privilege escalation chains, and cross-account pivot research.</div></div>
-    <div class="res-card rv d2"><div class="res-ic"><i class="ti ti-brand-docker"></i></div><div class="res-name">Vulnerable Docker Environments</div><div class="res-desc">Custom-built and open-source vulnerable application containers for web exploitation research, API security testing, and proof-of-concept validation in isolated environments.</div></div>
-    <div class="res-card rv d3"><div class="res-ic"><i class="ti ti-cpu"></i></div><div class="res-name">Malware Analysis VMs</div><div class="res-desc">Isolated virtual environments for malware behavioral analysis, AV/EDR evasion research, payload development testing, and shellcode validation prior to engagement use.</div></div>
+  <div class="sec-head">
+    <div class="sec-eyebrow rv"><span class="sec-num">// 06</span><div class="sec-line"></div></div>
+    <h2 class="sec-title rv" id="sec-res-title">Research & Lab Environment</h2>
+    <p class="sec-sub rv" id="sec-res-sub">Active offensive security research and self-maintained lab infrastructure for continuous capability development.</p>
   </div>
-
+  <div class="res-grid rv">
+    <div class="res-card"><div class="res-ic"><i class="ti ti-topology-star-ring-3"></i></div><div class="res-nm" id="r1n">Active Directory Labs</div><div class="res-desc" id="r1d">Multi-domain AD environments for AD attack chain development, BloodHound path testing, and post-exploitation technique validation.</div></div>
+    <div class="res-card"><div class="res-ic"><i class="ti ti-cloud"></i></div><div class="res-nm" id="r2n">Cloud Attack Simulations</div><div class="res-desc" id="r2d">AWS and Azure attack labs for IAM misconfiguration exploitation, S3 enumeration, privilege escalation chains, and cross-account pivot research.</div></div>
+    <div class="res-card"><div class="res-ic"><i class="ti ti-brand-docker"></i></div><div class="res-nm" id="r3n">Vulnerable Docker Environments</div><div class="res-desc" id="r3d">Custom and open-source vulnerable containers for web exploitation research, API security testing, and proof-of-concept validation.</div></div>
+    <div class="res-card"><div class="res-ic"><i class="ti ti-cpu"></i></div><div class="res-nm" id="r4n">Malware Analysis VMs</div><div class="res-desc" id="r4d">Isolated VMs for malware behavioral analysis, AV/EDR evasion research, payload development, and shellcode validation.</div></div>
+  </div>
   <div style="margin-top:2.5rem">
-    <div class="stop rv"><span style="font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)">// Current Research Areas</span><div class="sline"></div></div>
-    <div class="ops-grid rv" style="margin-top:1.2rem">
-      <div class="ops-card"><div class="ops-ic"><i class="ti ti-browser"></i></div><div class="ops-tool">Browser Exploitation</div><div class="ops-use">Client-side attack surface research, browser-based XSS payload development, sandbox escape techniques</div></div>
-      <div class="ops-card"><div class="ops-ic"><i class="ti ti-key"></i></div><div class="ops-tool">OAuth Abuse & JWT Attacks</div><div class="ops-use">OAuth flow vulnerabilities, JWT algorithm confusion, token forgery, scope escalation in SSO implementations</div></div>
-      <div class="ops-card"><div class="ops-ic"><i class="ti ti-cloud-lock"></i></div><div class="ops-tool">Cloud Privilege Escalation</div><div class="ops-use">IAM policy misconfigurations, cross-service privilege chains, metadata service exploitation in cloud-native environments</div></div>
-      <div class="ops-card"><div class="ops-ic"><i class="ti ti-topology-star"></i></div><div class="ops-tool">AD Persistence Techniques</div><div class="ops-use">Golden/Silver ticket persistence, ACL abuse, domain backdoor techniques, detection evasion in monitored AD environments</div></div>
-      <div class="ops-card"><div class="ops-ic"><i class="ti ti-api"></i></div><div class="ops-tool">API Security Research</div><div class="ops-use">GraphQL introspection abuse, REST BOLA/BFLA patterns, microservice authentication bypass research</div></div>
-      <div class="ops-card"><div class="ops-ic"><i class="ti ti-eye-off"></i></div><div class="ops-tool">EDR Evasion</div><div class="ops-use">Payload obfuscation, AMSI bypass techniques, process injection research, living-off-the-land evasion strategies</div></div>
+    <div class="sec-eyebrow rv" style="margin-bottom:1.2rem"><span class="sec-num" id="cur-res-label">// Current Research Areas</span><div class="sec-line"></div></div>
+    <div class="ops-grid rv">
+      <div class="ops-card"><div class="ops-ic"><i class="ti ti-browser"></i></div><div class="ops-tool" id="cr1n">Browser Exploitation</div><div class="ops-use" id="cr1d">Client-side attack surface research, XSS payload development, sandbox escape techniques</div></div>
+      <div class="ops-card"><div class="ops-ic"><i class="ti ti-key"></i></div><div class="ops-tool" id="cr2n">OAuth Abuse & JWT Attacks</div><div class="ops-use" id="cr2d">OAuth flow vulnerabilities, JWT algorithm confusion, token forgery, scope escalation in SSO</div></div>
+      <div class="ops-card"><div class="ops-ic"><i class="ti ti-cloud-lock"></i></div><div class="ops-tool" id="cr3n">Cloud Privilege Escalation</div><div class="ops-use" id="cr3d">IAM policy misconfigurations, cross-service privilege chains, metadata service exploitation</div></div>
+      <div class="ops-card"><div class="ops-ic"><i class="ti ti-topology-star"></i></div><div class="ops-tool" id="cr4n">AD Persistence Techniques</div><div class="ops-use" id="cr4d">Golden/Silver ticket persistence, ACL abuse, domain backdoor techniques, detection evasion</div></div>
+      <div class="ops-card"><div class="ops-ic"><i class="ti ti-api"></i></div><div class="ops-tool" id="cr5n">API Security Research</div><div class="ops-use" id="cr5d">GraphQL introspection abuse, REST BOLA/BFLA patterns, microservice authentication bypass</div></div>
+      <div class="ops-card"><div class="ops-ic"><i class="ti ti-eye-off"></i></div><div class="ops-tool" id="cr6n">EDR Evasion</div><div class="ops-use" id="cr6d">Payload obfuscation, AMSI bypass, process injection research, living-off-the-land strategies</div></div>
     </div>
   </div>
 </section>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- IMPACT -->
+<!-- ═══ IMPACT + CERTS ═══ -->
 <section class="sec" id="impact">
-  <div class="stop rv"><span class="snum">// 06</span><div class="sline"></div></div>
-  <h2 class="stitle rv">Engagement Impact</h2>
-  <p class="ssub rv">Measurable outcomes from authorized security assessments delivered worldwide.</p>
-  <div class="agrid">
-    <div class="ac rv"><div class="anum" data-count="150" data-suffix="+">0</div><div class="atxt">Enterprise clients served globally across finance, government, healthcare, and tech sectors</div><i class="ti ti-globe aic"></i></div>
-    <div class="ac rv d1"><div class="anum" data-count="300" data-suffix="+">0</div><div class="atxt">Security findings reported across all engagements — a curated sample shown on this site</div><i class="ti ti-clipboard-list aic"></i></div>
-    <div class="ac rv d2"><div class="anum">9.0+</div><div class="atxt">CVSS critical findings identified in production systems, preventing real-world data breaches</div><i class="ti ti-alert-triangle aic"></i></div>
-    <div class="ac rv d3"><div class="anum" data-count="40" data-suffix="%">0</div><div class="atxt">Operational efficiency gained through custom Python and Bash tooling across assessments</div><i class="ti ti-rocket aic"></i></div>
+  <div class="sec-head">
+    <div class="sec-eyebrow rv"><span class="sec-num">// 07</span><div class="sec-line"></div></div>
+    <h2 class="sec-title rv" id="sec-imp-title">Engagement Impact</h2>
+    <p class="sec-sub rv" id="sec-imp-sub">Measurable outcomes from authorized security assessments delivered worldwide.</p>
+  </div>
+  <div class="ach-grid rv">
+    <div class="ach-card"><div class="ach-num" data-count="150" data-suf="+">0</div><div class="ach-txt" id="ach1">Enterprise clients served globally across finance, government, healthcare, and technology sectors</div><i class="ti ti-globe ach-ico"></i></div>
+    <div class="ach-card"><div class="ach-num" data-count="300" data-suf="+">0</div><div class="ach-txt" id="ach2">Security findings reported — curated sample of 10 shown; full portfolio under NDA</div><i class="ti ti-clipboard-list ach-ico"></i></div>
+    <div class="ach-card"><div class="ach-num">9.8</div><div class="ach-txt" id="ach3">Highest CVSS finding confirmed in production systems, preventing real-world data breaches</div><i class="ti ti-alert-triangle ach-ico"></i></div>
+    <div class="ach-card"><div class="ach-num" data-count="40" data-suf="%">0</div><div class="ach-txt" id="ach4">Operational efficiency gained via custom Python and Bash automation tooling</div><i class="ti ti-rocket ach-ico"></i></div>
   </div>
   <div style="margin-top:3rem">
-    <div class="stop rv"><span style="font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)">// Certifications & Training</span><div class="sline"></div></div>
+    <div class="sec-eyebrow rv" style="margin-bottom:1.2rem"><span class="sec-num" id="cert-label">// Certifications</span><div class="sec-line"></div></div>
     <div class="cgrid rv">
-      <div class="cc"><i class="ti ti-certificate"></i><div><div class="ccn">CRPO</div><div class="ccb">Certified Red Team Professional Operator</div></div></div>
-      <div class="cc"><i class="ti ti-certificate"></i><div><div class="ccn">CSCSO</div><div class="ccb">Certified SOC & Cyber Security Operations</div></div></div>
-      <div class="cc"><i class="ti ti-certificate"></i><div><div class="ccn">CCEP</div><div class="ccb">Certified Cybersecurity Expert Practitioner</div></div></div>
-      <div class="cc"><i class="ti ti-certificate"></i><div><div class="ccn">CCSC</div><div class="ccb">Certified Cyber Security Consultant</div></div></div>
-      <div class="cc"><i class="ti ti-shield"></i><div><div class="ccn">ISSA Member</div><div class="ccb">Information Systems Security Association</div></div></div>
-      <div class="cc"><i class="ti ti-flask"></i><div><div class="ccn">Ongoing Lab Practice</div><div class="ccb">Advanced Exploitation & Red Team Research</div></div></div>
+      <div class="cc"><i class="ti ti-certificate"></i><div><div class="cc-nm">CRPO</div><div class="cc-sub" id="c1">Certified Red Team Professional Operator</div></div></div>
+      <div class="cc"><i class="ti ti-certificate"></i><div><div class="cc-nm">CCEP</div><div class="cc-sub" id="c2">Certified Cybersecurity Expert Practitioner</div></div></div>
+      <div class="cc"><i class="ti ti-certificate"></i><div><div class="cc-nm">CCSC</div><div class="cc-sub" id="c3">Certified Cyber Security Consultant</div></div></div>
+      <div class="cc"><i class="ti ti-certificate"></i><div><div class="cc-nm">CSCSO</div><div class="cc-sub" id="c4">SOC & Cyber Security Operations</div></div></div>
+      <div class="cc"><i class="ti ti-shield"></i><div><div class="cc-nm">ISSA Member</div><div class="cc-sub" id="c5">Information Systems Security Association</div></div></div>
+      <div class="cc"><i class="ti ti-flask"></i><div><div class="cc-nm" id="c6n">Ongoing Research</div><div class="cc-sub" id="c6">Advanced Exploitation & Red Team Lab Practice</div></div></div>
     </div>
   </div>
 </section>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- CONTACT -->
+<!-- ═══ CONTACT ═══ -->
 <section class="sec" id="contact">
-  <div class="stop rv"><span class="snum">// 07</span><div class="sline"></div></div>
-  <h2 class="stitle rv">Engage My Services</h2>
-  <div class="cgrid2">
-    <div class="rv">
-      <p class="cdesc">Available for full-scope penetration tests, red team operations, web and API assessments, Active Directory audits, and offensive security consulting. Operating globally, fully remote, with enterprise-grade confidentiality on every engagement.<br><br>All engagements conducted under formal statement of work with NDA, defined scope, rules of engagement, and professional technical reporting. Response within 24 hours.</p>
+  <div class="sec-head">
+    <div class="sec-eyebrow rv"><span class="sec-num">// 08</span><div class="sec-line"></div></div>
+    <h2 class="sec-title rv" id="sec-con-title">Engage My Services</h2>
+    <p class="sec-sub rv" id="sec-con-sub">Available globally — remote-first, enterprise-grade confidentiality on every engagement.</p>
+  </div>
+  <div class="contact-grid rv">
+    <div>
+      <p class="contact-desc" id="con-desc">Available for full-scope penetration tests, red team operations, web and API assessments, Active Directory audits, cloud security reviews, and offensive security consulting. All engagements conducted under formal statement of work with NDA, defined scope, rules of engagement, and professional technical reporting.<br><br>Response within 24 hours. References available upon request.</p>
     </div>
-    <div class="clinks rv d2">
+    <div class="clinks">
       <a class="clink" href="mailto:ayman.mahmoudoffsec@gmail.com"><i class="ti ti-mail"></i>ayman.mahmoudoffsec@gmail.com</a>
       <a class="clink" href="tel:+9647877716669"><i class="ti ti-phone"></i>+964 787 771 6669</a>
-      <a class="clink" href="#"><i class="ti ti-map-pin"></i>Iraq — Clients Worldwide</a>
+      <a class="clink" href="#"><i class="ti ti-map-pin"></i><span id="con-loc">Iraq — Clients Worldwide</span></a>
     </div>
   </div>
 </section>
 
 <footer>
-  <p><span>Ayman Mahmoud Jasim</span> · Senior Penetration Tester & Offensive Security Consultant</p>
-  <p style="margin-top:.4rem">All engagements conducted under NDA · The best defense starts with understanding the offense.</p>
+  <div class="fl"><span>AMN Security</span> · Ayman Mahmoud Jasim · <span id="foot-txt">Senior Penetration Tester & Offensive Security Consultant</span></div>
+  <div class="f-links">
+    <a href="#" id="foot-nda">All Engagements Under NDA</a>
+    <a href="#contact" id="foot-contact">Contact</a>
+  </div>
 </footer>
 
 <script>
-const mdata=[
-  {ref:"ASF-001",risk:"Critical",type:"DOM XSS → Account Takeover",eng:"External Web Application Assessment",env:"Production",surface:"Web Application / File Import Interface",title:"Authenticated DOM XSS Leading to Full Account Takeover",cvss:"9.3",status:"Remediated",chain:"Input rendering vulnerability exploited to inject attacker-controlled HTML within an authenticated session context, weaponizing the existing CSRF token to perform unauthorized state-changing requests on behalf of the victim user.",steps:["Attack surface mapping identified the file import workflow as an entry point with user-controlled input rendered in the DOM","Analysis revealed innerHTML sink used for filename rendering inside an authenticated form containing a valid CSRF token","Crafted a filename payload containing an injected form submit element with attacker-controlled formaction target","Delivered the malicious file to the target user session and triggered the injected control","Server processed the authenticated request, initiating an email ownership transfer to attacker-controlled mailbox","Attacker redeemed the ownership transfer link, obtained a fresh authenticated session, and confirmed full account control"],impact:"Complete account takeover for any targeted user. Secondary attack paths from the same injection point included creation of write-scoped API credentials and account deletion — demonstrating full control over the victim's organizational identity and data.",business:"Unauthorized access to client organizational data, potential for privilege escalation to administrator-level accounts, and reputational risk from account compromise affecting business continuity.",remediation:"Replace innerHTML with textContent for all user-supplied input rendering. Enforce a strict Content Security Policy. Implement binding constraints between form actions and their originating endpoints."},
-  {ref:"ASF-002",risk:"High",type:"Blind Server-Side Request Forgery",eng:"External API Security Assessment",env:"Production",surface:"REST API / Webhook Integration Layer",title:"Blind SSRF via Webhook Parameter Enabling Internal Network Pivot",cvss:"8.1",status:"Remediated",chain:"Outbound request functionality exploited to redirect server-side HTTP requests to attacker-controlled infrastructure, enabling enumeration of internal network services and cloud instance metadata endpoints inaccessible from the public internet.",steps:["API reconnaissance identified a webhook configuration endpoint accepting an arbitrary URL parameter","Supplied an out-of-band listener URL as the webhook target","Confirmed server-initiated outbound HTTP request to attacker infrastructure from the target server's IP address","Enumerated cloud metadata service endpoints through the SSRF channel","Demonstrated access to internal API endpoints not exposed externally"],impact:"Internal network service discovery, access to cloud instance metadata (IAM credentials), enumeration of internal API surfaces, and a pivot point for chaining attacks against non-public services.",business:"Exposure of cloud IAM credentials could enable full cloud environment takeover. Internal service access breaks network segmentation assumptions and expands the attack surface for subsequent compromise.",remediation:"Validate all URL parameters against an explicit allowlist of approved destinations. Block outbound requests to private IP ranges and cloud metadata endpoints. Implement SSRF-safe HTTP client configuration with deny-by-default egress policy."},
-  {ref:"ASF-003",risk:"Critical",type:"Path Traversal → Remote Code Execution",eng:"Internal Infrastructure Assessment",env:"Internal Lab / Production",surface:"File Transfer Protocol Handler",title:"SFTP Path Traversal in Transfer Utility Leading to Remote Code Execution",cvss:"9.1",status:"Mitigated",chain:"Directory traversal in protocol-level command processing exploited to write arbitrary files outside the user's designated directory. Chained with SSH key injection to achieve persistent unauthenticated remote code execution on the target server.",steps:["Identified SFTP service accepting protocol-level rename commands with unsanitized path arguments","Confirmed absence of traversal sequence sanitization in the file path resolution function","Issued a rename command with ../ sequences to move a file to a directory outside the home directory","Validated successful write to a target directory outside the authorized scope","Demonstrated RCE path by constructing an authorized_keys overwrite payload"],impact:"Persistent unauthorized remote code execution on the affected server. Any file writable by the service account can be overwritten or created, enabling backdoor installation, service disruption, and lateral movement.",business:"Full server compromise with persistent attacker access. Risk of lateral movement to connected internal systems and potential for data destruction or ransomware deployment in the affected environment.",remediation:"Sanitize all QUOTE command path arguments to reject traversal sequences before processing. Apply OS-level chroot jail for SFTP sessions. Implement allowlist-based path validation in the file path resolution layer."},
-  {ref:"ASF-004",risk:"High",type:"Stored Mutation XSS",eng:"External Web Application Assessment",env:"Production",surface:"Rich Text Editor / Content Management",title:"Stored Mutation XSS via Rich Text Editor Bypassing Client-Side Sanitization",cvss:"8.2",status:"Remediated",chain:"Mutation-based XSS payload constructed using a DOM parsing differential between sanitization and rendering phases. Malicious content stored in the application database executes in the browser context of every user who views the affected content.",steps:["Identified rich text editor component accepting HTML content with client-side sanitization","Researched known mutation XSS bypass vectors for the integrated sanitization library version","Constructed a payload using MathML namespace mutation chain that survives sanitization but mutates on render","Stored the payload through the editor's standard content submission flow","Confirmed JavaScript execution in a separate victim session upon content retrieval"],impact:"Persistent JavaScript execution in the session context of any user who views the affected content. Enables session token theft, credential harvesting, unauthorized actions, and further internal reconnaissance.",business:"Stored XSS in a content management system exposes all users who access affected content — including administrators — to session hijacking and account takeover, with no user interaction required beyond normal usage.",remediation:"Update the rich text editor and its sanitization dependency to a patched version. Implement server-side HTML sanitization as a second layer of defense. Enforce a strict Content Security Policy to limit script execution context."},
-  {ref:"ASF-005",risk:"High",type:"Broken Object-Level Authorization (BOLA/IDOR)",eng:"External API Security Assessment",env:"Production",surface:"Account Management API",title:"BOLA Enabling Cross-Account Profile Manipulation via API",cvss:"7.5",status:"Remediated",chain:"Account management endpoint accepts a user object identifier in the request body without performing server-side ownership verification. Any authenticated session can modify the profile data of arbitrary accounts by substituting the target identifier in the JSON payload.",steps:["Enumerated API endpoints during assessment and identified the account update endpoint","Captured an authenticated profile update request and analyzed the JSON structure","Identified a user identifier parameter in the request body with no apparent validation","Substituted the attacker account identifier with a victim account identifier","Confirmed successful modification of the victim's profile data without any authorization error","Validated that no notification was triggered on the victim account"],impact:"Silent modification of any platform user's personal and organizational profile data. Can be used to corrupt business records, disrupt communication, or facilitate targeted social engineering by altering contact information.",business:"Regulatory exposure for unauthorized data modification across user accounts. Trust and reputation risk if clients discover their organizational data has been altered without authorization.",remediation:"Implement server-side ownership validation on every object-level operation. Extract the target user identifier from the authenticated session, not from user-supplied input. Return 403 on ownership mismatch. Use non-sequential identifiers to reduce enumeration risk."},
-  {ref:"ASF-006",risk:"Critical",type:"Unauthenticated SQL Injection",eng:"External Web Application Assessment",env:"Production",surface:"Web Application / URL Parameter",title:"Unauthenticated SQL Injection with Full Database Enumeration",cvss:"9.8",status:"Remediated",chain:"URL-delivered parameter passed directly into a SQL query without parameterization or input validation. Automated exploitation confirmed 24 internal database schemas accessible without any authentication, including sensitive operational data stores.",steps:["Identified a URL parameter in the application exhibiting irregular response behavior","Confirmed SQL injection susceptibility through boolean differential testing","Automated extraction using a SQL injection framework to enumerate all available database schemas","Confirmed access to 24 internal databases including administrative and operational data stores","Demonstrated potential for full data extraction including user credentials and sensitive records"],impact:"Full unauthenticated access to 24 internal database schemas. Data extraction, modification, and potential remote code execution through database-level features depending on server configuration.",business:"Severe regulatory and compliance exposure from unauthorized access to sensitive organizational data. Risk of mass data breach, credential theft, and complete database compromise without requiring any user interaction.",remediation:"Implement parameterized queries throughout the application. Remove all direct concatenation of user input into SQL statements. Deploy a WAF with SQL injection signature detection as a defense-in-depth measure."},
-  {ref:"ASF-007",risk:"Critical",type:"Authentication Bypass → Account Takeover",eng:"External Web Application Assessment",env:"Production",surface:"Authentication / Password Reset Flow",title:"Authentication Bypass Enabling Mass Account Takeover via Password Reset",cvss:"9.8",status:"Remediated",chain:"Password reset workflow accepts a target account identifier without binding the operation to the requesting authenticated session. Any actor with knowledge of a target email address can reset credentials for any account, enabling full takeover at scale with no authentication required.",steps:["Analyzed the authentication flow and identified the password reset mechanism","Intercepted a legitimate password reset request and examined the parameter structure","Identified target account identifier as an unvalidated user-supplied parameter","Submitted a crafted reset request with a victim account identifier from an unrelated session","Confirmed successful credential reset for the victim account","Authenticated using the attacker-chosen credentials and confirmed full account access"],impact:"Full account takeover for any registered user on the platform without authentication. Requires only a known email address to compromise any account, enabling mass account compromise at scale.",business:"Complete authentication control failure. Exposes all user accounts to unauthorized access, with potential for mass credential compromise and regulatory penalties for failure to protect user account security.",remediation:"Bind all password reset operations to the authenticated session. Verify the session owner matches the reset target before processing. Require current credentials or a freshly issued one-time token. Invalidate all existing sessions on password change."},
-  {ref:"ASF-008",risk:"High",type:"Out-of-Band XML External Entity (XXE)",eng:"Internal Service Security Audit",env:"Production",surface:"Data Ingestion Service / XML Parser",title:"OOB XXE in Data Ingestion Service Exposing Internal Infrastructure",cvss:"7.7",status:"Remediated",chain:"XML processing pipeline parses external documents with entity resolution enabled. Attacker-supplied XML containing a DOCTYPE referencing an external DTD triggers out-of-band HTTP requests from the server, exfiltrating internal host information and cloud metadata.",steps:["Identified an XML-based data ingestion endpoint during service enumeration","Supplied a crafted XML document containing a DOCTYPE with an external DTD reference pointing to attacker infrastructure","Attacker-controlled server received an out-of-band HTTP request containing internal hostname data","Demonstrated exfiltration of the server's internal hostname","Assessed potential for multi-line file read and cloud metadata service access as escalation paths"],impact:"Internal host identifier exfiltration confirmed. Escalation path to cloud instance metadata (IAM credentials) identified pending multi-line file read bypass. Server-side request capability demonstrated.",business:"Exposure of internal infrastructure topology and potential cloud credential leakage. IAM credential access could enable cloud environment takeover and expansion of the attacker's footprint beyond the compromised service.",remediation:"Disable external entity processing (FEATURE_EXTERNAL_GENERAL_ENTITIES and FEATURE_EXTERNAL_PARAMETER_ENTITIES) in the XML parser configuration. Validate all XML inputs against a schema before processing. Restrict outbound connectivity from the ingestion service."},
-  {ref:"ASF-009",risk:"High",type:"Boolean-Based Blind SQL Injection",eng:"External API Security Assessment",env:"Production",surface:"REST API / Path Parameter",title:"Boolean-Based Blind SQL Injection in REST API Path Parameter",cvss:"8.0",status:"Remediated",chain:"URL path segment used directly in a database query without parameterization. Boolean differential responses confirm injection and allow full database enumeration through automated boolean-based extraction. Database engine and version fingerprinted without authentication.",steps:["Identified REST API endpoint with numeric path parameters","Appended SQL operator sequences to the path segment","Observed differential server responses confirming boolean-based injection","Fingerprinted database engine and version through inference","Validated complete data extraction capability through automated boolean enumeration"],impact:"Full database content accessible through boolean-based extraction. Database engine fingerprinted. Complete user record exfiltration achievable without authentication using automated extraction tooling.",business:"Unauthorized access to the entire application database. Risk of mass user data exfiltration, business intelligence exposure, and potential regulatory penalties for failure to protect customer data.",remediation:"Implement parameterized queries for all database interactions. Validate and enforce strict type constraints on all URL path parameters. Apply input allowlisting at the routing layer to reject non-conforming values."},
-  {ref:"ASF-010",risk:"Critical",type:"ORM-Layer SQL Injection",eng:"Internal Code Review + Functional Testing",env:"Production",surface:"Application ORM / API Filter Layer",title:"SQL Injection via ORM Query Builder — Complete Access Control Bypass",cvss:"9.5",status:"Mitigated",chain:"Application ORM query assembly uses unsafe string interpolation for a logical operator value that can be influenced through user-supplied API filter input. Injecting a crafted connector payload restructures the SQL WHERE clause, bypassing all intended access control logic and returning unauthorized records.",steps:["Code review identified unsafe string formatting in the ORM's query assembly method","Confirmed the connector parameter is reachable through user-supplied API filter input via dictionary unpacking","Constructed a payload with a malicious connector value containing SQL injection syntax","Submitted the payload through the API filter interface","Observed generated SQL with reconstructed WHERE clause bypassing all intended filters","Confirmed retrieval of privileged user records that should be inaccessible to the requesting session"],impact:"Complete access control bypass. All records in the queried table are retrievable regardless of the intended filter logic. Privileged user data including administrator accounts confirmed exfiltrated in testing.",business:"Full defeat of application-layer access control. Any user can retrieve any record from the affected data model, enabling mass data exfiltration, privilege escalation, and unauthorized administrative access.",remediation:"Validate the connector parameter against a strict allowlist of permitted values before string formatting. Prohibit the use of user-controlled dictionary unpacking as a query parameter source. Apply the patch to the ORM's WHERE clause assembly method to enforce type and value safety."}
+/* ══════════════════════════════
+   TRANSLATIONS
+══════════════════════════════ */
+const T={
+en:{
+  logoTag:'Offensive Security Consultancy',
+  nl:['Services','Methodology','Experience','Findings','Research','Contact'],
+  navHire:'Hire Me', fhTxt:'Hire Me', statusTxt:'Available for Enterprise Engagements',
+  heroRole:'Senior Penetration Tester & Offensive Security Consultant',
+  heroDesc:'6+ years conducting authorized offensive security assessments for enterprise clients worldwide. Specializing in red team operations, Active Directory attacks, exploit development, and full-scope adversary simulation under strict NDA-protected engagements.',
+  hs:['Clients Worldwide','Years Experience','Findings Reported','Efficiency Gain'],
+  btn1:'Assessment Findings', btn2:'Engage Services',
+  secSvcTitle:'Services', secSvcSub:'Enterprise-grade offensive security services delivered under formal NDA and rules of engagement.',
+  svcs:[
+    {n:'01 / Web & API',name:'Web Application & API Penetration Testing',desc:'Full-scope assessment of web applications and REST/GraphQL APIs covering authentication flaws, injection vulnerabilities, IDOR, business logic issues, and all OWASP Top 10 categories in production and staging environments.'},
+    {n:'02 / Red Team',name:'Red Team Operations',desc:'Full APT-style adversary simulation from initial reconnaissance through lateral movement, privilege escalation, and domain compromise. Delivered under formal rules of engagement with comprehensive debrief and reporting.'},
+    {n:'03 / Active Directory',name:'Active Directory Security Assessment',desc:'Comprehensive AD attack chains including Kerberoasting, AS-REP Roasting, Pass-the-Hash/Ticket, DCSync, and BloodHound-guided privilege escalation mapping from misconfiguration discovery to full Domain Admin compromise.'},
+    {n:'04 / Network',name:'Network & Infrastructure Penetration Testing',desc:'Internal and external network assessments covering service enumeration, firewall evasion, SMB relay, LLMNR poisoning, pivoting through segmented environments, and tunneling across isolated network zones.'},
+    {n:'05 / Cloud',name:'Cloud Security Assessment',desc:'AWS, Azure, and GCP security assessments covering IAM misconfiguration exploitation, storage enumeration, privilege escalation chains, cross-account pivot techniques, and cloud-native attack path analysis.'},
+    {n:'06 / Social Engineering',name:'Social Engineering & Phishing Simulation',desc:'Targeted phishing campaigns, pretexting simulations, and vishing engagements to measure organizational security awareness maturity. Full campaign metrics with behavioral analysis and awareness recommendations.'}
+  ],
+  secMethTitle:'Assessment Methodology', secMethSub:'Structured offensive security process aligned with PTES, OSSTMM, and MITRE ATT&CK frameworks.',
+  meths:[
+    {p:'Phase 01',n:'Reconnaissance & OSINT',d:'Passive and active intelligence gathering. Asset enumeration, DNS mapping, technology fingerprinting, and attack surface scoping.'},
+    {p:'Phase 02',n:'Attack Surface Mapping',d:'Port scanning, service fingerprinting, web directory enumeration, API endpoint discovery, and cloud asset identification.'},
+    {p:'Phase 03',n:'Vulnerability Discovery',d:'Manual and tool-assisted vulnerability identification across all attack surfaces within the authorized scope.'},
+    {p:'Phase 04',n:'Controlled Exploitation',d:'Safe exploitation of confirmed vulnerabilities within authorized scope with full evidence capture and minimal operational footprint.'},
+    {p:'Phase 05',n:'Post-Exploitation',d:'Privilege escalation, lateral movement, persistence demonstration, and data exfiltration simulation to prove full business impact.'},
+    {p:'Phase 06',n:'Reporting',d:'Executive and technical reports with CVSS v3.1 scoring, PoC evidence, risk prioritization, and structured remediation roadmaps.'},
+    {p:'Phase 07',n:'Verification & Re-test',d:'Post-remediation testing to confirm effective fixes with no regressions. Tracked until full verified closure of critical findings.'},
+    {p:'Phase 08',n:'Debrief & Handoff',d:'Technical debrief with client security team, knowledge transfer, and long-term remediation prioritization workshop.'}
+  ],
+  opsLabel:'// Operational Stack',
+  ops:['Web application assessment, manual testing, active scanning, custom extension development','AD attack path visualization, privilege escalation chain mapping, domain analysis','SMB relay, DCSync, Pass-the-Hash/Ticket, AS-REP roasting, Kerberos-based AD attacks','Fuzzing web directories, virtual hosts, API endpoints, parameter discovery at scale','Network discovery, service fingerprinting, infrastructure vulnerability scanning','Custom exploit development, recon automation, post-exploitation scripting','Binary reverse engineering, vulnerability analysis, custom shellcode validation','AWS, Azure, GCP privilege escalation, IAM misconfigurations, metadata service exploitation'],
+  secSkTitle:'Core Competencies', secSkSub:'Technical depth across the full offensive security stack.',
+  sks:['Web App Pentesting','Active Directory Attacks','Red Team Operations','Custom Tooling & Automation','Network & Infrastructure','Binary & Exploit Dev'],
+  skds:['SQLi variants, XSS, SSRF, XXE, IDOR, Deserialization, Auth Bypass — OWASP Top 10 and beyond including API and GraphQL.','Kerberoasting, AS-REP Roasting, Pass-the-Hash/Ticket, DCSync, BloodHound path mapping, full domain compromise.','Full APT-style simulation: recon → initial access → lateral movement → privilege escalation → domain compromise.','Python and Bash automation for recon, exploitation, and post-exploitation. Reduced repetitive overhead by ~40%.','Service enumeration, firewall evasion, pivoting, tunneling, SMB relay, LLMNR poisoning in segmented networks.','Buffer overflow, custom shellcode, ASLR/DEP awareness, Ghidra analysis, AV/EDR evasion in assessment environments.'],
+  skls:['Expert','Expert','Advanced','Advanced','Advanced','Proficient'],
+  secExpTitle:'Professional Experience', secExpSub:'Enterprise offensive security consulting under NDA across multiple industry verticals.',
+  expRole:'Senior Penetration Tester & Offensive Security Consultant',
+  expOrg:'Independent Security Consultant · Remote · Worldwide Clients',
+  expPts:['Conducted <strong>150+ authorized security assessments</strong> for enterprise clients across finance, government, healthcare, and technology sectors globally under formal NDA and rules of engagement','Delivered full-scope <strong>red team operations</strong> simulating APT actors — from initial reconnaissance through lateral movement to full domain compromise','Executed comprehensive <strong>Active Directory attack chains</strong>: Kerberoasting, DCSync, BloodHound-guided privilege escalation to Domain Admin in enterprise environments','Performed advanced web and API assessments covering OWASP Top 10, GraphQL security, OAuth abuse, JWT attacks, and business logic flaws in production SaaS environments','Identified <strong>multiple CVSS 9.0–9.8 findings</strong> in production systems, preventing real data breaches and significant business disruption','Engineered custom <strong>Python and Bash automation tooling</strong> reducing assessment overhead by ~40% across engagements','Delivered executive-level and technical reports with <strong>CVSS v3.1 scoring</strong>, PoC evidence, and risk-prioritized remediation roadmaps for C-suite and technical audiences','Conducted phishing simulations and social engineering campaigns measuring organizational security awareness maturity'],
+  secFindTitle:'Sanitized Assessment Findings', secFindSub:'A curated sample from 300+ findings across authorized engagements worldwide.',
+  findNote:'The findings below represent <strong>a curated sample</strong> from real-world authorized penetration testing engagements. All client identities, infrastructure details, and sensitive data have been fully sanitized per confidentiality agreements. <strong>Full portfolio available under NDA upon formal request.</strong>',
+  fbAll:'All (10)', fbW:'Web App', fbN:'Network', fbAD:'Active Directory', fbAPI:'API / Service',
+  secResTitle:'Research & Lab Environment', secResSub:'Active offensive security research and self-maintained lab infrastructure for continuous capability development.',
+  res:[{n:'Active Directory Labs',d:'Multi-domain AD environments for AD attack chain development, BloodHound path testing, and post-exploitation technique validation.'},{n:'Cloud Attack Simulations',d:'AWS and Azure attack labs for IAM misconfiguration exploitation, S3 enumeration, privilege escalation chains, and cross-account pivot research.'},{n:'Vulnerable Docker Environments',d:'Custom and open-source vulnerable containers for web exploitation research, API security testing, and proof-of-concept validation.'},{n:'Malware Analysis VMs',d:'Isolated VMs for malware behavioral analysis, AV/EDR evasion research, payload development, and shellcode validation.'}],
+  curResLabel:'// Current Research Areas',
+  cr:[{n:'Browser Exploitation',d:'Client-side attack surface research, XSS payload development, sandbox escape techniques'},{n:'OAuth Abuse & JWT Attacks',d:'OAuth flow vulnerabilities, JWT algorithm confusion, token forgery, scope escalation in SSO'},{n:'Cloud Privilege Escalation',d:'IAM policy misconfigurations, cross-service privilege chains, metadata service exploitation'},{n:'AD Persistence Techniques',d:'Golden/Silver ticket persistence, ACL abuse, domain backdoor techniques, detection evasion'},{n:'API Security Research',d:'GraphQL introspection abuse, REST BOLA/BFLA patterns, microservice authentication bypass'},{n:'EDR Evasion',d:'Payload obfuscation, AMSI bypass, process injection research, living-off-the-land strategies'}],
+  secImpTitle:'Engagement Impact', secImpSub:'Measurable outcomes from authorized security assessments delivered worldwide.',
+  achs:['Enterprise clients served globally across finance, government, healthcare, and technology sectors','Security findings reported — curated sample of 10 shown; full portfolio under NDA','Highest CVSS finding confirmed in production systems, preventing real-world data breaches','Operational efficiency gained via custom Python and Bash automation tooling'],
+  certLabel:'// Certifications',
+  certs:['Certified Red Team Professional Operator','Certified Cybersecurity Expert Practitioner','Certified Cyber Security Consultant','SOC & Cyber Security Operations','Information Systems Security Association','Advanced Exploitation & Red Team Lab Practice'],
+  c6n:'Ongoing Research',
+  secConTitle:'Engage My Services', secConSub:'Available globally — remote-first, enterprise-grade confidentiality on every engagement.',
+  conDesc:'Available for full-scope penetration tests, red team operations, web and API assessments, Active Directory audits, cloud security reviews, and offensive security consulting. All engagements conducted under formal statement of work with NDA, defined scope, rules of engagement, and professional technical reporting.\n\nResponse within 24 hours. References available upon request.',
+  conLoc:'Iraq — Clients Worldwide',
+  footTxt:'Senior Penetration Tester & Offensive Security Consultant',
+  footNda:'All Engagements Under NDA', footCon:'Contact'
+},
+ar:{
+  logoTag:'استشارات الأمن الهجومي',
+  nl:['الخدمات','المنهجية','الخبرة','النتائج','البحث','التواصل'],
+  navHire:'توظيفي', fhTxt:'توظيفي', statusTxt:'متاح للارتباطات المؤسسية',
+  heroRole:'مختبر اختراق أول ومستشار أمن هجومي',
+  heroDesc:'أكثر من 6 سنوات في إجراء تقييمات أمنية معتمدة لعملاء مؤسسيين حول العالم. متخصص في عمليات الفريق الأحمر وهجمات Active Directory وتطوير الثغرات ومحاكاة الخصوم ضمن ارتباطات محمية بـ NDA.',
+  hs:['عميل حول العالم','سنوات خبرة','ثغرة موثقة','كسب في الكفاءة'],
+  btn1:'نتائج التقييمات', btn2:'احجز خدماتي',
+  secSvcTitle:'الخدمات', secSvcSub:'خدمات أمن هجومي على مستوى مؤسسي تُقدَّم تحت NDA رسمي وقواعد اشتباك محددة.',
+  svcs:[
+    {n:'01 / ويب وAPI',name:'اختبار اختراق تطبيقات الويب والـ API',desc:'تقييم شامل لتطبيقات الويب وواجهات REST/GraphQL يغطي ثغرات المصادقة وحقن البيانات وIDOR وأخطاء المنطق التجاري وجميع فئات OWASP Top 10 في بيئات الإنتاج والاختبار.'},
+    {n:'02 / الفريق الأحمر',name:'عمليات الفريق الأحمر',desc:'محاكاة خصم APT كاملة من الاستطلاع الأولي عبر الحركة الجانبية وتصعيد الصلاحيات إلى الاستيلاء على النطاق، مع إفادة شاملة وتقرير تفصيلي.'},
+    {n:'03 / Active Directory',name:'تقييم أمن Active Directory',desc:'سلاسل هجوم AD شاملة تشمل Kerberoasting وAS-REP Roasting وPass-the-Hash/Ticket وDCSync ورسم مسارات تصعيد الصلاحيات عبر BloodHound حتى الاستيلاء الكامل على Domain Admin.'},
+    {n:'04 / الشبكات',name:'اختبار اختراق الشبكات والبنية التحتية',desc:'تقييمات شبكية داخلية وخارجية تغطي حصر الخدمات وتجاوز جدران الحماية وSMB relay وLLMNR poisoning والتمحور عبر البيئات المجزأة.'},
+    {n:'05 / السحابة',name:'تقييم أمن السحابة',desc:'تقييمات AWS وAzure وGCP تغطي استغلال تكوينات IAM الخاطئة وحصر التخزين وسلاسل تصعيد الصلاحيات وتقنيات التمحور بين الحسابات.'},
+    {n:'06 / الهندسة الاجتماعية',name:'محاكاة التصيد والهندسة الاجتماعية',desc:'حملات تصيد موجهة ومحاكاة pretexting وارتباطات vishing لقياس نضج الوعي الأمني المؤسسي مع مقاييس الحملة الكاملة وتوصيات التوعية.'}
+  ],
+  secMethTitle:'منهجية التقييم', secMethSub:'عملية أمن هجومي منظمة متوافقة مع PTES وOSSTMM وإطار MITRE ATT&CK.',
+  meths:[
+    {p:'المرحلة 01',n:'الاستطلاع وجمع OSINT',d:'جمع المعلومات سلبياً ونشطاً. حصر الأصول ورسم DNS وبصمة التقنيات وتحديد نطاق سطح الهجوم.'},
+    {p:'المرحلة 02',n:'رسم خريطة سطح الهجوم',d:'مسح المنافذ وبصمة الخدمات وحصر مسارات الويب واكتشاف نقاط API وتحديد أصول السحابة.'},
+    {p:'المرحلة 03',n:'اكتشاف الثغرات',d:'تحديد الثغرات يدوياً وبمساعدة الأدوات عبر جميع أسطح الهجوم ضمن النطاق المعتمد.'},
+    {p:'المرحلة 04',n:'الاستغلال المتحكم به',d:'استغلال آمن للثغرات المؤكدة ضمن النطاق المعتمد مع توثيق كامل للأدلة وبصمة تشغيلية دنيا.'},
+    {p:'المرحلة 05',n:'ما بعد الاستغلال',d:'تصعيد الصلاحيات والحركة الجانبية وإثبات الاستمرارية ومحاكاة تسريب البيانات لإثبات التأثير الفعلي.'},
+    {p:'المرحلة 06',n:'إعداد التقارير',d:'تقارير تنفيذية وتقنية مع تسجيل CVSS v3.1 وأدلة PoC وتحديد الأولويات وخرائط المعالجة الهيكلية.'},
+    {p:'المرحلة 07',n:'التحقق وإعادة الاختبار',d:'اختبار ما بعد المعالجة للتحقق من فاعلية الإصلاحات وتتبع الإغلاق الكامل للثغرات الحرجة.'},
+    {p:'المرحلة 08',n:'الإفادة والتسليم',d:'جلسة إفادة تقنية مع فريق أمن العميل ونقل المعرفة وورشة تحديد أولويات المعالجة على المدى البعيد.'}
+  ],
+  opsLabel:'// المنظومة التشغيلية',
+  ops:['تقييم تطبيقات الويب والاختبار اليدوي والفحص النشط وتطوير الإضافات المخصصة','تصور مسارات هجوم AD ورسم سلاسل تصعيد الصلاحيات وتحليل النطاق','SMB relay وDCSync وPass-the-Hash/Ticket وAS-REP roasting وهجمات Kerberos','فحز مسارات الويب والمضيفات الافتراضية ونقاط API واكتشاف المعاملات على نطاق واسع','استكشاف الشبكات وبصمة الخدمات ومسح ثغرات البنية التحتية','تطوير استغلال مخصص وأتمتة الاستطلاع ونصوص ما بعد الاستغلال','هندسة عكسية للملفات الثنائية وتحليل الثغرات والتحقق من الشيل كود','تصعيد صلاحيات AWS وAzure وGCP واستغلال IAM وخدمة البيانات الوصفية'],
+  secSkTitle:'الكفاءات الأساسية', secSkSub:'عمق تقني شامل عبر مجمل منظومة الأمن الهجومي.',
+  sks:['اختبار تطبيقات الويب','هجمات Active Directory','عمليات الفريق الأحمر','أدوات مخصصة وأتمتة','الشبكات والبنية التحتية','تطوير الثغرات والاستغلال'],
+  skds:['أنواع حقن SQL وXSS وSSRF وXXE وIDOR وDeserialization وAuth Bypass — OWASP Top 10 وما يتجاوزه.','Kerberoasting وAS-REP Roasting وPass-the-Hash/Ticket وDCSync ورسم مسارات BloodHound.','محاكاة APT كاملة: استطلاع → وصول أولي → حركة جانبية → تصعيد صلاحيات → استيلاء على النطاق.','أتمتة Python وBash للاستطلاع والاستغلال وما بعد الاستغلال. تقليص التكاليف المتكررة بنحو 40%.','حصر الخدمات وتجاوز جدران الحماية والتمحور والأنفاق وSMB relay وLLMNR poisoning.','Buffer overflow وShellcode مخصص وتحليل Ghidra والتحايل على AV/EDR في بيئات التقييم.'],
+  skls:['خبير','خبير','متقدم','متقدم','متقدم','محترف'],
+  secExpTitle:'الخبرة المهنية', secExpSub:'استشارات أمن هجومي على مستوى مؤسسي تحت NDA عبر قطاعات متعددة.',
+  expRole:'مختبر اختراق أول ومستشار أمن هجومي',
+  expOrg:'مستشار أمني مستقل · عن بُعد · عملاء حول العالم',
+  expPts:['أجرى <strong>أكثر من 150 تقييم أمني معتمد</strong> لعملاء مؤسسيين في قطاعات المال والحكومة والرعاية الصحية والتكنولوجيا عالمياً تحت NDA رسمي وقواعد اشتباك محددة','نفّذ عمليات <strong>فريق أحمر شاملة</strong> تحاكي ممثلي APT من الاستطلاع الأولي عبر الحركة الجانبية إلى الاستيلاء الكامل على النطاق','أجرى سلاسل هجوم <strong>Active Directory</strong> شاملة: Kerberoasting وDCSync وتصعيد الصلاحيات إلى Domain Admin بتوجيه BloodHound','نفّذ تقييمات متقدمة لتطبيقات الويب والـ API تغطي OWASP Top 10 وأمن GraphQL وإساءة استخدام OAuth وهجمات JWT','اكتشف <strong>ثغرات CVSS 9.0–9.8</strong> متعددة في أنظمة إنتاجية، منعت خروقات بيانات حقيقية واضطرابات أعمال جوهرية','طوّر أدوات أتمتة مخصصة بـ <strong>Python وBash</strong> قلّصت عبء التقييمات بنحو 40%','أعدّ تقارير تنفيذية وتقنية مع تسجيل <strong>CVSS v3.1</strong> وأدلة PoC كاملة وخرائط معالجة مُرتبة حسب الأولوية','أجرى محاكاة تصيد احتيالي وحملات هندسة اجتماعية لقياس مستوى الوعي الأمني المؤسسي'],
+  secFindTitle:'نتائج التقييمات المعتمدة', secFindSub:'عينة مختارة من أكثر من 300 نتيجة عبر ارتباطات معتمدة حول العالم.',
+  findNote:'النتائج أدناه تمثّل <strong>عينة مختارة</strong> من اختبارات اختراق حقيقية معتمدة. جميع هويات العملاء وتفاصيل البنية التحتية مُعتمة وفق اتفاقيات السرية. <strong>الملف الكامل متاح تحت NDA عند الطلب الرسمي.</strong>',
+  fbAll:'الكل (10)', fbW:'تطبيقات ويب', fbN:'شبكات', fbAD:'Active Directory', fbAPI:'API / خدمات',
+  secResTitle:'البحث والبيئة المختبرية', secResSub:'بحث أمن هجومي نشط وبنية تحتية مختبرية ذاتية لتطوير القدرات المستمر.',
+  res:[{n:'مختبرات Active Directory',d:'بيئات AD متعددة النطاقات لتطوير سلاسل الهجوم واختبار مسارات BloodHound والتحقق من تقنيات ما بعد الاستغلال.'},{n:'محاكاة هجمات السحابة',d:'مختبرات هجوم AWS وAzure لاستغلال تكوينات IAM وحصر S3 وسلاسل تصعيد الصلاحيات وبحث التمحور بين الحسابات.'},{n:'بيئات Docker المعرّضة للثغرات',d:'حاويات مخصصة ومفتوحة المصدر لبحث استغلال الويب واختبار أمن API والتحقق من إثباتات المفهوم.'},{n:'أجهزة تحليل البرمجيات الخبيثة',d:'أجهزة افتراضية معزولة لتحليل سلوك البرمجيات الخبيثة وبحث التحايل على AV/EDR وتطوير الحمولات.'}],
+  curResLabel:'// مجالات البحث الحالية',
+  cr:[{n:'استغلال المتصفحات',d:'بحث سطح الهجوم من جانب العميل وتطوير حمولات XSS وتقنيات الهروب من الصندوق الرملي'},{n:'إساءة استخدام OAuth وهجمات JWT',d:'ثغرات تدفق OAuth وارتباك خوارزمية JWT وتزوير التوكن وتصعيد النطاق في SSO'},{n:'تصعيد الصلاحيات السحابية',d:'تكوينات IAM الخاطئة وسلاسل الصلاحيات بين الخدمات واستغلال خدمة البيانات الوصفية'},{n:'تقنيات استمرارية AD',d:'استمرارية التذاكر الذهبية/الفضية وإساءة استخدام ACL وتقنيات الباب الخلفي وتجاوز الكشف'},{n:'بحث أمن API',d:'إساءة استخدام introspection في GraphQL وأنماط BOLA/BFLA وتجاوز مصادقة الخدمات المصغرة'},{n:'التحايل على EDR',d:'تشويش الحمولات وتجاوز AMSI وبحث حقن العمليات واستراتيجيات living-off-the-land'}],
+  secImpTitle:'تأثير الارتباطات', secImpSub:'نتائج قابلة للقياس من تقييمات أمنية معتمدة حول العالم.',
+  achs:['عميل مؤسسي تم خدمتهم عالمياً في قطاعات المال والحكومة والرعاية الصحية والتكنولوجيا','ثغرة أمنية موثقة — عينة مختارة من 10 معروضة؛ الملف الكامل تحت NDA','أعلى نتيجة CVSS مؤكدة في أنظمة إنتاجية، منعت خروقات بيانات حقيقية','كسب في الكفاءة التشغيلية عبر أدوات أتمتة Python وBash المخصصة'],
+  certLabel:'// الشهادات',
+  certs:['مشغّل فريق أحمر معتمد CRPO','خبير ممارس في الأمن السيبراني CCEP','مستشار أمن سيبراني معتمد CCSC','عمليات SOC والأمن السيبراني CSCSO','عضو جمعية أمن نظم المعلومات ISSA','ممارسة متقدمة في الاستغلال ومختبرات الفريق الأحمر'],
+  c6n:'بحث مستمر',
+  secConTitle:'احجز خدماتي', secConSub:'متاح عالمياً — عمل عن بُعد مع سرية مؤسسية في كل ارتباط.',
+  conDesc:'متاح لاختبارات الاختراق الشاملة وعمليات الفريق الأحمر وتقييمات الويب والـ API وتدقيق Active Directory ومراجعات أمن السحابة والاستشارات الأمنية. جميع الارتباطات تحت عقد رسمي مع NDA ونطاق محدد وقواعد اشتباك وتقارير تقنية احترافية.\n\nرد خلال 24 ساعة. مراجع متاحة عند الطلب.',
+  conLoc:'العراق — عملاء حول العالم',
+  footTxt:'مختبر اختراق أول ومستشار أمن هجومي',
+  footNda:'جميع الارتباطات تحت NDA', footCon:'تواصل'
+}
+};
+
+/* modal data */
+const MD=[
+  {ref:'ASF-001',risk:'Critical',type:'DOM XSS → Account Takeover',eng:'External Web Application Assessment',env:'Production',surface:'Web Application / File Import Interface',cvss:'9.3',status:'Remediated',chain:'Input rendering vulnerability exploited to inject attacker-controlled HTML within an authenticated session context, weaponizing the existing CSRF token to perform unauthorized state-changing requests on behalf of the victim user.',steps:['Attack surface mapping identified the file import workflow as a DOM injection entry point','Analysis revealed innerHTML sink used for filename rendering inside an authenticated form containing a valid CSRF token','Crafted a filename payload injecting a form submit element with attacker-controlled formaction target','Delivered the malicious file to the target user session and triggered the injected control','Server processed the authenticated request, initiating an email ownership transfer to attacker mailbox','Attacker redeemed the link, obtained a fresh authenticated session, and confirmed full account control'],impact:'Complete account takeover for any targeted user. Secondary paths from the same injection point: write-scoped API credential creation and account deletion.',business:'Unauthorized access to organizational data, privilege escalation risk to administrator accounts, and reputational risk from account compromise affecting business continuity.',remediation:'Replace innerHTML with textContent for all user-supplied rendering. Enforce strict Content Security Policy. Implement binding constraints between form actions and their originating endpoints.'},
+  {ref:'ASF-002',risk:'Critical',type:'Unauthenticated SQL Injection',eng:'External Web Application Assessment',env:'Production',surface:'Web Application / URL Parameter',cvss:'9.8',status:'Remediated',chain:'URL-delivered parameter passed directly into SQL query without parameterization. Automated extraction confirmed 24 internal databases accessible without any authentication.',steps:['Identified URL parameter exhibiting irregular response behavior on the target application','Confirmed SQL injection through boolean differential testing','Automated extraction using SQL injection framework to enumerate all available database schemas','Confirmed access to 24 internal databases including administrative and operational data stores'],impact:'Full unauthenticated access to 24 internal database schemas. Data extraction, modification, and potential RCE through database-level features.',business:'Severe regulatory exposure from unauthorized access to sensitive organizational data. Risk of mass data breach and credential theft without any user interaction.',remediation:'Implement parameterized queries throughout. Remove all direct concatenation of user input into SQL. Deploy WAF with SQL injection signature detection as defense-in-depth.'},
+  {ref:'ASF-003',risk:'Critical',type:'Authentication Bypass → ATO',eng:'External Web Application Assessment',env:'Production',surface:'Authentication / Password Reset Flow',cvss:'9.8',status:'Remediated',chain:'Password reset workflow accepts a target account identifier without binding the operation to the requesting authenticated session. Any actor with a known target email can reset credentials for any account.',steps:['Analyzed the authentication flow and identified the password reset mechanism','Intercepted a legitimate reset request and examined the parameter structure','Identified target account identifier as an unvalidated user-supplied parameter','Submitted a crafted reset request with a victim account identifier from an unrelated session','Confirmed successful credential reset for the victim account and full access'],impact:'Full account takeover for any registered user. Requires only a known email address, enabling mass compromise at scale.',business:'Complete authentication control failure. Exposes all user accounts to unauthorized access with potential mass compromise and regulatory penalties.',remediation:'Bind all password reset operations to the authenticated session. Verify session owner matches reset target. Require current credentials or fresh OTP. Invalidate all sessions on password change.'},
+  {ref:'ASF-004',risk:'Critical',type:'ORM-Layer SQL Injection',eng:'Internal Code Review + Functional Testing',env:'Production',surface:'Application ORM / API Filter Layer',cvss:'9.5',status:'Mitigated',chain:'ORM query assembly uses unsafe string formatting for connector value reachable via user-supplied API filter input. Injecting a crafted connector payload restructures the SQL WHERE clause, bypassing all intended access control logic.',steps:['Code review identified unsafe string formatting in ORM query assembly method','Confirmed connector parameter reachable through user-supplied API filter via dictionary unpacking','Constructed payload with malicious connector value containing SQL injection syntax','Submitted payload through API filter interface','Observed reconstructed WHERE clause bypassing all intended filters','Confirmed retrieval of privileged user records inaccessible to the requesting session'],impact:'Complete access control bypass. All records in queried table retrievable regardless of intended filter logic. Admin accounts confirmed exfiltrated in testing.',business:'Full defeat of application-layer access control. Any user retrieves any record from affected models, enabling mass data exfiltration and unauthorized administrative access.',remediation:'Validate connector against strict allowlist before formatting. Prohibit unvalidated dictionary unpacking as query parameter source. Apply patch to ORM WHERE clause assembly method.'},
+  {ref:'ASF-005',risk:'Critical',type:'Path Traversal → RCE',eng:'Internal Infrastructure Assessment',env:'Production / Internal Lab',surface:'File Transfer Protocol Handler',cvss:'9.1',status:'Mitigated',chain:'Directory traversal in SFTP QUOTE command processing exploited to write arbitrary files outside the user designated directory. Chained with SSH key injection to achieve persistent unauthenticated RCE.',steps:['Identified SFTP service accepting protocol-level rename commands with unsanitized path arguments','Confirmed absence of ../ traversal sanitization in file path resolution function','Issued rename command with traversal sequences to move a file outside the home directory','Validated successful write to a target directory outside authorized scope','Demonstrated RCE path by constructing an authorized_keys overwrite payload'],impact:'Persistent unauthorized RCE on the affected server. Any file writable by the service account can be overwritten, enabling backdoor installation and lateral movement.',business:'Full server compromise with persistent attacker access. Risk of lateral movement to connected internal systems and potential for data destruction.',remediation:'Sanitize all QUOTE command path arguments to reject traversal sequences. Apply OS-level chroot jail for SFTP sessions. Implement allowlist-based path validation.'},
+  {ref:'ASF-006',risk:'High',type:'Stored Mutation XSS',eng:'External Web Application Assessment',env:'Production',surface:'Rich Text Editor / Content Management',cvss:'8.2',status:'Remediated',chain:'Mutation-based XSS constructed using DOM parsing differential between sanitization and rendering phases. MathML namespace chain bypasses integrated sanitization. Malicious content stored in DB executes in every viewer session.',steps:['Identified rich text editor accepting HTML content with client-side sanitization','Researched known mutation XSS bypass vectors for the integrated library version','Constructed payload using MathML mutation chain surviving sanitization but mutating on render','Stored payload through standard editor content submission flow','Confirmed JavaScript execution in separate victim session upon content retrieval'],impact:'Persistent JavaScript execution in context of any user viewing affected content. Session token theft, credential harvesting, unauthorized actions possible.',business:'Stored XSS in CMS exposes all users including administrators to session hijacking and account takeover with no interaction required beyond normal usage.',remediation:'Update rich text editor and sanitization dependency to a patched version. Implement server-side HTML sanitization as second layer. Enforce strict Content Security Policy.'},
+  {ref:'ASF-007',risk:'High',type:'Blind SSRF',eng:'External API Security Assessment',env:'Production',surface:'REST API / Webhook Integration Layer',cvss:'8.1',status:'Remediated',chain:'Outbound request functionality exploited to redirect server-side HTTP requests to attacker infrastructure, enabling internal network service enumeration and cloud metadata endpoint access.',steps:['API reconnaissance identified webhook endpoint accepting arbitrary URL parameter','Supplied out-of-band listener URL as webhook target','Confirmed server-initiated outbound HTTP request from target server IP','Enumerated cloud metadata service endpoints through SSRF channel','Demonstrated access to internal API endpoints not exposed externally'],impact:'Internal network service discovery, cloud IAM credential access, internal API surface enumeration, and pivot point for chaining attacks against non-public services.',business:'Cloud IAM credential exposure could enable full cloud environment takeover. Internal service access breaks network segmentation and expands attack surface.',remediation:'Validate all URL parameters against explicit allowlist. Block outbound requests to private IP ranges and cloud metadata endpoints. Implement deny-by-default egress policy.'},
+  {ref:'ASF-008',risk:'High',type:'Boolean-Based Blind SQLi',eng:'External API Security Assessment',env:'Production',surface:'REST API / Path Parameter',cvss:'8.0',status:'Remediated',chain:'URL path segment passed unsanitized to database query. Boolean differential responses confirm injection. Database engine and version fingerprinted. Full extraction achievable without authentication.',steps:['Identified REST API endpoint with numeric path parameters','Appended SQL operator sequences to path segment','Observed differential server responses confirming boolean-based injection','Fingerprinted database engine and version through inference','Validated complete data extraction capability through automated boolean enumeration'],impact:'Full database content accessible through boolean-based extraction. Database engine fingerprinted. Complete user record exfiltration achievable without authentication.',business:'Unauthorized access to entire application database. Risk of mass user data exfiltration and regulatory penalties for failure to protect customer data.',remediation:'Implement parameterized queries for all database interactions. Enforce strict type constraints on all URL path parameters. Apply input allowlisting at routing layer.'},
+  {ref:'ASF-009',risk:'High',type:'Out-of-Band XXE',eng:'Internal Service Security Audit',env:'Production',surface:'Data Ingestion Service / XML Parser',cvss:'7.7',status:'Remediated',chain:'XML processing pipeline parses external documents with entity resolution enabled. Attacker-supplied XML containing external DTD reference triggers OOB requests from the server, exfiltrating internal host information.',steps:['Identified XML-based data ingestion endpoint during service enumeration','Supplied crafted XML document with external DTD reference pointing to attacker infrastructure','Attacker server received OOB HTTP request containing internal hostname data','Demonstrated exfiltration of server internal hostname','Assessed potential for multi-line file read and cloud metadata access as escalation paths'],impact:'Internal host identifier exfiltration confirmed. Escalation path to cloud IAM credentials identified pending multi-line file read bypass.',business:'Exposure of internal infrastructure topology and potential cloud credential leakage. IAM access could enable cloud environment takeover.',remediation:'Disable external entity processing in XML parser. Validate all XML inputs against schema before processing. Restrict outbound connectivity from ingestion service.'},
+  {ref:'ASF-010',risk:'High',type:'BOLA / IDOR',eng:'External API Security Assessment',env:'Production',surface:'Account Management API',cvss:'7.5',status:'Remediated',chain:'Account management endpoint accepts user identifier in request body without server-side ownership verification. Any authenticated user modifies arbitrary account profile data by substituting target identifier.',steps:['Enumerated API endpoints and identified account update endpoint','Captured authenticated profile update request and analyzed JSON structure','Identified user identifier parameter with no server-side validation','Substituted attacker account ID with victim account ID in request body','Confirmed successful modification of victim profile data without authorization error'],impact:'Silent modification of any platform user profile data. Username, address, phone number, company name all modifiable without victim notification.',business:'Regulatory exposure for unauthorized data modification. Trust and reputation risk if clients discover organizational data has been altered without authorization.',remediation:'Implement server-side ownership validation on every object-level operation. Extract target user ID from authenticated session, not user input. Return 403 on ownership mismatch.'}
 ];
 
 function openModal(id){
-  const d=mdata[id];
-  const sc=d.risk==='Critical'?'var(--accent3)':'var(--accent4)';
+  const d=MD[id];
+  const sc=d.risk==='Critical'?'var(--red)':'var(--blue)';
   document.getElementById('mhdr').innerHTML=`
     <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap">
       <div>
-        <div style="font-size:.56rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:.35rem">${d.ref} · ${d.type}</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600;line-height:1.3">${d.title}</div>
+        <div style="font-family:var(--mono);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:.35rem">${d.ref} · ${d.type}</div>
+        <div style="font-family:var(--font);font-size:1rem;font-weight:600;line-height:1.3">${d.title||''}</div>
       </div>
-      <span style="padding:.2rem .6rem;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:${sc};border:1px solid ${sc};background:${sc}1a;flex-shrink:0">${d.risk}</span>
+      <span style="padding:.2rem .6rem;font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:${sc};border:1px solid ${sc};background:${sc}1a;flex-shrink:0;border-radius:var(--r4)">${d.risk}</span>
     </div>
     <div class="mrow" style="margin-top:1rem;margin-bottom:0">
-      <div class="mf"><label>Engagement Type</label><span>${d.eng}</span></div>
+      <div class="mf"><label>Engagement</label><span>${d.eng}</span></div>
       <div class="mf"><label>Environment</label><span>${d.env}</span></div>
       <div class="mf"><label>CVSS v3.1</label><span style="color:${sc}">${d.cvss}</span></div>
     </div>
     <div class="mrow" style="margin-bottom:0">
-      <div class="mf"><label>Attack Surface</label><span>${d.surface}</span></div>
+      <div class="mf"><label>Attack Surface</label><span style="color:var(--accent);font-size:.65rem">${d.surface}</span></div>
       <div class="mf"><label>Status</label><span style="color:var(--accent)">${d.status}</span></div>
     </div>`;
   document.getElementById('mbdy').innerHTML=`
@@ -663,7 +1384,81 @@ function closeMod(e){if(e.target===document.getElementById('mover'))closeModD()}
 function closeModD(){document.getElementById('mover').classList.remove('open');document.body.style.overflow=''}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModD()});
 
-// FILTER
+/* LANG */
+let lang='en';
+function setLang(l){
+  lang=l;const t=T[l];const isAr=l==='ar';
+  document.documentElement.lang=l;
+  document.documentElement.dir=isAr?'rtl':'ltr';
+  document.body.classList.toggle('ar',isAr);
+  document.getElementById('btn-en').classList.toggle('on',!isAr);
+  document.getElementById('btn-ar').classList.toggle('on',isAr);
+  document.getElementById('logo-tag').textContent=t.logoTag;
+  const nls=document.querySelectorAll('#navLinks a');
+  t.nl.forEach((s,i)=>{if(nls[i])nls[i].textContent=s});
+  document.getElementById('nav-hire-txt').textContent=t.navHire;
+  document.getElementById('fh-txt').textContent=t.fhTxt;
+  document.getElementById('status-txt').textContent=t.statusTxt;
+  document.getElementById('hero-role').textContent=t.heroRole;
+  document.getElementById('hero-desc').textContent=t.heroDesc;
+  ['hs1','hs2','hs3','hs4'].forEach((id,i)=>document.getElementById(id).textContent=t.hs[i]);
+  document.getElementById('btn1-txt').textContent=t.btn1;
+  document.getElementById('btn2-txt').textContent=t.btn2;
+  document.getElementById('sec-svc-title').textContent=t.secSvcTitle;
+  document.getElementById('sec-svc-sub').textContent=t.secSvcSub;
+  t.svcs.forEach((s,i)=>{
+    const n=i+1;
+    document.getElementById('s'+n+'n').textContent=s.n;
+    document.getElementById('s'+n+'name').textContent=s.name;
+    document.getElementById('s'+n+'desc').textContent=s.desc;
+  });
+  document.getElementById('sec-meth-title').textContent=t.secMethTitle;
+  document.getElementById('sec-meth-sub').textContent=t.secMethSub;
+  t.meths.forEach((m,i)=>{
+    const n=i+1;
+    document.getElementById('ms'+n+'p').textContent=m.p;
+    document.getElementById('ms'+n+'n').textContent=m.n;
+    document.getElementById('ms'+n+'d').textContent=m.d;
+  });
+  document.getElementById('ops-label').textContent=t.opsLabel;
+  t.ops.forEach((o,i)=>document.getElementById('op'+(i+1)).textContent=o);
+  document.getElementById('sec-sk-title').textContent=t.secSkTitle;
+  document.getElementById('sec-sk-sub').textContent=t.secSkSub;
+  t.sks.forEach((s,i)=>{document.getElementById('sk'+(i+1)).textContent=s;document.getElementById('sk'+(i+1)+'d').textContent=t.skds[i];document.getElementById('sk'+(i+1)+'l').textContent=t.skls[i]});
+  document.getElementById('sec-exp-title').textContent=t.secExpTitle;
+  document.getElementById('sec-exp-sub').textContent=t.secExpSub;
+  document.getElementById('exp-role').textContent=t.expRole;
+  document.getElementById('exp-org').textContent=t.expOrg;
+  document.getElementById('exp-pts').innerHTML=t.expPts.map(p=>`<li>${p}</li>`).join('');
+  document.getElementById('sec-find-title').textContent=t.secFindTitle;
+  document.getElementById('sec-find-sub').textContent=t.secFindSub;
+  document.getElementById('find-note').innerHTML=t.findNote;
+  document.getElementById('fb-all').textContent=t.fbAll;
+  document.getElementById('fb-w').textContent=t.fbW;
+  document.getElementById('fb-n').textContent=t.fbN;
+  document.getElementById('fb-ad').textContent=t.fbAD;
+  document.getElementById('fb-api').textContent=t.fbAPI;
+  document.getElementById('sec-res-title').textContent=t.secResTitle;
+  document.getElementById('sec-res-sub').textContent=t.secResSub;
+  t.res.forEach((r,i)=>{document.getElementById('r'+(i+1)+'n').textContent=r.n;document.getElementById('r'+(i+1)+'d').textContent=r.d});
+  document.getElementById('cur-res-label').textContent=t.curResLabel;
+  t.cr.forEach((r,i)=>{document.getElementById('cr'+(i+1)+'n').textContent=r.n;document.getElementById('cr'+(i+1)+'d').textContent=r.d});
+  document.getElementById('sec-imp-title').textContent=t.secImpTitle;
+  document.getElementById('sec-imp-sub').textContent=t.secImpSub;
+  t.achs.forEach((a,i)=>document.getElementById('ach'+(i+1)).textContent=a);
+  document.getElementById('cert-label').textContent=t.certLabel;
+  t.certs.forEach((c,i)=>document.getElementById('c'+(i+1)).textContent=c);
+  document.getElementById('c6n').textContent=t.c6n;
+  document.getElementById('sec-con-title').textContent=t.secConTitle;
+  document.getElementById('sec-con-sub').textContent=t.secConSub;
+  document.getElementById('con-desc').innerHTML=t.conDesc.replace('\n\n','<br><br>');
+  document.getElementById('con-loc').textContent=t.conLoc;
+  document.getElementById('foot-txt').textContent=t.footTxt;
+  document.getElementById('foot-nda').textContent=t.footNda;
+  document.getElementById('foot-contact').textContent=t.footCon;
+}
+
+/* FILTER */
 document.querySelectorAll('.fbtn').forEach(b=>{
   b.addEventListener('click',function(){
     document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));
@@ -675,40 +1470,47 @@ document.querySelectorAll('.fbtn').forEach(b=>{
   });
 });
 
-// CURSOR
-const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+/* CURSOR */
+const csr=document.getElementById('csr'),ring=document.getElementById('csr-ring');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
-(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=Math.round(rx)+'px';ring.style.top=Math.round(ry)+'px';requestAnimationFrame(a)})();
-document.querySelectorAll('a,button,.frow,.tag,.fbtn,.meth-card,.ops-card,.res-card,.ac').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cur.classList.add('h');ring.classList.add('h')});
-  el.addEventListener('mouseleave',()=>{cur.classList.remove('h');ring.classList.remove('h')});
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;csr.style.left=mx+'px';csr.style.top=my+'px'});
+(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=Math.round(rx)+'px';ring.style.top=Math.round(ry)+'px';requestAnimationFrame(anim)})();
+document.querySelectorAll('a,button,.svc-card,.ops-card,.res-card,.ach-card,.cc,.meth-card,.frow,.sk-card,.tag').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{csr.classList.add('big');ring.classList.add('big')});
+  el.addEventListener('mouseleave',()=>{csr.classList.remove('big');ring.classList.remove('big')});
 });
 
-// NAV
-document.getElementById('nb').addEventListener('click',()=>document.getElementById('nl').classList.toggle('open'));
+/* NAV burger */
+document.getElementById('navBurger').addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('open'));
 
-// SCROLL REVEAL
+/* NAV scroll */
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav').classList.toggle('scrolled',scrollY>20);
+  document.getElementById('floatHire').classList.toggle('show',scrollY>400);
+});
+
+/* SCROLL REVEAL */
 const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');obs.unobserve(x.target)}})},{threshold:.07});
-document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+document.querySelectorAll('.rv,.rv-l').forEach(el=>obs.observe(el));
 
-// COUNT UP
-const cobs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)countUp(x.target)})},{threshold:.5});
+/* COUNT UP */
+const cobs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)cu(x.target)})},{threshold:.5});
 document.querySelectorAll('[data-count]').forEach(el=>cobs.observe(el));
-function countUp(el){
+function cu(el){
   if(el.dataset.done)return;el.dataset.done=1;
-  const t=parseInt(el.dataset.count),s=el.dataset.suffix||'';
+  const t=parseInt(el.dataset.count),s=el.dataset.suf||'';
   let c=0;const step=t/55;
   const tm=setInterval(()=>{c=Math.min(c+step,t);el.textContent=Math.floor(c)+s;if(c>=t)clearInterval(tm)},18);
 }
 
-// SKILL BARS
-const bobs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){setTimeout(()=>{x.target.style.width=x.target.dataset.w+'%'},200);bobs.unobserve(x.target)}})},{threshold:.3});
-document.querySelectorAll('.skfill').forEach(b=>bobs.observe(b));
+/* SKILL BARS */
+const bobs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){setTimeout(()=>{x.target.style.width=x.target.dataset.w+'%'},250);bobs.unobserve(x.target)}})},{threshold:.3});
+document.querySelectorAll('.sk-fill').forEach(b=>bobs.observe(b));
 
-// CVSS BARS
-const cvobs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.querySelectorAll('.cvss-f').forEach(f=>{const v=parseFloat(f.dataset.cvss);setTimeout(()=>{f.style.width=(v/10*100)+'%'},350)});cvobs.unobserve(x.target)}})},{threshold:.1});
-document.getElementById('ftable')&&cvobs.observe(document.getElementById('ftable'));
+/* CVSS BARS */
+const cvobs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.querySelectorAll('.cvss-f').forEach(f=>{const v=parseFloat(f.dataset.cvss);setTimeout(()=>{f.style.width=(v/10*100)+'%'},400)});cvobs.unobserve(x.target)}})},{threshold:.05});
+const ftable=document.getElementById('ftable');
+if(ftable)cvobs.observe(ftable);
 </script>
 </body>
 </html>
