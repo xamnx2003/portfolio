@@ -297,6 +297,8 @@ body.ar .sec-t{font-family:var(--ar);font-weight:700;letter-spacing:0;color:var(
 body.ar .sec-s{font-family:var(--ar);font-size:.8rem;color:var(--tx2-ar);line-height:1.8}
 
 .div{border:none;border-top:1px solid var(--bd);position:relative;z-index:1}
+/* Alternate section subtle tint */
+#methodology,#findings,#impact{background:linear-gradient(180deg,var(--bg2) 0%,var(--bg) 100%);position:relative}
 
 /* ══ REVEAL ══ */
 .rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
@@ -321,18 +323,50 @@ body.ar .sec-s{font-family:var(--ar);font-size:.8rem;color:var(--tx2-ar);line-he
   color:var(--tx3);white-space:nowrap;flex-shrink:0;
 }
 body.ar .cert-strip-label{font-family:var(--ar);font-size:.66rem;letter-spacing:0;text-transform:none}
-.cert-pills{display:flex;flex-wrap:wrap;gap:.6rem;flex:1}
+.cert-pills{display:flex;flex-wrap:wrap;gap:.7rem;flex:1}
 .cert-pill{
-  display:flex;align-items:center;gap:.5rem;
-  padding:.38rem .85rem;
-  border:1px solid var(--bd);border-radius:100px;
+  display:flex;align-items:center;gap:.85rem;
+  padding:.7rem 1.1rem;
+  border:1px solid var(--bd);border-radius:10px;
   background:var(--s2);
-  font-family:var(--mono);font-size:.58rem;letter-spacing:.06em;
-  color:var(--tx2);transition:all .22s;
+  transition:all .25s;cursor:default;
+  position:relative;overflow:hidden;
 }
-.cert-pill:hover{border-color:var(--bda);color:var(--a0);background:rgba(0,255,179,.06)}
-.cert-pill i{font-size:.9rem;color:var(--a0)}
-body.ar .cert-pill{font-family:var(--ar);font-size:.72rem;letter-spacing:0;color:var(--tx2-ar)}
+.cert-pill::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,var(--a0),var(--a1));
+  transform:scaleY(0);transition:transform .3s cubic-bezier(.16,1,.3,1);transform-origin:bottom;
+}
+.cert-pill:hover::before{transform:scaleY(1)}
+.cert-pill:hover{border-color:var(--bda);background:rgba(0,255,157,.04);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.2)}
+.cert-icon-wrap{
+  width:34px;height:34px;border-radius:8px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;border:1px solid;transition:all .25s;
+}
+.cert-icon-wrap.ci-green{background:rgba(0,255,157,.08);color:var(--a0);border-color:rgba(0,255,157,.18)}
+.cert-icon-wrap.ci-cyan{background:rgba(0,217,255,.08);color:var(--a1);border-color:rgba(0,217,255,.18)}
+.cert-icon-wrap.ci-purple{background:rgba(139,92,246,.1);color:var(--a2);border-color:rgba(139,92,246,.2)}
+.cert-icon-wrap.ci-amber{background:rgba(245,158,11,.08);color:var(--a4);border-color:rgba(245,158,11,.18)}
+.cert-pill:hover .cert-icon-wrap{transform:scale(1.08)}
+.cert-text-block{display:flex;flex-direction:column;gap:.18rem}
+.cert-abbr{
+  font-family:var(--mono);font-size:.62rem;font-weight:600;
+  letter-spacing:.06em;color:var(--tx);line-height:1;
+  transition:color .25s;
+}
+.cert-pill:hover .cert-abbr{color:var(--a0)}
+.cert-fullname{
+  font-family:var(--f);font-size:.6rem;color:var(--tx2);
+  line-height:1.3;font-weight:400;
+}
+.cert-domain{
+  font-family:var(--mono);font-size:.5rem;letter-spacing:.04em;
+  color:var(--tx3);line-height:1.2;
+}
+body.ar .cert-abbr{font-family:var(--mono);color:var(--tx-ar)}
+body.ar .cert-fullname{font-family:var(--ar);font-size:.66rem;color:var(--tx2-ar)}
+body.ar .cert-domain{font-family:var(--ar);font-size:.56rem;letter-spacing:0;color:var(--tx3)}
 
 /* ══════════════════════════════════════════════
    SERVICES
@@ -345,14 +379,16 @@ body.ar .cert-pill{font-family:var(--ar);font-size:.72rem;letter-spacing:0;color
 @media(max-width:580px){.svc-grid{grid-template-columns:1fr}}
 .svc{
   background:var(--s1);padding:2rem;
-  position:relative;overflow:hidden;transition:background .25s;
+  position:relative;overflow:hidden;
+  transition:background .3s,box-shadow .3s;
   display:flex;flex-direction:column;gap:.8rem;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
 }
 .svc::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--a0),transparent);opacity:0;transition:opacity .4s;background-size:200% 100%;animation:none}
 .svc:hover::after{opacity:1;animation:borderScan 1.8s ease-in-out}
 @keyframes borderScan{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .svc:hover::after{opacity:1}
-.svc:hover{background:var(--s2)}
+.svc:hover{background:var(--s2);box-shadow:0 4px 20px rgba(0,0,0,.15)}
 .svc-n{font-family:var(--mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--tx3)}
 .svc-ico{
   width:44px;height:44px;border:1px solid var(--bda);border-radius:10px;
@@ -406,7 +442,8 @@ body.ar .meth-badge{font-family:var(--ar);font-size:.58rem;letter-spacing:0;text
 .ops-tool{
   display:flex;align-items:center;gap:.85rem;
   padding:.9rem 1rem;border:1px solid var(--bd);background:var(--s1);border-radius:8px;
-  transition:all .22s;
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 1px 3px rgba(0,0,0,.15);
 }
 .ops-tool:hover{border-color:var(--bda);background:var(--s2);transform:translateX(4px);box-shadow:0 4px 20px rgba(0,255,157,.05)}
 body.ar .ops-tool:hover{transform:translateX(-4px)}
@@ -422,7 +459,7 @@ body.ar .ops-tool-d{font-family:var(--ar);font-size:.64rem;letter-spacing:0;line
 .sk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:14px;overflow:hidden}
 @media(max-width:900px){.sk-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.sk-grid{grid-template-columns:1fr}}
-.skc{background:var(--s1);padding:1.6rem;position:relative;overflow:hidden;transition:background .22s}
+.skc{background:var(--s1);padding:1.6rem;position:relative;overflow:hidden;transition:background .3s,box-shadow .3s;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
 .skc::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--a0),var(--a1));opacity:0;transform:scaleX(0);transition:opacity .3s,transform .4s ease;transform-origin:left}
 .skc:hover::after{opacity:1;transform:scaleX(1)}
 .skc:hover{background:var(--s2)}
@@ -492,7 +529,9 @@ body.ar .fb{font-family:var(--ar);font-size:.64rem;letter-spacing:0;text-transfo
 .find-card{
   background:var(--s1);border:1px solid var(--bd);border-radius:10px;
   padding:1.4rem;display:flex;flex-direction:column;gap:.7rem;
-  transition:all .25s;position:relative;overflow:hidden;cursor:default;
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+  position:relative;overflow:hidden;cursor:default;
+  box-shadow:0 1px 3px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.025);
 }
 .find-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--a3);transform:scaleY(0);transition:transform .35s cubic-bezier(.16,1,.3,1);transform-origin:top}
 .find-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,77,109,.5),transparent);transform:scaleX(0);transition:transform .5s ease;transform-origin:left}
@@ -502,7 +541,7 @@ body.ar .fb{font-family:var(--ar);font-size:.64rem;letter-spacing:0;text-transfo
 .find-card.high::before{background:var(--a1)}
 .find-card.ad-card::before{background:var(--a2)}
 .find-card:hover::before{transform:scaleY(1)}
-.find-card:hover{border-color:rgba(255,255,255,.1);background:var(--s2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.3)}
+.find-card:hover{border-color:rgba(255,255,255,.1);background:var(--s2);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.3),0 4px 12px rgba(0,0,0,.2)}
 .find-card:not(.high):not(.ad-card):hover{box-shadow:0 8px 32px rgba(255,77,109,.08),0 4px 16px rgba(0,0,0,.3)}
 .find-card.high:hover{box-shadow:0 8px 32px rgba(0,217,255,.08),0 4px 16px rgba(0,0,0,.3)}
 .find-card.ad-card:hover{box-shadow:0 8px 32px rgba(139,92,246,.1),0 4px 16px rgba(0,0,0,.3)}
@@ -552,22 +591,23 @@ body.ar .view-btn{font-family:var(--ar);font-size:.64rem;letter-spacing:0}
 .mov{display:none;position:fixed;inset:0;z-index:500;background:rgba(3,5,8,.9);backdrop-filter:blur(16px);align-items:center;justify-content:center;padding:1rem}
 .mov.open{display:flex}
 .mb{background:var(--s1);border:1px solid var(--bd);border-radius:14px;max-width:740px;width:100%;max-height:92vh;overflow-y:auto;position:relative;animation:mup .22s ease}
-@keyframes mup{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes mup{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes mdown{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(12px) scale(.98)}}
 .mc{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--tx2);font-size:1.2rem;cursor:none;transition:color .2s;z-index:1}
 .mc:hover{color:var(--a0)}
 .mh{padding:2rem 2.2rem 1.3rem;border-bottom:1px solid var(--bd)}
-.mbd{padding:1.5rem 2.2rem 2.2rem}
+.mbd{padding:1.6rem 2.2rem 2.4rem}
 .mrow{display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:1rem}
 .mf{flex:1;min-width:110px}
 .mf label{display:block;font-family:var(--mono);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--tx3);margin-bottom:.25rem}
 .mf span{font-size:.72rem;color:var(--tx)}
-.ms{margin-bottom:1.4rem}
+.ms{margin-bottom:1.6rem;padding-bottom:.2rem}
 .ms h4{font-family:var(--fd);font-size:.72rem;font-weight:600;color:var(--a0);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.55rem;display:flex;align-items:center;gap:.38rem}
 body.ar .ms h4{font-family:var(--ar);font-size:.8rem;letter-spacing:0;text-transform:none;font-weight:700;color:var(--a0)}
-.ms p{font-size:.73rem;color:var(--tx2);line-height:1.88}
+.ms p{font-size:.74rem;color:var(--tx2);line-height:1.95;letter-spacing:.01em}
 body.ar .ms p{font-family:var(--ar);font-size:.82rem;line-height:2.2;color:var(--tx2-ar)}
 .msteps{list-style:none;counter-reset:st}
-.msteps li{counter-increment:st;display:flex;gap:.75rem;font-size:.73rem;color:var(--tx2);padding:.44rem 0;border-bottom:1px solid rgba(255,255,255,.04);line-height:1.65}
+.msteps li{counter-increment:st;display:flex;gap:.75rem;font-size:.74rem;color:var(--tx2);padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.04);line-height:1.72}
 .msteps li:last-child{border:none}
 .msteps li::before{content:counter(st);min-width:22px;height:22px;display:flex;align-items:center;justify-content:center;background:rgba(0,255,179,.08);border:1px solid var(--bda);font-family:var(--mono);font-size:.54rem;color:var(--a0);flex-shrink:0;margin-top:.08rem;border-radius:4px}
 body.ar .msteps li{font-family:var(--ar);font-size:.82rem;line-height:2;color:var(--tx2-ar)}
@@ -616,7 +656,9 @@ body.ar .msteps li{font-family:var(--ar);font-size:.82rem;line-height:2;color:va
 .res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.7rem}
 .res-c{
   padding:1.3rem;border:1px solid var(--bd);background:var(--s1);border-radius:8px;
-  position:relative;overflow:hidden;transition:all .25s;cursor:default;
+  position:relative;overflow:hidden;
+  transition:all .3s cubic-bezier(.4,0,.2,1);cursor:default;
+  box-shadow:0 1px 3px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.02);
 }
 .res-c:hover{border-color:rgba(139,92,246,.25);background:var(--s2);transform:translateY(-2px);box-shadow:0 6px 24px rgba(139,92,246,.08)}
 .res-c::after{content:'ACTIVE';position:absolute;top:.7rem;right:.8rem;font-family:var(--mono);font-size:.44rem;letter-spacing:.14em;padding:.14rem .38rem;border:1px solid rgba(139,92,246,.25);color:var(--a2);background:rgba(139,92,246,.08);border-radius:3px}
@@ -632,7 +674,9 @@ body.ar .res-ds{font-family:var(--ar);font-size:.7rem;line-height:1.9}
 .ach-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:.7rem}
 .ach-c{
   padding:1.5rem;border:1px solid var(--bd);background:var(--s1);border-radius:8px;
-  position:relative;overflow:hidden;transition:all .25s;cursor:default;
+  position:relative;overflow:hidden;
+  transition:all .3s cubic-bezier(.4,0,.2,1);cursor:default;
+  box-shadow:0 1px 3px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.025);
 }
 .ach-c:hover{border-color:rgba(0,255,157,.18);transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,.2),0 0 0 1px rgba(0,255,157,.06)}
 .ach-v{font-family:var(--fd);font-size:2.4rem;font-weight:700;color:var(--a0);line-height:1;margin-bottom:.45rem}
@@ -711,11 +755,21 @@ body.ar .f-links a{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-
   .hsc-item:nth-child(even){border-right:none}
   .hsc-item:nth-child(3),.hsc-item:nth-child(4){border-top:1px solid var(--bd)}
   .sec{padding:4rem 1.4rem}
+  /* Cert pills on mobile — stack 2 per row */
   .cert-strip{padding:1.4rem}
-  .cert-strip-inner{gap:1.2rem}
+  .cert-strip-inner{gap:1rem;flex-direction:column}
+  .cert-pills{gap:.5rem}
+  .cert-pill{padding:.6rem .9rem;gap:.7rem}
+  .cert-icon-wrap{width:30px;height:30px;font-size:.9rem}
+  .cert-fullname{font-size:.58rem}
+  .cert-domain{display:none}
+  /* Finds */
   .finds-grid{grid-template-columns:1fr}
-  .mh,.mbd{padding:1.2rem 1.4rem}
+  /* Modal */
+  .mh,.mbd{padding:1.2rem 1.2rem}
   .mrow{flex-direction:column;gap:.7rem}
+  .mrow .mf{min-width:unset}
+  /* Misc */
   footer{flex-direction:column;align-items:flex-start;padding:1.8rem 1.4rem}
   .logo-sub{display:none}
   .fcta{bottom:1.2rem;right:1.2rem;padding:.6rem 1.1rem;font-size:.54rem}
@@ -723,11 +777,17 @@ body.ar .f-links a{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-
   .sk-grid{grid-template-columns:1fr 1fr}
   .svc-grid{grid-template-columns:1fr}
   body.ar .tl-pts li{font-size:.82rem;line-height:2.1}
+  /* Text readability on mobile */
+  .ms p{font-size:.78rem;line-height:2}
+  .msteps li{font-size:.76rem}
+  .fc-short{font-size:.68rem;line-height:1.8}
+  .fc-title{font-size:.85rem}
 }
 @media(max-width:420px){
   .sk-grid{grid-template-columns:1fr}
   .hero-name{font-size:2.6rem}
   .finds-grid{grid-template-columns:1fr}
+  .cert-pills{grid-template-columns:1fr 1fr;display:grid}
 }
 </style>
 </head>
@@ -817,12 +877,54 @@ body.ar .f-links a{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-
   <div class="cert-strip-inner">
     <span class="cert-strip-label" id="cert-label">Certifications</span>
     <div class="cert-pills">
-      <div class="cert-pill"><i class="ti ti-certificate"></i><span>CRPO</span></div>
-      <div class="cert-pill"><i class="ti ti-certificate"></i><span>CCEP</span></div>
-      <div class="cert-pill"><i class="ti ti-certificate"></i><span>CCSC</span></div>
-      <div class="cert-pill"><i class="ti ti-certificate"></i><span>CSCSO</span></div>
-      <div class="cert-pill"><i class="ti ti-shield"></i><span>ISSA Member</span></div>
-      <div class="cert-pill"><i class="ti ti-flask"></i><span id="c6n">Ongoing Research</span></div>
+      <div class="cert-pill">
+        <div class="cert-icon-wrap ci-green"><i class="ti ti-certificate"></i></div>
+        <div class="cert-text-block">
+          <span class="cert-abbr">CRPO</span>
+          <span class="cert-fullname" id="cert-crpo-full">Certified Red Team Professional Operator</span>
+          <span class="cert-domain" id="cert-crpo-dom">Red Team · Adversary Simulation</span>
+        </div>
+      </div>
+      <div class="cert-pill">
+        <div class="cert-icon-wrap ci-cyan"><i class="ti ti-certificate"></i></div>
+        <div class="cert-text-block">
+          <span class="cert-abbr">CCEP</span>
+          <span class="cert-fullname" id="cert-ccep-full">Certified Cybersecurity Expert Practitioner</span>
+          <span class="cert-domain" id="cert-ccep-dom">Cybersecurity · Expert Level</span>
+        </div>
+      </div>
+      <div class="cert-pill">
+        <div class="cert-icon-wrap ci-cyan"><i class="ti ti-certificate"></i></div>
+        <div class="cert-text-block">
+          <span class="cert-abbr">CCSC</span>
+          <span class="cert-fullname" id="cert-ccsc-full">Certified Cyber Security Consultant</span>
+          <span class="cert-domain" id="cert-ccsc-dom">Security Consulting · Enterprise</span>
+        </div>
+      </div>
+      <div class="cert-pill">
+        <div class="cert-icon-wrap ci-purple"><i class="ti ti-certificate"></i></div>
+        <div class="cert-text-block">
+          <span class="cert-abbr">CSCSO</span>
+          <span class="cert-fullname" id="cert-cscso-full">Certified SOC & Cyber Security Operations</span>
+          <span class="cert-domain" id="cert-cscso-dom">SOC Operations · Incident Response</span>
+        </div>
+      </div>
+      <div class="cert-pill">
+        <div class="cert-icon-wrap ci-green"><i class="ti ti-shield"></i></div>
+        <div class="cert-text-block">
+          <span class="cert-abbr">ISSA</span>
+          <span class="cert-fullname" id="cert-issa-full">Information Systems Security Association</span>
+          <span class="cert-domain" id="cert-issa-dom">Professional Membership</span>
+        </div>
+      </div>
+      <div class="cert-pill">
+        <div class="cert-icon-wrap ci-amber"><i class="ti ti-flask"></i></div>
+        <div class="cert-text-block">
+          <span class="cert-abbr" id="c6n">Ongoing Research</span>
+          <span class="cert-fullname" id="cert-r6-full">Advanced Exploitation & Red Team Labs</span>
+          <span class="cert-domain" id="cert-r6-dom">Continuous Development</span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1417,6 +1519,29 @@ function setLang(l){
   document.getElementById('ft-con').textContent=t.ftCon;
   const vbs=document.querySelectorAll('.view-btn');
   vbs.forEach(b=>{const icon=b.querySelector('i');b.innerHTML='';b.appendChild(document.createTextNode(ar?'عرض التفاصيل ':' View Details'));b.appendChild(icon||document.createElement('i'));});
+  /* Update cert full names per language */
+  const certData=ar?{
+    crpoFull:'مشغّل فريق أحمر معتمد',crpoDom:'الفريق الأحمر · محاكاة الخصوم',
+    ccepFull:'خبير ممارس في الأمن السيبراني',ccepDom:'الأمن السيبراني · مستوى خبير',
+    ccscFull:'مستشار أمن سيبراني معتمد',ccscDom:'الاستشارات الأمنية · المؤسسات',
+    cscsoFull:'عمليات SOC والأمن السيبراني',ccscoDom:'عمليات مركز الأمن · الاستجابة للحوادث',
+    issaFull:'جمعية أمن نظم المعلومات',issaDom:'عضوية مهنية',
+    r6Full:'استغلال متقدم ومختبرات الفريق الأحمر',r6Dom:'تطوير مستمر'
+  }:{
+    crpoFull:'Certified Red Team Professional Operator',crpoDom:'Red Team · Adversary Simulation',
+    ccepFull:'Certified Cybersecurity Expert Practitioner',ccepDom:'Cybersecurity · Expert Level',
+    ccscFull:'Certified Cyber Security Consultant',ccscDom:'Security Consulting · Enterprise',
+    cscsoFull:'Certified SOC & Cyber Security Operations',ccscoDom:'SOC Operations · Incident Response',
+    issaFull:'Information Systems Security Association',issaDom:'Professional Membership',
+    r6Full:'Advanced Exploitation & Red Team Labs',r6Dom:'Continuous Development'
+  };
+  const setC=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  setC('cert-crpo-full',certData.crpoFull);setC('cert-crpo-dom',certData.crpoDom);
+  setC('cert-ccep-full',certData.ccepFull);setC('cert-ccep-dom',certData.ccepDom);
+  setC('cert-ccsc-full',certData.ccscFull);setC('cert-ccsc-dom',certData.ccscDom);
+  setC('cert-cscso-full',certData.cscsoFull);setC('cert-cscso-dom',certData.ccscoDom);
+  setC('cert-issa-full',certData.issaFull);setC('cert-issa-dom',certData.issaDom);
+  setC('cert-r6-full',certData.r6Full);setC('cert-r6-dom',certData.r6Dom);
 }
 
 function buildFlow(steps){
