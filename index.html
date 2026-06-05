@@ -3,7 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>AMN Security — Ayman Mahmoud Jasim</title>
+<title>Ayman Mahmoud Jasim — Senior Penetration Tester & Offensive Security Consultant | AMN Security</title>
+<meta name="description" content="Senior Penetration Tester and Offensive Security Consultant with 6+ years of enterprise security assessments. Red team operations, Active Directory attacks, web application pentesting, and cloud security. Iraq-based, serving clients worldwide.">
+<meta name="keywords" content="penetration tester, offensive security, red team, web application security, Active Directory attacks, cybersecurity consultant, Iraq, enterprise pentesting, AMN Security, Ayman Mahmoud Jasim">
+<meta name="author" content="Ayman Mahmoud Jasim">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ayman Mahmoud Jasim — Offensive Security Consultant | AMN Security">
+<meta property="og:description" content="Senior Penetration Tester with 6+ years of enterprise security assessments. 150+ clients worldwide. Red team operations and offensive security consulting.">
+<meta property="og:url" content="https://amn-security.com">
+<meta property="og:site_name" content="AMN Security">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ayman Mahmoud Jasim — Offensive Security Consultant">
+<meta name="twitter:description" content="Senior Penetration Tester with 6+ years. Red team operations, Active Directory attacks, web application pentesting.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Ayman Mahmoud Jasim","jobTitle":"Senior Penetration Tester & Offensive Security Consultant","description":"Offensive security specialist with 6+ years of enterprise penetration testing and red team operations.","email":"ayman.mahmoudoffsec@gmail.com","telephone":"+9647877716669","address":{"@type":"PostalAddress","addressCountry":"IQ"},"knowsAbout":["Penetration Testing","Red Team Operations","Active Directory Security","Web Application Security","Cloud Security","Offensive Security"],"brand":{"@type":"Brand","name":"AMN Security"}}</script>
 <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&family=IBM+Plex+Sans+Arabic:wght@300;400;600;700&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
@@ -46,6 +59,14 @@ body.ar .sec-t,body.ar .svc-name,body.ar .fc-title,body.ar .meth-nm,body.ar .sk-
 body.ar .tl-pts li{font-size:.85rem;line-height:2;color:var(--tx2-ar)}
 ::selection{background:rgba(0,255,157,0.16);color:var(--tx)}
 
+/* ══ SCROLL PROGRESS ══ */
+#scroll-bar{
+  position:fixed;top:0;left:0;height:2px;width:0%;z-index:9999;
+  background:linear-gradient(90deg,var(--a0),var(--a1));
+  transition:width .1s linear;
+  box-shadow:0 0 8px rgba(0,255,157,.4);
+}
+
 /* ══ CURSOR ══ */
 #dot{position:fixed;width:6px;height:6px;border-radius:50%;background:var(--a0);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .15s,height .15s;mix-blend-mode:screen}
 #ring{position:fixed;width:30px;height:30px;border-radius:50%;border:1px solid rgba(0,255,179,.3);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .12s,height .12s,border-color .12s}
@@ -70,6 +91,101 @@ body.ar .tl-pts li{font-size:.85rem;line-height:2;color:var(--tx2-ar)}
 ::-webkit-scrollbar-track{background:var(--bg2)}
 ::-webkit-scrollbar-thumb{background:var(--s3);border-radius:2px;transition:background .2s}
 ::-webkit-scrollbar-thumb:hover{background:var(--a0)}
+
+/* ══ RESUME MODAL ══ */
+.resume-overlay{
+  display:none;position:fixed;inset:0;z-index:600;
+  background:rgba(4,6,10,.94);backdrop-filter:blur(14px);
+  align-items:center;justify-content:center;padding:1.5rem;
+}
+.resume-overlay.open{display:flex}
+.resume-modal{
+  background:#f2efe9;color:#13161c;
+  border-radius:14px;max-width:860px;width:100%;
+  max-height:92vh;overflow-y:auto;position:relative;
+  animation:mup .25s ease;
+  font-family:'Outfit',sans-serif;
+}
+.resume-close{
+  position:absolute;top:1rem;right:1rem;z-index:10;
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(0,0,0,.12);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;color:#1a1e24;transition:all .2s;
+}
+.resume-close:hover{background:rgba(0,0,0,.22);transform:scale(1.1)}
+/* Resume print */
+.resume-print{
+  position:absolute;top:1rem;right:3.5rem;z-index:10;
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(0,0,0,.12);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;color:#1a1e24;transition:all .2s;
+}
+.resume-print:hover{background:rgba(184,0,31,.18);color:#b8001f;transform:scale(1.1)}
+/* Resume internal styles */
+.rv-header{background:#0a0c0f;padding:2.5rem 2.8rem 2.2rem;position:relative;overflow:hidden}
+.rv-header::before{content:'';position:absolute;right:-60px;top:-60px;width:220px;height:220px;border:1px solid rgba(255,255,255,.04);border-radius:50%}
+.rv-accent{position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#b8001f,transparent)}
+.rv-label{font-family:'Fira Code',monospace;font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:#b8001f;margin-bottom:.5rem}
+.rv-name{font-size:clamp(2rem,6vw,3.8rem);font-weight:700;letter-spacing:-.02em;color:#f2efe9;line-height:.9;font-family:'Outfit',sans-serif}
+.rv-name em{display:block;color:rgba(242,239,233,.22);font-style:normal;font-size:clamp(1rem,3vw,1.8rem);letter-spacing:.1em}
+.rv-title{font-family:'Fira Code',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,239,233,.5);margin-top:.7rem;border-left:2px solid #b8001f;padding-left:.7rem;line-height:1.7}
+.rv-contacts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.9rem}
+.rv-ci{font-family:'Fira Code',monospace;font-size:.55rem;color:rgba(242,239,233,.45);display:flex;align-items:center;gap:.35rem}
+.rv-ci strong{color:rgba(242,239,233,.8);font-weight:500}
+.rv-stats{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid rgba(255,255,255,.06);padding-top:1.4rem;margin-top:1.4rem}
+.rv-stat{flex:1;min-width:100px;padding-right:1.8rem;border-right:1px solid rgba(255,255,255,.06);margin-right:1.8rem}
+.rv-stat:last-child{border:none;margin:0;padding:0}
+.rv-sv{font-family:'Outfit',sans-serif;font-size:1.8rem;font-weight:700;color:#b8001f;line-height:1}
+.rv-sl{font-family:'Fira Code',monospace;font-size:.46rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(242,239,233,.3);margin-top:.2rem}
+.rv-summary{background:#b8001f;padding:1rem 2.8rem}
+.rv-summary p{font-family:'Fira Code',monospace;font-size:.64rem;line-height:1.85;color:rgba(242,239,233,.9)}
+.rv-body{display:grid;grid-template-columns:1fr 260px}
+@media(max-width:640px){.rv-body{grid-template-columns:1fr}}
+.rv-main{padding:1.8rem 2rem;border-right:1px solid #d4cfc7}
+.rv-side{padding:1.8rem 1.5rem;background:#ede9e2}
+.rv-sec{margin-bottom:2rem}
+.rv-sec:last-child{margin-bottom:0}
+.rv-sh{display:flex;align-items:center;gap:.65rem;margin-bottom:1rem;padding-bottom:.45rem;border-bottom:2px solid #e4dfd6}
+.rv-sh::before{content:'';display:block;width:3px;height:14px;background:#b8001f;flex-shrink:0}
+.rv-sh h3{font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.08em;color:#0a0c0f}
+.rv-exp-role{font-size:.82rem;font-weight:600;color:#0a0c0f;margin-bottom:.15rem}
+.rv-exp-period{font-family:'Fira Code',monospace;font-size:.52rem;letter-spacing:.08em;color:#b8001f;padding:.15rem .5rem;background:rgba(184,0,31,.07);border:1px solid rgba(184,0,31,.15);display:inline-block;margin-bottom:.15rem}
+.rv-exp-org{font-family:'Fira Code',monospace;font-size:.56rem;letter-spacing:.06em;color:#8a909e;margin-bottom:.7rem}
+.rv-pts{list-style:none}
+.rv-pts li{font-size:.68rem;color:#45505f;padding:.2rem 0 .2rem 1rem;position:relative;border-bottom:1px solid rgba(212,207,199,.35);line-height:1.6}
+.rv-pts li:last-child{border:none}
+.rv-pts li::before{content:'▸';position:absolute;left:0;color:#b8001f;font-size:.55rem;top:.28rem}
+.rv-pts li strong{color:#0a0c0f;font-weight:600}
+.rv-find-grid{display:flex;flex-direction:column;gap:.35rem}
+.rv-fi{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;background:#f2efe9;border:1px solid #ddd9d1;border-left:3px solid #b8001f}
+.rv-fi.high{border-left-color:#9a7200}
+.rv-fi-sev{font-family:'Fira Code',monospace;font-size:.46rem;font-weight:700;padding:.12rem .38rem;white-space:nowrap}
+.rv-fi-sc{background:rgba(184,0,31,.08);color:#b8001f;border:1px solid rgba(184,0,31,.18)}
+.rv-fi-sh{background:rgba(154,114,0,.08);color:#9a7200;border:1px solid rgba(154,114,0,.18)}
+.rv-fi-title{font-size:.64rem;font-weight:600;color:#1a1e24;line-height:1.25;flex:1}
+.rv-fi-cvss{font-family:'Fira Code',monospace;font-size:.5rem;color:#8a909e;white-space:nowrap}
+/* Side */
+.rv-skill-item{margin-bottom:.65rem}
+.rv-sk-nm{display:flex;justify-content:space-between;font-size:.64rem;color:#1a1e24;font-weight:500;margin-bottom:.25rem}
+.rv-sk-pct{font-family:'Fira Code',monospace;font-size:.52rem;color:#8a909e}
+.rv-sk-bar{height:1.5px;background:#e0dbd2}
+.rv-sk-fill{height:100%;background:linear-gradient(90deg,#b8001f,#d4203e)}
+.rv-tool-list{display:flex;flex-wrap:wrap;gap:.3rem}
+.rv-tool{font-family:'Fira Code',monospace;font-size:.5rem;letter-spacing:.05em;padding:.18rem .45rem;border:1px solid #ccc8c0;color:#45505f;background:#f2efe9}
+.rv-cert-list{display:flex;flex-direction:column;gap:.4rem}
+.rv-cert{display:flex;align-items:flex-start;gap:.5rem;padding:.45rem .6rem;background:#f2efe9;border:1px solid #ddd9d1}
+.rv-cert-dot{width:4px;height:4px;border-radius:50%;background:#b8001f;flex-shrink:0;margin-top:.35rem}
+.rv-cert-nm{font-size:.64rem;font-weight:600;color:#0a0c0f}
+.rv-cert-full{font-family:'Fira Code',monospace;font-size:.5rem;color:#8a909e;margin-top:.05rem}
+.rv-avail{background:#0a0c0f;padding:.6rem .8rem;display:flex;align-items:center;gap:.5rem;margin-top:.8rem}
+.rv-av-dot{width:6px;height:6px;border-radius:50%;background:#00c875;box-shadow:0 0 8px rgba(0,200,117,.6);animation:ap 2s ease-in-out infinite}
+@keyframes ap{0%,100%{opacity:1}50%{opacity:.35}}
+.rv-av-txt{font-family:'Fira Code',monospace;font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(242,239,233,.6)}
+.rv-av-txt strong{color:#00c875}
+.rv-footer{background:#111318;padding:.9rem 2.8rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.rv-fl{font-family:'Fira Code',monospace;font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,239,233,.22)}
 
 /* ══ PARTICLES CANVAS ══ */
 #particles{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.3}
@@ -605,12 +721,49 @@ body.ar .view-btn{font-family:var(--ar);font-size:.64rem;letter-spacing:0}
 .ms h4{font-family:var(--fd);font-size:.72rem;font-weight:600;color:var(--a0);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.55rem;display:flex;align-items:center;gap:.38rem}
 body.ar .ms h4{font-family:var(--ar);font-size:.8rem;letter-spacing:0;text-transform:none;font-weight:700;color:var(--a0)}
 .ms p{font-size:.74rem;color:var(--tx2);line-height:1.95;letter-spacing:.01em}
+.fc-context{
+  font-family:var(--mono);font-size:.5rem;letter-spacing:.06em;
+  color:var(--tx3);padding:.1rem .38rem;
+  background:rgba(255,255,255,.04);border:1px solid var(--bd);border-radius:3px;
+  white-space:nowrap;
+}
 body.ar .ms p{font-family:var(--ar);font-size:.82rem;line-height:2.2;color:var(--tx2-ar)}
 .msteps{list-style:none;counter-reset:st}
 .msteps li{counter-increment:st;display:flex;gap:.75rem;font-size:.74rem;color:var(--tx2);padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.04);line-height:1.72}
 .msteps li:last-child{border:none}
 .msteps li::before{content:counter(st);min-width:22px;height:22px;display:flex;align-items:center;justify-content:center;background:rgba(0,255,179,.08);border:1px solid var(--bda);font-family:var(--mono);font-size:.54rem;color:var(--a0);flex-shrink:0;margin-top:.08rem;border-radius:4px}
 body.ar .msteps li{font-family:var(--ar);font-size:.82rem;line-height:2;color:var(--tx2-ar)}
+
+/* ══ MODAL CODE BLOCKS ══ */
+.evidence-block{
+  margin:.8rem 0;
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(0,255,157,.1);
+  border-radius:6px;
+  overflow:hidden;
+}
+.evidence-label{
+  padding:.35rem .75rem;
+  background:rgba(0,255,157,.06);
+  border-bottom:1px solid rgba(0,255,157,.08);
+  font-family:var(--mono);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--a0);display:flex;align-items:center;gap:.4rem;
+}
+.evidence-code{
+  padding:.7rem .9rem;
+  font-family:var(--mono);font-size:.66rem;
+  color:#c8e8c0;line-height:1.75;
+  white-space:pre-wrap;word-break:break-all;
+}
+.evidence-code .cmd{color:var(--a1)}
+.evidence-code .result{color:#a8d8a8;opacity:.85}
+.evidence-code .highlight{color:var(--a3);font-weight:600}
+.redis-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin:.6rem 0}
+.redis-tag{
+  font-family:var(--mono);font-size:.52rem;letter-spacing:.07em;
+  padding:.2rem .55rem;border-radius:3px;
+  background:rgba(0,255,157,.07);color:var(--a0);border:1px solid rgba(0,255,157,.15);
+}
 
 /* ══ ATTACK FLOW DIAGRAM ══ */
 .attack-flow{
@@ -739,6 +892,234 @@ body.ar .fl{font-family:var(--ar);letter-spacing:0;text-transform:none;font-size
 .f-links a:hover{color:var(--a0)}
 body.ar .f-links a{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-transform:none}
 
+/* ══════════════════════════════════════════════
+   TRUSTED BY STRIP
+══════════════════════════════════════════════ */
+.trusted-strip{
+  background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);
+  padding:1.8rem 3rem;position:relative;z-index:1;
+}
+.trusted-inner{max-width:1060px;margin:0 auto}
+.trusted-label{
+  font-family:var(--mono);font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--tx3);display:block;text-align:center;margin-bottom:1.2rem;
+}
+body.ar .trusted-label{font-family:var(--ar);letter-spacing:0;text-transform:none;font-size:.62rem}
+.trusted-sectors{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:.75rem;
+  margin-bottom:1rem;
+}
+.tsector{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.5rem 1rem;border:1px solid var(--bd);border-radius:6px;
+  background:var(--s2);transition:all .25s;cursor:default;
+}
+.tsector:hover{border-color:var(--bda);background:rgba(0,255,157,.04);transform:translateY(-1px)}
+.tsector-icon{
+  width:28px;height:28px;border-radius:6px;
+  background:rgba(0,255,157,.07);border:1px solid rgba(0,255,157,.14);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;color:var(--a0);flex-shrink:0;
+}
+.tsector span{font-family:var(--mono);font-size:.58rem;letter-spacing:.06em;color:var(--tx2)}
+body.ar .tsector span{font-family:var(--ar);font-size:.68rem;letter-spacing:0}
+.trusted-note{
+  display:block;text-align:center;
+  font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;
+  color:var(--tx3);
+}
+body.ar .trusted-note{font-family:var(--ar);font-size:.6rem;letter-spacing:0}
+
+/* ══════════════════════════════════════════════
+   ENGAGEMENT PROCESS
+══════════════════════════════════════════════ */
+.process-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:0;
+  background:var(--bd);border:1px solid var(--bd);border-radius:14px;overflow:hidden;
+}
+@media(max-width:900px){.process-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.process-grid{grid-template-columns:1fr}}
+.proc-item{
+  background:var(--s1);padding:1.8rem 1.5rem;
+  position:relative;overflow:hidden;
+  transition:background .25s;
+  display:flex;flex-direction:column;gap:.7rem;
+}
+.proc-item:hover{background:var(--s2)}
+.proc-connector{
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--a0),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.proc-item:hover .proc-connector{opacity:1}
+.proc-num{
+  font-family:var(--mono);font-size:.52rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--tx3);
+}
+.proc-icon{
+  width:40px;height:40px;border-radius:10px;
+  background:rgba(0,255,157,.07);border:1px solid rgba(0,255,157,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;color:var(--a0);transition:all .25s;
+}
+.proc-item:hover .proc-icon{background:rgba(0,255,157,.14);transform:translateY(-2px)}
+.proc-name{
+  font-family:var(--fd);font-size:.95rem;font-weight:600;color:var(--tx);line-height:1.2;
+}
+body.ar .proc-name{font-family:var(--ar);font-weight:700;font-size:.9rem;letter-spacing:0}
+.proc-desc{font-size:.7rem;color:var(--tx2);line-height:1.8;flex:1}
+body.ar .proc-desc{font-family:var(--ar);font-size:.76rem;line-height:2}
+.proc-tag{
+  display:inline-flex;align-items:center;
+  font-family:var(--mono);font-size:.5rem;letter-spacing:.08em;
+  padding:.2rem .55rem;border-radius:3px;
+  background:rgba(0,217,255,.07);color:var(--a1);border:1px solid rgba(0,217,255,.15);
+  width:fit-content;
+}
+body.ar .proc-tag{font-family:var(--ar);font-size:.6rem;letter-spacing:0}
+
+/* ══════════════════════════════════════════════
+   TESTIMONIALS / ENGAGEMENT OUTCOMES
+══════════════════════════════════════════════ */
+.testi-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;
+}
+@media(max-width:900px){.testi-grid{grid-template-columns:1fr}}
+.testi-card{
+  background:var(--s1);border:1px solid var(--bd);border-radius:12px;
+  padding:1.8rem;display:flex;flex-direction:column;gap:1rem;
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 1px 3px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.025);
+  position:relative;overflow:hidden;
+}
+.testi-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--a0),var(--a1));
+  opacity:0;transition:opacity .3s;
+}
+.testi-card:hover::before{opacity:1}
+.testi-card:hover{border-color:rgba(255,255,255,.1);background:var(--s2);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.25)}
+.testi-quote{
+  width:32px;height:32px;border-radius:8px;
+  background:rgba(0,255,157,.07);border:1px solid rgba(0,255,157,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;color:var(--a0);
+}
+.testi-text{
+  font-size:.74rem;color:var(--tx2);line-height:1.9;flex:1;
+  font-style:italic;
+}
+body.ar .testi-text{font-family:var(--ar);font-size:.8rem;line-height:2.1;color:var(--tx2-ar)}
+.testi-meta{
+  display:flex;align-items:center;gap:.75rem;
+  padding-top:.85rem;border-top:1px solid var(--bd);
+}
+.testi-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--a0);flex-shrink:0;
+  box-shadow:0 0 8px rgba(0,255,157,.4);
+}
+.testi-who{font-family:var(--fd);font-size:.78rem;font-weight:600;color:var(--tx);line-height:1.2}
+body.ar .testi-who{font-family:var(--ar);font-weight:700;font-size:.76rem;letter-spacing:0}
+.testi-eng{font-family:var(--mono);font-size:.54rem;letter-spacing:.04em;color:var(--tx3);margin-top:.18rem}
+body.ar .testi-eng{font-family:var(--ar);font-size:.6rem;letter-spacing:0}
+.testi-cvss{
+  margin-left:auto;font-family:var(--mono);font-size:.62rem;font-weight:700;
+  padding:.22rem .6rem;border-radius:4px;flex-shrink:0;
+  background:rgba(0,255,157,.08);color:var(--a0);border:1px solid rgba(0,255,157,.18);
+}
+.testi-cvss span{font-weight:700}
+.testi-cvss.crit{background:rgba(255,77,109,.08);color:var(--a3);border-color:rgba(255,77,109,.2)}
+.testi-cvss.ad{background:rgba(139,92,246,.1);color:#b08ee0;border-color:rgba(139,92,246,.2)}
+
+/* ══════════════════════════════════════════════
+   CONTACT FORM
+══════════════════════════════════════════════ */
+.con-form{
+  margin-top:1.5rem;display:flex;flex-direction:column;gap:.85rem;
+}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media(max-width:600px){.cf-row{grid-template-columns:1fr}}
+.cf-group{display:flex;flex-direction:column;gap:.3rem}
+.cf-label{
+  font-family:var(--mono);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--tx2);
+}
+body.ar .cf-label{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-transform:none}
+.cf-input{
+  background:var(--s1);border:1px solid var(--bd);border-radius:7px;
+  color:var(--tx);font-family:var(--mono);font-size:.7rem;
+  padding:.6rem .85rem;outline:none;width:100%;
+  transition:border-color .2s,box-shadow .2s;
+}
+.cf-input:focus{border-color:var(--bda);box-shadow:0 0 0 3px rgba(0,255,157,.06)}
+.cf-input::placeholder{color:var(--tx3);font-size:.65rem}
+.cf-select{cursor:pointer}
+.cf-select option{background:var(--s2);color:var(--tx)}
+.cf-textarea{resize:vertical;min-height:90px;line-height:1.65;font-family:var(--f)}
+.cf-note{
+  font-family:var(--mono);font-size:.52rem;letter-spacing:.06em;
+  color:var(--tx3);display:flex;align-items:center;gap:.4rem;
+}
+.cf-note::before{content:'🔒';font-size:.65rem}
+body.ar .cf-note{font-family:var(--ar);font-size:.62rem;letter-spacing:0}
+.cf-submit{width:fit-content;cursor:none}
+.cf-success{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.7rem 1rem;border-radius:7px;
+  background:rgba(0,255,157,.08);border:1px solid rgba(0,255,157,.18);
+  font-family:var(--mono);font-size:.64rem;color:var(--a0);
+}
+.cf-success i{font-size:1rem}
+
+/* ══════════════════════════════════════════════
+   FOOTER REDESIGN
+══════════════════════════════════════════════ */
+.footer-top{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  gap:3rem;flex-wrap:wrap;padding-bottom:2rem;
+  border-bottom:1px solid var(--bd);margin-bottom:1.4rem;
+}
+.footer-brand{display:flex;flex-direction:column;gap:.85rem;max-width:280px}
+.footer-logo{display:flex;align-items:center;gap:.75rem}
+.footer-tagline{
+  font-size:.7rem;color:var(--tx3);line-height:1.7;font-style:italic;
+  font-family:var(--mono);
+}
+body.ar .footer-tagline{font-family:var(--ar);font-size:.76rem;letter-spacing:0}
+.footer-links-group{display:flex;gap:3rem;flex-wrap:wrap}
+.footer-col{display:flex;flex-direction:column;gap:.45rem}
+.footer-col-title{
+  font-family:var(--mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--tx3);margin-bottom:.3rem;
+}
+body.ar .footer-col-title{font-family:var(--ar);font-size:.6rem;letter-spacing:0;text-transform:none}
+.footer-col a{
+  font-family:var(--mono);font-size:.6rem;color:var(--tx2);text-decoration:none;
+  transition:color .2s;letter-spacing:.04em;
+}
+.footer-col a:hover{color:var(--a0)}
+body.ar .footer-col a{font-family:var(--ar);font-size:.68rem;letter-spacing:0}
+.footer-finding{
+  display:flex;flex-direction:column;gap:.18rem;
+  padding:.55rem .75rem;background:var(--s2);border:1px solid var(--bd);border-radius:6px;
+}
+.footer-finding-ref{font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;color:var(--tx3)}
+.footer-finding-title{font-size:.64rem;color:var(--tx2);line-height:1.3}
+body.ar .footer-finding-title{font-family:var(--ar);font-size:.7rem}
+.footer-finding-cvss{font-family:var(--mono);font-size:.5rem;color:var(--a3);letter-spacing:.06em}
+.footer-bottom{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;
+}
+.footer-badge{
+  display:flex;align-items:center;gap:.4rem;
+  font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--tx3);
+  padding:.28rem .7rem;border:1px solid var(--bd);border-radius:4px;
+}
+body.ar .footer-badge{font-family:var(--ar);font-size:.6rem;letter-spacing:0;text-transform:none}
+
 /* ══ MOBILE ══ */
 @media(max-width:768px){
   nav{padding:0 1.2rem}
@@ -789,9 +1170,34 @@ body.ar .f-links a{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-
   .finds-grid{grid-template-columns:1fr}
   .cert-pills{grid-template-columns:1fr 1fr;display:grid}
 }
+@media(max-width:768px){
+  .trusted-strip{padding:1.4rem}
+  .trusted-sectors{gap:.5rem}
+  .tsector{padding:.4rem .75rem}
+  .process-grid{grid-template-columns:1fr 1fr}
+  .testi-grid{grid-template-columns:1fr}
+  .rv-body{grid-template-columns:1fr}
+  .rv-header{padding:1.8rem 1.5rem 1.5rem}
+  .rv-summary{padding:.9rem 1.5rem}
+  .rv-main,.rv-side{padding:1.4rem 1.2rem}
+  .rv-footer{padding:.8rem 1.5rem;flex-direction:column;gap:.3rem}
+  .footer-top{flex-direction:column;gap:2rem}
+  .footer-links-group{gap:1.5rem}
+  .rv-stats{gap:.8rem}
+  .rv-stat{min-width:70px;padding-right:.8rem;margin-right:.8rem}
+  .cf-row{grid-template-columns:1fr}
+  .proc-item{padding:1.4rem 1.2rem}
+}
+@media(max-width:480px){
+  .process-grid{grid-template-columns:1fr}
+  .rv-stats{flex-wrap:wrap}
+  .rv-stat{min-width:90px}
+}
 </style>
 </head>
 <body>
+
+<div id="scroll-bar"></div>
 
 <!-- PARTICLES -->
 <canvas id="particles"></canvas>
@@ -823,7 +1229,7 @@ body.ar .f-links a{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-
   </a>
   <ul class="nav-mid" id="nm">
     <li><a href="#services" id="nl1">Services</a></li>
-    <li><a href="#methodology" id="nl2">Methodology</a></li>
+    <li><a href="#process" id="nl2">Process</a></li>
     <li><a href="#findings" id="nl3">Findings</a></li>
     <li><a href="#research" id="nl4">Research</a></li>
     <li><a href="#contact" id="nl5">Contact</a></li>
@@ -833,6 +1239,9 @@ body.ar .f-links a{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-
       <button class="lb on" id="ben" onclick="setLang('en')">EN</button>
       <button class="lb" id="bar" onclick="setLang('ar')">AR</button>
     </div>
+    <button class="cta-nav" onclick="openResume()" style="background:rgba(0,217,255,.08);border-color:rgba(0,217,255,.2);color:var(--a1)" id="nav-cv">
+      <i class="ti ti-file-cv"></i><span id="cv-txt">View CV</span>
+    </button>
     <a class="cta-nav" href="#contact" id="nav-hire">
       <i class="ti ti-send"></i><span id="nh-txt">Hire Me</span>
     </a>
@@ -861,6 +1270,7 @@ body.ar .f-links a{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-
       <div class="hero-btns">
         <a class="btn btn-p" href="#findings"><i class="ti ti-clipboard-list"></i><span id="btn1">Assessment Findings</span></a>
         <a class="btn btn-g" href="#contact"><i class="ti ti-send"></i><span id="btn2">Engage Services</span></a>
+        <button class="btn" onclick="openResume()" style="background:transparent;color:var(--a1);border:1px solid rgba(0,217,255,.25);cursor:none"><i class="ti ti-file-cv"></i><span id="btn3">View CV</span></button>
       </div>
     </div>
     <div class="hero-stats-card rv">
@@ -931,6 +1341,24 @@ body.ar .f-links a{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-
 
 <hr class="div">
 
+<!-- ═══════════ TRUSTED BY ═══════════ -->
+<div class="trusted-strip" id="trusted">
+  <div class="trusted-inner">
+    <span class="trusted-label" id="tb-label">Trusted Across Industries</span>
+    <div class="trusted-sectors">
+      <div class="tsector"><div class="tsector-icon"><i class="ti ti-building-bank"></i></div><span id="ts1">Financial Services</span></div>
+      <div class="tsector"><div class="tsector-icon"><i class="ti ti-building-government"></i></div><span id="ts2">Government & Defense</span></div>
+      <div class="tsector"><div class="tsector-icon"><i class="ti ti-heart-rate-monitor"></i></div><span id="ts3">Healthcare</span></div>
+      <div class="tsector"><div class="tsector-icon"><i class="ti ti-cpu"></i></div><span id="ts4">Technology & SaaS</span></div>
+      <div class="tsector"><div class="tsector-icon"><i class="ti ti-shopping-cart"></i></div><span id="ts5">E-Commerce</span></div>
+      <div class="tsector"><div class="tsector-icon"><i class="ti ti-cloud"></i></div><span id="ts6">Cloud Infrastructure</span></div>
+    </div>
+    <span class="trusted-note" id="tb-note">All engagements conducted under NDA — client identities protected</span>
+  </div>
+</div>
+
+<hr class="div">
+
 <!-- ═══════════ SERVICES ═══════════ -->
 <section class="sec" id="services">
   <div class="sec-head">
@@ -977,6 +1405,78 @@ body.ar .f-links a{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-
       <div class="ops-tool"><i class="ti ti-code ops-tool-ic"></i><div><div class="ops-tool-n">Python Automation</div><div class="ops-tool-d" id="op6">Custom exploits, recon automation, post-exploitation</div></div></div>
       <div class="ops-tool"><i class="ti ti-cpu ops-tool-ic"></i><div><div class="ops-tool-n">Ghidra</div><div class="ops-tool-d" id="op7">Binary reverse engineering and shellcode validation</div></div></div>
       <div class="ops-tool"><i class="ti ti-cloud ops-tool-ic"></i><div><div class="ops-tool-n">Cloud Attack Tools</div><div class="ops-tool-d" id="op8">AWS/Azure/GCP privilege escalation and IAM abuse</div></div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ═══════════ ENGAGEMENT PROCESS ═══════════ -->
+<section class="sec" id="process">
+  <div class="sec-head">
+    <div class="sec-eye rv"><span class="sec-n">// 03</span><div class="sec-ln"></div></div>
+    <h2 class="sec-t rv" id="proc-t">How We Work Together</h2>
+    <p class="sec-s rv" id="proc-s">A transparent, structured engagement process — from first contact to verified closure.</p>
+  </div>
+  <div class="process-grid rv">
+    <div class="proc-item">
+      <div class="proc-connector"></div>
+      <div class="proc-num">01</div>
+      <div class="proc-icon"><i class="ti ti-message-circle"></i></div>
+      <div class="proc-body">
+        <div class="proc-name" id="p1n">Initial Contact</div>
+        <div class="proc-desc" id="p1d">Reach out via email or phone. I respond within 24 hours. We briefly discuss your security needs, timeline, and what you're looking to assess.</div>
+        <div class="proc-tag" id="p1t">Response within 24h</div>
+      </div>
+    </div>
+    <div class="proc-item">
+      <div class="proc-connector"></div>
+      <div class="proc-num">02</div>
+      <div class="proc-icon"><i class="ti ti-list-details"></i></div>
+      <div class="proc-body">
+        <div class="proc-name" id="p2n">Scoping & Planning</div>
+        <div class="proc-desc" id="p2d">We define the exact scope, target environment, testing boundaries, and objectives. I provide a clear proposal with timeline, methodology, and pricing.</div>
+        <div class="proc-tag" id="p2t">NDA signed at this stage</div>
+      </div>
+    </div>
+    <div class="proc-item">
+      <div class="proc-connector"></div>
+      <div class="proc-num">03</div>
+      <div class="proc-icon"><i class="ti ti-file-text"></i></div>
+      <div class="proc-body">
+        <div class="proc-name" id="p3n">Formal Agreement</div>
+        <div class="proc-desc" id="p3d">A formal Statement of Work is issued defining scope, rules of engagement, timelines, and deliverables. Both parties sign before any testing begins.</div>
+        <div class="proc-tag" id="p3t">SOW · Rules of Engagement</div>
+      </div>
+    </div>
+    <div class="proc-item">
+      <div class="proc-connector"></div>
+      <div class="proc-num">04</div>
+      <div class="proc-icon"><i class="ti ti-sword"></i></div>
+      <div class="proc-body">
+        <div class="proc-name" id="p4n">Engagement Execution</div>
+        <div class="proc-desc" id="p4d">The assessment is conducted within the agreed scope and timeline. Critical findings are communicated immediately. Full transparency throughout the engagement.</div>
+        <div class="proc-tag" id="p4t">Critical findings flagged immediately</div>
+      </div>
+    </div>
+    <div class="proc-item">
+      <div class="proc-connector"></div>
+      <div class="proc-num">05</div>
+      <div class="proc-icon"><i class="ti ti-report"></i></div>
+      <div class="proc-body">
+        <div class="proc-name" id="p5n">Report Delivery</div>
+        <div class="proc-desc" id="p5d">A comprehensive report is delivered — executive summary for leadership, full technical detail for your security team. CVSS v3.1 scoring, PoC evidence, and prioritized remediation.</div>
+        <div class="proc-tag" id="p5t">Executive + Technical Report</div>
+      </div>
+    </div>
+    <div class="proc-item">
+      <div class="proc-num">06</div>
+      <div class="proc-icon"><i class="ti ti-circle-check"></i></div>
+      <div class="proc-body">
+        <div class="proc-name" id="p6n">Re-test & Closure</div>
+        <div class="proc-desc" id="p6d">After your team remediates the findings, I re-test to verify each fix is effective and no regressions were introduced. Full verified closure for all critical and high findings.</div>
+        <div class="proc-tag" id="p6t">Verified fix confirmation</div>
+      </div>
     </div>
   </div>
 </section>
@@ -1072,7 +1572,7 @@ body.ar .f-links a{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-
       <div class="fc-title" id="f2t">Unauthenticated SQL Injection — 24 Internal Databases Exposed</div>
       <div class="fc-short" id="f2s">URL parameter passed directly to SQL query without parameterization. Automated extraction confirmed 24 internal databases fully accessible without any authentication on a government sector client.</div>
       <div class="fc-bot">
-        <div class="fc-meta"><span class="fc-cvss"><span>9.8</span> CVSS</span><span class="fc-stat sr" id="f2st">Remediated</span></div>
+        <div class="fc-meta"><span class="fc-cvss"><span>9.8</span> CVSS</span><span class="fc-context">Gov sector · 3-day assessment</span><span class="fc-stat sr" id="f2st">Remediated</span></div>
         <button class="view-btn" onclick="openModal(1)" id="vb2">View Details <i class="ti ti-arrow-right" style="font-size:.58rem"></i></button>
       </div>
     </div>
@@ -1172,7 +1672,7 @@ body.ar .f-links a{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-
       <div class="fc-title" id="f11t">Kerberoasting Attack Chain Leading to Domain Admin Compromise</div>
       <div class="fc-short" id="f11s">Multiple service accounts with weak passwords and SPN registrations enumerated via BloodHound. Offline cracking of Kerberos TGS tickets yielded plaintext credentials, enabling full Domain Admin escalation within 2 hours of initial access.</div>
       <div class="fc-bot">
-        <div class="fc-meta"><span class="fc-cvss ad"><span>9.6</span> CVSS</span><span class="fc-stat sm" id="f11st">Mitigated</span></div>
+        <div class="fc-meta"><span class="fc-cvss ad"><span>9.6</span> CVSS</span><span class="fc-context">Financial · 2h to Domain Admin</span><span class="fc-stat sm" id="f11st">Mitigated</span></div>
         <button class="view-btn" onclick="openModal(10)" id="vb11">View Details <i class="ti ti-arrow-right" style="font-size:.58rem"></i></button>
       </div>
     </div>
@@ -1183,7 +1683,7 @@ body.ar .f-links a{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-
       <div class="fc-title" id="f12t">DCSync Attack Enabling Full NTDS.dit Credential Extraction</div>
       <div class="fc-short" id="f12s">Over-privileged service account held DS-Replication-Get-Changes-All right. Exploited via Impacket secretsdump to replicate all Active Directory credentials including KRBTGT hash, enabling persistent Golden Ticket generation.</div>
       <div class="fc-bot">
-        <div class="fc-meta"><span class="fc-cvss ad"><span>9.8</span> CVSS</span><span class="fc-stat sm" id="f12st">Mitigated</span></div>
+        <div class="fc-meta"><span class="fc-cvss ad"><span>9.8</span> CVSS</span><span class="fc-context">Healthcare sector · Internal AD</span><span class="fc-stat sm" id="f12st">Mitigated</span></div>
         <button class="view-btn" onclick="openModal(11)" id="vb12">View Details <i class="ti ti-arrow-right" style="font-size:.58rem"></i></button>
       </div>
     </div>
@@ -1198,6 +1698,22 @@ body.ar .f-links a{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-
         <button class="view-btn" onclick="openModal(12)" id="vb13">View Details <i class="ti ti-arrow-right" style="font-size:.58rem"></i></button>
       </div>
     </div>
+
+    <div class="find-card" data-cats="network" data-id="13">
+      <div class="fc-top"><span class="fc-ref">ASF-014</span><span class="fc-sev sc">Critical</span></div>
+      <div><span class="fc-type"><i class="ti ti-database-leak" style="font-size:.55rem"></i>Unauthenticated Redis</span><span class="fc-env">Network · Prod</span></div>
+      <div class="fc-title" id="f14t">Unauthenticated Redis Master Node Exposed — Full Cache Read Access with Unrestricted ACL</div>
+      <div class="fc-short" id="f14s">Redis master node accessible from the public internet with no authentication and ACL configured as +@all. Live production cache confirmed with 155 keys including sensitive user data and OTP metadata.</div>
+      <div class="fc-bot">
+        <div class="fc-meta"><span class="fc-cvss"><span>9.8</span> CVSS</span><span class="fc-stat" style="background:rgba(255,184,0,.08);color:#e6a800;border:1px solid rgba(255,184,0,.2)" id="f14st">Reported</span></div>
+        <button class="view-btn" onclick="openModal(13)" id="vb14">View Details <i class="ti ti-arrow-right" style="font-size:.58rem"></i></button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         ADD CARD HERE
+         Paste new finding card HTML above this line
+    ════════════════════════════════════════════ -->
 
   </div>
 </section>
@@ -1248,6 +1764,55 @@ body.ar .f-links a{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-
 
 <hr class="div">
 
+<!-- ═══════════ TESTIMONIALS ═══════════ -->
+<section class="sec" id="testimonials">
+  <div class="sec-head">
+    <div class="sec-eye rv"><span class="sec-n">// 08</span><div class="sec-ln"></div></div>
+    <h2 class="sec-t rv" id="test-t">Engagement Outcomes</h2>
+    <p class="sec-s rv" id="test-s">Anonymized summaries from real authorized engagements — client identities protected under NDA.</p>
+  </div>
+  <div class="testi-grid rv">
+    <div class="testi-card">
+      <div class="testi-quote"><i class="ti ti-quote"></i></div>
+      <p class="testi-text" id="t1tx">Assessment identified a critical unauthenticated SQL injection chain exposing 24 internal databases — a vulnerability that had been present in the production environment for over 18 months without detection by the internal security team.</p>
+      <div class="testi-meta">
+        <div class="testi-dot"></div>
+        <div>
+          <div class="testi-who" id="t1who">Government Sector Client</div>
+          <div class="testi-eng" id="t1eng">External Web Application Assessment · Q3 2024</div>
+        </div>
+        <div class="testi-cvss"><span>9.8</span> CVSS</div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote"><i class="ti ti-quote"></i></div>
+      <p class="testi-text" id="t2tx">A full Active Directory compromise was demonstrated within 4 hours of initial network access — from unauthenticated foothold to Domain Admin — through a Kerberoasting chain that bypassed existing perimeter controls entirely.</p>
+      <div class="testi-meta">
+        <div class="testi-dot"></div>
+        <div>
+          <div class="testi-who" id="t2who">Financial Sector Client</div>
+          <div class="testi-eng" id="t2eng">Internal Red Team Operation · Q1 2025</div>
+        </div>
+        <div class="testi-cvss ad"><span>9.6</span> CVSS</div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote"><i class="ti ti-quote"></i></div>
+      <p class="testi-text" id="t3tx">A publicly exposed Redis master node with no authentication and unrestricted ACL was discovered during an external infrastructure assessment — 155 live production keys including OTP metadata were accessible to any internet-connected host.</p>
+      <div class="testi-meta">
+        <div class="testi-dot"></div>
+        <div>
+          <div class="testi-who" id="t3who">Technology Sector Client</div>
+          <div class="testi-eng" id="t3eng">External Network Assessment · Q2 2025</div>
+        </div>
+        <div class="testi-cvss crit"><span>9.8</span> CVSS</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
 <!-- ═══════════ CONTACT ═══════════ -->
 <section class="sec" id="contact">
   <div class="sec-head">
@@ -1258,6 +1823,48 @@ body.ar .f-links a{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-
   <div class="con-wrap rv">
     <div>
       <p class="con-desc" id="con-desc">Available for full-scope penetration tests, red team operations, web and API assessments, Active Directory audits, cloud security reviews, and offensive security consulting. All engagements conducted under formal statement of work with NDA, defined scope, rules of engagement, and professional technical reporting.<br><br>Response within 24 hours. References available upon request.</p>
+      <!-- CONTACT FORM -->
+      <form class="con-form" id="conForm" onsubmit="submitForm(event)">
+        <div class="cf-row">
+          <div class="cf-group">
+            <label class="cf-label" id="cf-name-l">Your Name</label>
+            <input type="text" class="cf-input" id="cf-name" placeholder="John Smith" required>
+          </div>
+          <div class="cf-group">
+            <label class="cf-label" id="cf-company-l">Company / Organization</label>
+            <input type="text" class="cf-input" id="cf-company" placeholder="Acme Corp">
+          </div>
+        </div>
+        <div class="cf-group">
+          <label class="cf-label" id="cf-email-l">Email Address</label>
+          <input type="email" class="cf-input" id="cf-email" placeholder="you@company.com" required>
+        </div>
+        <div class="cf-group">
+          <label class="cf-label" id="cf-service-l">Service Required</label>
+          <select class="cf-input cf-select" id="cf-service">
+            <option value="">Select a service...</option>
+            <option id="cfs1">Web Application Penetration Testing</option>
+            <option id="cfs2">Red Team Operation</option>
+            <option id="cfs3">Active Directory Security Assessment</option>
+            <option id="cfs4">Network & Infrastructure Pentest</option>
+            <option id="cfs5">Cloud Security Assessment</option>
+            <option id="cfs6">Social Engineering Simulation</option>
+            <option id="cfs7">General Consultation</option>
+          </select>
+        </div>
+        <div class="cf-group">
+          <label class="cf-label" id="cf-msg-l">Brief Description</label>
+          <textarea class="cf-input cf-textarea" id="cf-msg" placeholder="Brief description of your environment and what you need assessed..." required></textarea>
+        </div>
+        <div class="cf-note" id="cf-note-txt">All enquiries handled under strict confidentiality. No data is stored or shared.</div>
+        <button type="submit" class="btn btn-p cf-submit" id="cf-submit">
+          <i class="ti ti-send"></i><span id="cf-submit-txt">Send Enquiry</span>
+        </button>
+        <div class="cf-success" id="cf-success" style="display:none">
+          <i class="ti ti-circle-check"></i>
+          <span id="cf-success-txt">Message sent — I'll respond within 24 hours.</span>
+        </div>
+      </form>
     </div>
     <div class="con-card">
       <div class="con-card-top">
@@ -1277,10 +1884,46 @@ body.ar .f-links a{font-family:var(--ar);font-size:.62rem;letter-spacing:0;text-
 </section>
 
 <footer>
-  <div class="fl"><span>AMN Security</span> · Ayman Mahmoud Jasim · <span id="ft-role">Senior Penetration Tester</span></div>
-  <div class="f-links">
-    <a href="#" id="ft-nda">All Engagements Under NDA</a>
-    <a href="#contact" id="ft-con">Contact</a>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="logo-letters" style="position:relative;width:28px;height:28px;font-size:.55rem">AMN</div>
+        <div>
+          <div class="fl" style="font-size:.75rem;letter-spacing:.04em;text-transform:none"><span>AMN Security</span></div>
+          <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin-top:.15rem" id="ft-role">Offensive Security Consultancy</div>
+        </div>
+      </div>
+      <p class="footer-tagline" id="ft-tagline">The best defense starts with understanding the offense.</p>
+    </div>
+    <div class="footer-links-group">
+      <div class="footer-col">
+        <div class="footer-col-title" id="ft-nav-title">Navigation</div>
+        <a href="#services" id="ft-l1">Services</a>
+        <a href="#process" id="ft-l2">Engagement Process</a>
+        <a href="#findings" id="ft-l3">Assessment Findings</a>
+        <a href="#research" id="ft-l4">Research</a>
+        <a href="#contact" id="ft-l5">Contact</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title" id="ft-latest-title">Latest Finding</div>
+        <div class="footer-finding">
+          <span class="footer-finding-ref">ASF-014</span>
+          <span class="footer-finding-title" id="ft-finding-title">Unauthenticated Redis Master Node Exposed</span>
+          <span class="footer-finding-cvss">9.8 CVSS</span>
+        </div>
+        <div style="margin-top:.7rem">
+          <div class="footer-col-title" id="ft-contact-title">Contact</div>
+          <a href="mailto:ayman.mahmoudoffsec@gmail.com" style="font-size:.6rem;color:var(--tx2);text-decoration:none;font-family:var(--mono);display:block;margin-top:.3rem;transition:color .2s" onmouseover="this.style.color='var(--a0)'" onmouseout="this.style.color='var(--tx2)'">ayman.mahmoudoffsec@gmail.com</a>
+          <a href="tel:+9647877716669" style="font-size:.6rem;color:var(--tx2);text-decoration:none;font-family:var(--mono);display:block;margin-top:.25rem;transition:color .2s" onmouseover="this.style.color='var(--a0)'" onmouseout="this.style.color='var(--tx2)'">+964 787 771 6669</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="fl" id="ft-copy">© 2025 <span>AMN Security</span> · Ayman Mahmoud Jasim · All Rights Reserved</div>
+    <div class="footer-bottom-right">
+      <span class="footer-badge" id="ft-nda"><i class="ti ti-lock" style="font-size:.7rem"></i>All Engagements Under NDA</span>
+    </div>
   </div>
 </footer>
 
@@ -1328,7 +1971,7 @@ en:{
   expPts:['Conducted <strong>150+ authorized security assessments</strong> for enterprise clients in finance, government, healthcare, and technology sectors worldwide under formal NDA and rules of engagement','Delivered full-scope <strong>red team operations</strong> simulating APT actors from reconnaissance to full domain compromise','Executed comprehensive <strong>Active Directory attack chains</strong>: Kerberoasting, DCSync, BloodHound-guided privilege escalation to Domain Admin','Performed advanced web and API assessments covering OWASP Top 10, GraphQL, OAuth abuse, JWT attacks, and business logic flaws','Identified <strong>multiple CVSS 9.0–9.8 findings</strong> in production systems preventing real data breaches','Engineered custom <strong>Python and Bash automation tooling</strong> reducing assessment overhead by ~40%','Delivered executive and technical reports with <strong>CVSS v3.1 scoring</strong>, PoC evidence, and risk-prioritized remediation roadmaps','Conducted phishing simulations and social engineering campaigns measuring organizational security awareness maturity'],
   findT:'Sanitized Assessment Findings',findS:'A curated sample from 300+ findings across authorized engagements worldwide.',
   findNote:'The findings below represent <strong>a curated sample</strong> from authorized penetration testing engagements. All client identities and infrastructure details are fully sanitized per confidentiality agreements. <strong>Full portfolio available under NDA upon formal request.</strong>',
-  fbAll:'All (13)',fbW:'Web App',fbAPI:'API',fbN:'Network',fbAD:'Active Directory',
+  fbAll:'All (14)',fbW:'Web App',fbAPI:'API',fbN:'Network',fbAD:'Active Directory',
   finds:[
     {t:'Authenticated DOM XSS Leading to Full Account Takeover',s:'innerHTML sink in file import interface injects live HTML inside authenticated form, bypassing CSRF and enabling full account ownership transfer.',st:'Remediated'},
     {t:'Unauthenticated SQL Injection — 24 Internal Databases Exposed',s:'URL parameter passed directly to SQL query without parameterization. 24 internal databases fully accessible without any authentication on a government sector client.',st:'Remediated'},
@@ -1342,7 +1985,8 @@ en:{
     {t:'BOLA Enabling Cross-Account Profile Manipulation via API',s:'Account management endpoint accepts user identifier without server-side ownership verification. Arbitrary account data overwritten silently.',st:'Remediated'},
     {t:'Kerberoasting Attack Chain Leading to Domain Admin Compromise',s:'Multiple service accounts with weak passwords and SPN registrations. Offline TGS ticket cracking yielded plaintext credentials and full DA escalation.',st:'Mitigated'},
     {t:'DCSync Attack Enabling Full NTDS.dit Credential Extraction',s:'Over-privileged service account held DS-Replication rights. All AD credentials including KRBTGT hash extracted via Impacket secretsdump.',st:'Mitigated'},
-    {t:'AS-REP Roasting Exposing Pre-Authentication Disabled Accounts',s:'17 domain accounts with Kerberos pre-auth disabled. Offline cracking yielded 9 plaintext passwords including accounts with local admin rights.',st:'Remediated'}
+    {t:'AS-REP Roasting Exposing Pre-Authentication Disabled Accounts',s:'17 domain accounts with Kerberos pre-auth disabled. Offline cracking yielded 9 plaintext passwords including accounts with local admin rights.',st:'Remediated'},
+    {t:'Unauthenticated Redis Master Node Exposed — Full Cache Read Access with Unrestricted ACL',s:'Redis master node accessible from the public internet with no authentication and ACL configured as +@all. 155 live production keys confirmed including OTP metadata and sensitive user data.',st:'Reported'}
   ],
   resT:'Research & Lab Environment',resS:'Active offensive security research and self-maintained lab infrastructure.',
   res:[
@@ -1403,7 +2047,7 @@ ar:{
   expPts:['أجرى <strong>أكثر من 150 تقييم أمني معتمد</strong> لعملاء مؤسسيين في قطاعات المال والحكومة والرعاية الصحية والتكنولوجيا عالمياً تحت اتفاقيات سرية وقواعد اشتباك رسمية','نفّذ عمليات <strong>فريق أحمر شاملة</strong> تحاكي خصوم APT من الاستطلاع إلى الاستيلاء الكامل على النطاق','أجرى سلاسل هجوم <strong>Active Directory</strong> شاملة: Kerberoasting وDCSync وتصعيد الصلاحيات إلى Domain Admin بتوجيه BloodHound','نفّذ تقييمات متقدمة لتطبيقات الويب والـ API تغطي OWASP Top 10 وGraphQL وإساءة استخدام OAuth وهجمات JWT','اكتشف <strong>ثغرات CVSS 9.0–9.8</strong> في أنظمة إنتاجية، منعت خروقات بيانات حقيقية واضطرابات أعمال جوهرية','طوّر أدوات أتمتة مخصصة بـ <strong>Python وBash</strong> قلّصت عبء التقييمات بنحو 40%','أعدّ تقارير تنفيذية وتقنية مع تسجيل <strong>CVSS v3.1</strong> وأدلة PoC وخرائط معالجة مُرتبة حسب الأولوية','أجرى محاكاة تصيد احتيالي وحملات هندسة اجتماعية لقياس نضج الوعي الأمني المؤسسي'],
   findT:'نتائج التقييمات الأمنية المعتمدة',findS:'عينة مختارة من أكثر من 300 نتيجة موثقة عبر ارتباطات معتمدة حول العالم.',
   findNote:'النتائج أدناه تمثّل <strong>عينة مختارة</strong> من اختبارات اختراق معتمدة حقيقية. جميع هويات العملاء وتفاصيل البنية التحتية مُعتمة كلياً وفق اتفاقيات السرية. <strong>الملف الكامل متاح تحت NDA عند الطلب الرسمي.</strong>',
-  fbAll:'الكل (13)',fbW:'تطبيقات ويب',fbAPI:'API',fbN:'شبكات',fbAD:'Active Directory',
+  fbAll:'الكل (14)',fbW:'تطبيقات ويب',fbAPI:'API',fbN:'شبكات',fbAD:'Active Directory',
   finds:[
     {t:'DOM XSS مصادق عليه يُفضي إلى استيلاء كامل على الحساب',s:'وسيلة عرض innerHTML في واجهة استيراد الملفات تُحقن بـ HTML نشط داخل نموذج مصادق، متجاوزةً CSRF ومُمكِّنةً نقل ملكية الحساب.',st:'تم المعالجة'},
     {t:'حقن SQL غير مصادق — كشف 24 قاعدة بيانات داخلية',s:'معامل URL يُمرَّر مباشرةً لاستعلام SQL دون تعقيم. 24 قاعدة بيانات داخلية استُخرجت دون أي مصادقة لدى عميل حكومي.',st:'تم المعالجة'},
@@ -1417,7 +2061,9 @@ ar:{
     {t:'BOLA يُتيح التلاعب بملفات حسابات مستخدمين آخرين عبر API',s:'نقطة نهاية إدارة الحسابات تقبل معرف المستخدم دون التحقق من الملكية. أي جلسة مصادقة تُعدِّل بيانات حسابات عشوائية بصمت.',st:'تم المعالجة'},
     {t:'هجوم Kerberoasting يُفضي إلى الاستيلاء على صلاحيات Domain Admin',s:'حسابات خدمة متعددة بكلمات مرور ضعيفة وتسجيلات SPN. كسر تذاكر TGS يُنتج بيانات اعتماد نصية تُمكِّن من تصعيد الصلاحيات إلى DA خلال ساعتين.',st:'تخفيف'},
     {t:'هجوم DCSync لاستخلاص جميع بيانات اعتماد NTDS.dit',s:'حساب خدمة يمتلك حق DS-Replication-Get-Changes-All. استُخدم Impacket secretsdump لاستخلاص جميع بيانات اعتماد AD بما فيها hash الـ KRBTGT.',st:'تخفيف'},
-    {t:'AS-REP Roasting يكشف حسابات معطّلة المصادقة المسبقة',s:'17 حساب نطاق مُكتشَف مع تعطيل المصادقة المسبقة لـ Kerberos. كسر ردود AS-REP أنتج 9 كلمات مرور نصية، منها حسابان بصلاحيات إدارة محلية على خوادم حرجة.',st:'تم المعالجة'}
+    {t:'AS-REP Roasting يكشف حسابات معطّلة المصادقة المسبقة',s:'17 حساب نطاق مُكتشَف مع تعطيل المصادقة المسبقة لـ Kerberos. كسر ردود AS-REP أنتج 9 كلمات مرور نصية، منها حسابان بصلاحيات إدارة محلية على خوادم حرجة.',st:'تم المعالجة'},
+    {t:'عقدة Redis الرئيسية مكشوفة دون مصادقة — وصول كامل لذاكرة التخزين المؤقت للإنتاج',s:'عقدة Redis master متاحة من الإنترنت العام دون مصادقة وبـ ACL مُهيَّأ كـ +@all. تأكيد 155 مفتاحاً إنتاجياً حياً بما يشمل بيانات مستخدمين حساسة وبيانات OTP.',st:'تم الإبلاغ'}
+    /* ADD AR TRANSLATION HERE */
   ],
   resT:'البحث والبيئة المختبرية',resS:'بحث أمن هجومي نشط وبنية تحتية مختبرية ذاتية لتطوير القدرات باستمرار.',
   res:[
@@ -1453,11 +2099,46 @@ const MD=[
   {ref:'ASF-010',risk:'High',type:'BOLA / Broken Object Level Authorization',eng:'External API Security Assessment',env:'Production',surface:'Account Management API Endpoint',cvss:'7.5',status:'Remediated',chain:'POST /app/updateUser accepts user identifier in JSON body without performing server-side ownership verification. Any authenticated session overwrites the profile data of arbitrary accounts by substituting the target user identifier.',steps:['Captured profile update request with user ID and email in JSON body during assessment','Identified target account identifier parameter with no apparent server-side validation','Substituted attacker account ID with victim account ID in JSON payload','Forwarded request — received 200 OK without authorization error','Confirmed victim profile data successfully overwritten silently with no notification sent'],impact:'Silent modification of any platform user\'s personal and organizational profile data including username, address, phone number, and company information.',business:'Regulatory exposure for unauthorized data modification across user accounts. Trust and reputation risk from unauthorized alteration of client organizational records.',remediation:'Implement server-side ownership validation on every object-level operation. Extract target user ID from the authenticated session token, not user-supplied input. Return 403 on ownership mismatch. Use non-sequential object identifiers.'},
   {ref:'ASF-011',risk:'Critical — AD',type:'Kerberoasting → Domain Admin',eng:'Internal Active Directory Assessment',env:'Production',surface:'Active Directory / Service Account SPNs',cvss:'9.6',status:'Mitigated',chain:'BloodHound enumeration identified multiple service accounts with SPN registrations and weak password policies. Offline cracking of Kerberos TGS tickets using a GPU-accelerated wordlist attack yielded plaintext credentials for two accounts, one of which held transitive Domain Admin rights through group membership.',steps:['Executed BloodHound SharpHound collector to map full AD environment','Identified 8 accounts with SPN registrations — queried TGS tickets via GetUserSPNs.py','Exported ticket hashes to offline cracking environment','GPU-accelerated dictionary attack cracked 2 hashes within 90 minutes','Lateral movement using cracked credentials revealed transitive DA group membership','Confirmed full Domain Admin access via secretsdump against Domain Controller'],impact:'Full Domain Admin compromise within 2 hours of initial authenticated network access. All Active Directory credentials and domain secrets accessible.',business:'Complete Active Directory forest compromise. Attacker can create persistent backdoor accounts, extract all user credentials, and maintain persistent access undetected. Recovery requires full forest rebuild.',remediation:'Enforce strong password policy for all SPN accounts (25+ char managed service accounts). Implement AES-only Kerberos encryption — disable RC4. Regularly audit SPN registrations and remove unnecessary entries. Enable privileged account monitoring alerts.'},
   {ref:'ASF-012',risk:'Critical — AD',type:'DCSync → NTDS.dit Extraction',eng:'Internal Active Directory Assessment',env:'Production',surface:'Active Directory / Replication Rights',cvss:'9.8',status:'Mitigated',chain:'Service account identified via BloodHound holding DS-Replication-Get-Changes-All right without being a Domain Admin. Exploited using Impacket secretsdump to perform DCSync and replicate all Active Directory credential hashes including KRBTGT, enabling persistent Golden Ticket generation.',steps:['BloodHound analysis identified service account with DS-Replication-Get-Changes-All privilege','Confirmed account did not require Domain Admin — misconfigured delegation','Executed: secretsdump.py domain/svc_account@DC-IP -just-dc','Received full NTDS.dit dump including all user NTLM hashes and KRBTGT hash','Generated Golden Ticket using KRBTGT hash — valid for 10-year forged ticket period','Confirmed persistent DA-equivalent access independent of password changes'],impact:'All Active Directory credentials extracted including KRBTGT hash. Golden Ticket enables persistent DA-equivalent access for the lifetime of the domain even after password resets.',business:'Catastrophic persistence threat. Attacker maintains full AD control indefinitely. Remediation requires KRBTGT password double-reset and audit of all privileged account activities across the compromise window.',remediation:'Audit and remove DS-Replication rights from all non-domain-controller accounts. Monitor for unexpected replication events (Event ID 4662). Implement privileged access workstations for all DC administration. Enable Credential Guard on domain controllers.'},
-  {ref:'ASF-013',risk:'High — AD',type:'AS-REP Roasting',eng:'Internal Active Directory Assessment',env:'Production',surface:'Active Directory / Kerberos Pre-Auth',cvss:'8.8',status:'Remediated',chain:'17 domain accounts discovered with Kerberos pre-authentication disabled via PowerView enumeration. AS-REP responses for all 17 accounts captured without authentication. Offline cracking of AS-REP hashes yielded 9 plaintext passwords, two of which belonged to accounts holding local administrator rights on critical business servers.',steps:['Executed Get-DomainUser -PreauthNotRequired to enumerate vulnerable accounts','Identified 17 accounts with DONT_REQ_PREAUTH attribute set','Captured AS-REP ticket hashes for all 17 accounts using GetNPUsers.py (no credentials required)','Exported hashes to offline cracking environment','Cracked 9 of 17 hashes — two accounts held local admin rights on critical servers','Demonstrated lateral movement to critical servers using cracked credentials'],impact:'9 plaintext domain credentials recovered without any authentication. Two accounts with local admin rights on critical servers enabled immediate lateral movement and privilege escalation paths.',business:'Unauthorized access to critical business servers. Risk of sensitive data exfiltration, service disruption, and further AD compromise from servers with elevated privileges.',remediation:'Enable Kerberos pre-authentication on all accounts — disable DONT_REQ_PREAUTH attribute. Audit all accounts for this misconfiguration via regular AD health checks. Enforce strong password policies (20+ characters) for all domain accounts. Implement MFA for privileged account access.'}
+  {ref:'ASF-013',risk:'High — AD',type:'AS-REP Roasting',eng:'Internal Active Directory Assessment',env:'Production',surface:'Active Directory / Kerberos Pre-Auth',cvss:'8.8',status:'Remediated',chain:'17 domain accounts discovered with Kerberos pre-authentication disabled via PowerView enumeration. AS-REP responses for all 17 accounts captured without authentication. Offline cracking of AS-REP hashes yielded 9 plaintext passwords, two of which belonged to accounts holding local administrator rights on critical business servers.',steps:['Executed Get-DomainUser -PreauthNotRequired to enumerate vulnerable accounts','Identified 17 accounts with DONT_REQ_PREAUTH attribute set','Captured AS-REP ticket hashes for all 17 accounts using GetNPUsers.py (no credentials required)','Exported hashes to offline cracking environment','Cracked 9 of 17 hashes — two accounts held local admin rights on critical servers','Demonstrated lateral movement to critical servers using cracked credentials'],impact:'9 plaintext domain credentials recovered without any authentication. Two accounts with local admin rights on critical servers enabled immediate lateral movement and privilege escalation paths.',business:'Unauthorized access to critical business servers. Risk of sensitive data exfiltration, service disruption, and further AD compromise from servers with elevated privileges.',remediation:'Enable Kerberos pre-authentication on all accounts — disable DONT_REQ_PREAUTH attribute. Audit all accounts for this misconfiguration via regular AD health checks. Enforce strong password policies (20+ characters) for all domain accounts. Implement MFA for privileged account access.'},
+  {
+    ref:'ASF-014',
+    risk:'Critical',
+    type:'Unauthenticated Redis Exposure',
+    eng:'External Network / Infrastructure Assessment',
+    env:'Production',
+    surface:'Redis Master Node / Default Port 6379',
+    cvss:'9.8',
+    status:'Reported',
+    tags:['Redis Cache Exposure','ACL Misconfiguration','Unauthenticated Network'],
+    chain:'A Redis master node was identified listening on port 6379 with no authentication enforced and no network-level restriction. The instance was directly reachable from the public internet, exposing the full production cache — 155 live keys — to any unauthenticated remote connection. Three Redis commands confirmed the full scope: ACL LIST revealed unrestricted +@all permissions, ROLE confirmed the master node status, and DBSIZE returned 155 live production keys.',
+    steps:[
+      'Port scan identified Redis 6379 open on a public-facing IP with no authentication prompt',
+      'Connected anonymously via redis-cli — no password required, connection accepted immediately',
+      'Executed ACL LIST → returned: user default on nopass sanitize-payload ~* &* +@all (no restrictions)',
+      'Executed ROLE → returned: master (confirming write-capable primary node, not a read-only replica)',
+      'Executed DBSIZE → returned: 155 (live production keys confirmed in cache)',
+      'Executed RANDOMKEY in a loop — key naming patterns exposed OTP metadata linked to real user identifiers and application service cache including product pricing data',
+      'Executed CONFIG GET * → returned empty (rename-command obfuscation applied as partial mitigation — does not affect ACL or write capability)',
+      'Documented full rebuttal against the security team\'s read-only claim with three technical proofs: ACL +@all, ROLE=master, and CONFIG GET behavior'
+    ],
+    impact:'<strong>Unauthenticated access to live OTP metadata</strong> linked to real user identifiers. Full application cache readable by any internet-connected host. Master node write capability confirmed via ACL, enabling potential cache poisoning of end-user-facing data. Zero defensive layers: no authentication, no rate limiting, no IP restriction.',
+    business:'Exposure of live OTP codes enables real-time account takeover for any user with an active authentication session. Cache poisoning capability allows manipulation of product pricing, content delivery, and session data visible to end users. Regulatory exposure under GDPR and regional data protection frameworks for unauthenticated access to personally identifiable data in production.',
+    remediation:'<strong>1.</strong> Bind Redis to localhost or internal interface only: <code>bind 127.0.0.1</code><br><strong>2.</strong> Enforce authentication: <code>requirepass &lt;strong_password&gt;</code><br><strong>3.</strong> Define restrictive ACL rules per service account — avoid +@all<br><strong>4.</strong> Apply firewall rules blocking all external access to port 6379<br><strong>5.</strong> Enable Protected Mode to reject external connections when no auth is configured'
+  }
+  /* ADD MODAL DATA HERE */
 ];
 
 let lang='en';
+// Helper: safely set element text content
+function setEl(id, v){
+  try{ const el=document.getElementById(id); if(el) el.textContent=v; }catch(err){}
+}
+function setElH(id, v){
+  try{ const el=document.getElementById(id); if(el) el.innerHTML=v; }catch(err){}
+}
+
 function setLang(l){
+  try{
   lang=l;const t=T[l];const ar=l==='ar';
   document.documentElement.lang=l;
   document.documentElement.dir=ar?'rtl':'ltr';
@@ -1465,61 +2146,215 @@ function setLang(l){
   document.getElementById('ben').classList.toggle('on',!ar);
   document.getElementById('bar').classList.toggle('on',ar);
 
-  document.getElementById('logo-sub').textContent=t.logoSub;
+  setEl('logo-sub', t.logoSub);
   const nls=document.querySelectorAll('#nm a');
   t.nl.forEach((s,i)=>{if(nls[i])nls[i].textContent=s});
-  document.getElementById('nh-txt').textContent=t.nhTxt;
-  document.getElementById('fcta-txt').textContent=t.fctaTxt;
-  document.getElementById('badge-txt').textContent=t.badgeTxt;
-  document.getElementById('h-title').textContent=t.hTitle;
-  document.getElementById('h-desc').textContent=t.hDesc;
+  setEl('nh-txt', t.nhTxt);
+  setEl('fcta-txt', t.fctaTxt);
+  setEl('badge-txt', t.badgeTxt);
+  setEl('h-title', t.hTitle);
+  setEl('h-desc', t.hDesc);
   ['hs1','hs2','hs3','hs4'].forEach((id,i)=>document.getElementById(id).textContent=t.hs[i]);
-  document.getElementById('btn1').textContent=t.btn1;
-  document.getElementById('btn2').textContent=t.btn2;
-  document.getElementById('cert-label').textContent=t.certLabel;
-  document.getElementById('c6n').textContent=t.c6n;
-  document.getElementById('svc-t').textContent=t.svcT;
-  document.getElementById('svc-s').textContent=t.svcS;
+  setEl('btn1', t.btn1);
+  setEl('btn2', t.btn2);
+  setEl('cert-label', t.certLabel);
+  setEl('c6n', t.c6n);
+  setEl('svc-t', t.svcT);
+  setEl('svc-s', t.svcS);
   t.svcs.forEach((s,i)=>{const n=i+1;document.getElementById('s'+n+'n').textContent=s.n;document.getElementById('s'+n+'name').textContent=s.name;document.getElementById('s'+n+'desc').textContent=s.desc;});
-  document.getElementById('meth-t').textContent=t.methT;
-  document.getElementById('meth-s').textContent=t.methS;
+  setEl('meth-t', t.methT);
+  setEl('meth-s', t.methS);
   t.meths.forEach((m,i)=>{const n=i+1;document.getElementById('m'+n+'n').textContent=m.n;document.getElementById('m'+n+'d').textContent=m.d;document.getElementById('m'+n+'b').textContent=m.b;});
   t.ops.forEach((o,i)=>document.getElementById('op'+(i+1)).textContent=o);
-  document.getElementById('sk-t').textContent=t.skT;
-  document.getElementById('sk-s').textContent=t.skS;
+  setEl('sk-t', t.skT);
+  setEl('sk-s', t.skS);
   t.sks.forEach((s,i)=>{const n=i+1;document.getElementById('sk'+n).textContent=s;document.getElementById('sk'+n+'d').textContent=t.skds[i];document.getElementById('sk'+n+'l').textContent=t.skls[i];});
-  document.getElementById('exp-t').textContent=t.expT;
-  document.getElementById('exp-s').textContent=t.expS;
-  document.getElementById('exp-role').textContent=t.expRole;
-  document.getElementById('exp-org').textContent=t.expOrg;
-  document.getElementById('exp-pts').innerHTML=t.expPts.map(p=>`<li>${p}</li>`).join('');
-  document.getElementById('find-t').textContent=t.findT;
-  document.getElementById('find-s').textContent=t.findS;
-  document.getElementById('find-note').innerHTML=t.findNote;
-  document.getElementById('fb-all').textContent=t.fbAll;
-  document.getElementById('fb-w').textContent=t.fbW;
-  document.getElementById('fb-api').textContent=t.fbAPI;
-  document.getElementById('fb-n').textContent=t.fbN;
-  document.getElementById('fb-ad').textContent=t.fbAD;
+  setEl('exp-t', t.expT);
+  setEl('exp-s', t.expS);
+  setEl('exp-role', t.expRole);
+  setEl('exp-org', t.expOrg);
+  setElH('exp-pts', t.expPts.map(p=>`<li>${p}</li>`).join(''));
+  setEl('find-t', t.findT);
+  setEl('find-s', t.findS);
+  setElH('find-note', t.findNote);
+  setEl('fb-all', t.fbAll);
+  setEl('fb-w', t.fbW);
+  setEl('fb-api', t.fbAPI);
+  setEl('fb-n', t.fbN);
+  setEl('fb-ad', t.fbAD);
   t.finds.forEach((f,i)=>{const n=i+1;const e=document.getElementById('f'+n+'t');const s2=document.getElementById('f'+n+'s');const st=document.getElementById('f'+n+'st');if(e)e.textContent=f.t;if(s2)s2.textContent=f.s;if(st){st.textContent=f.st;st.className='fc-stat '+(f.st.includes('Remediated')||f.st.includes('تم المعالجة')?'sr':'sm');}});
-  document.getElementById('res-t').textContent=t.resT;
-  document.getElementById('res-s').textContent=t.resS;
+  setEl('res-t', t.resT);
+  setEl('res-s', t.resS);
   t.res.forEach((r,i)=>{const n=i+1;document.getElementById('r'+n+'n').textContent=r.n;document.getElementById('r'+n+'d').textContent=r.d;});
-  document.getElementById('imp-t').textContent=t.impT;
-  document.getElementById('imp-s').textContent=t.impS;
+  setEl('imp-t', t.impT);
+  setEl('imp-s', t.impS);
   ['a1','a2','a3','a4'].forEach((id,i)=>document.getElementById(id).textContent=t.achs[i]);
-  document.getElementById('con-t').textContent=t.conT;
-  document.getElementById('con-s').textContent=t.conS;
-  document.getElementById('con-desc').innerHTML=t.conDesc;
-  document.getElementById('av-txt').innerHTML=t.avTxt;
-  document.getElementById('con-note').innerHTML=t.conNote;
-  document.getElementById('con-loc').textContent=t.conLoc;
-  document.getElementById('ft-role').textContent=t.ftRole;
-  document.getElementById('ft-nda').textContent=t.ftNda;
-  document.getElementById('ft-con').textContent=t.ftCon;
+  setEl('con-t', t.conT);
+  setEl('con-s', t.conS);
+  setElH('con-desc', t.conDesc);
+  setElH('av-txt', t.avTxt);
+  setElH('con-note', t.conNote);
+  setEl('con-loc', t.conLoc);
+  setEl('ft-role', t.ftRole);
+  setEl('ft-nda', t.ftNda);
+  setEl('ft-con', t.ftCon); // ft-con may not exist - safe
   const vbs=document.querySelectorAll('.view-btn');
   vbs.forEach(b=>{const icon=b.querySelector('i');b.innerHTML='';b.appendChild(document.createTextNode(ar?'عرض التفاصيل ':' View Details'));b.appendChild(icon||document.createElement('i'));});
-  /* Update cert full names per language */
+  /* ── Trusted By ── */
+  const isAr=ar;
+  const tbLabel=isAr?'موثوق به عبر القطاعات':'Trusted Across Industries';
+  const tbNote=isAr?'جميع الارتباطات تحت اتفاقيات سرية — هويات العملاء محمية':'All engagements conducted under NDA — client identities protected';
+  const ts=[
+    isAr?'الخدمات المالية':'Financial Services',
+    isAr?'الحكومة والدفاع':'Government & Defense',
+    isAr?'الرعاية الصحية':'Healthcare',
+    isAr?'التكنولوجيا والـ SaaS':'Technology & SaaS',
+    isAr?'التجارة الإلكترونية':'E-Commerce',
+    isAr?'البنية التحتية السحابية':'Cloud Infrastructure'
+  ];
+  // setEl is declared outside setLang
+  setEl('tb-label',tbLabel);setEl('tb-note',tbNote);
+  ts.forEach((s,i)=>setEl('ts'+(i+1),s));
+
+  /* ── Engagement Process ── */
+  setEl('proc-t',isAr?'كيف نعمل معاً':'How We Work Together');
+  setEl('proc-s',isAr?'منهج ارتباط شفاف ومنظم — من أول تواصل حتى الإغلاق الموثق.':'A transparent, structured engagement process — from first contact to verified closure.');
+  const procs=[
+    {n:isAr?'التواصل الأولي':'Initial Contact',d:isAr?'تواصل معي عبر البريد أو الهاتف. أرد خلال 24 ساعة. نناقش احتياجاتك الأمنية والجدول الزمني وما تريد تقييمه.':'Reach out via email or phone. I respond within 24 hours. We briefly discuss your security needs, timeline, and what you\'re looking to assess.',t:isAr?'رد خلال 24 ساعة':'Response within 24h'},
+    {n:isAr?'تحديد النطاق والتخطيط':'Scoping & Planning',d:isAr?'نحدد النطاق الدقيق وبيئة الهدف وحدود الاختبار والأهداف. أقدم عرضاً واضحاً بالجدول الزمني والمنهجية والتسعير.':'We define the exact scope, target environment, testing boundaries, and objectives. I provide a clear proposal with timeline, methodology, and pricing.',t:isAr?'توقيع NDA في هذه المرحلة':'NDA signed at this stage'},
+    {n:isAr?'الاتفاقية الرسمية':'Formal Agreement',d:isAr?'يُصدر عقد رسمي يحدد النطاق وقواعد الاشتباك والجدول الزمني والمخرجات. كلا الطرفين يوقعان قبل بدء أي اختبار.':'A formal Statement of Work is issued defining scope, rules of engagement, timelines, and deliverables. Both parties sign before any testing begins.',t:isAr?'عقد عمل · قواعد اشتباك':'SOW · Rules of Engagement'},
+    {n:isAr?'تنفيذ الارتباط':'Engagement Execution',d:isAr?'يُجرى التقييم ضمن النطاق والجدول الزمني المتفق عليهما. تُبلَّغ النتائج الحرجة فوراً. شفافية كاملة طوال الارتباط.':'The assessment is conducted within the agreed scope and timeline. Critical findings are communicated immediately. Full transparency throughout.',t:isAr?'النتائج الحرجة تُبلَّغ فوراً':'Critical findings flagged immediately'},
+    {n:isAr?'تسليم التقرير':'Report Delivery',d:isAr?'يُسلَّم تقرير شامل — ملخص تنفيذي للإدارة، وتفاصيل تقنية كاملة لفريق الأمن. تسجيل CVSS v3.1 وأدلة PoC ومعالجة ذات أولوية.':'A comprehensive report is delivered — executive summary for leadership, full technical detail for your security team. CVSS v3.1 scoring, PoC evidence, and prioritized remediation.',t:isAr?'تقرير تنفيذي + تقني':'Executive + Technical Report'},
+    {n:isAr?'إعادة الاختبار والإغلاق':'Re-test & Closure',d:isAr?'بعد معالجة الفريق للنتائج، أعيد الاختبار للتحقق من فاعلية كل إصلاح وعدم وجود انتكاسات. إغلاق موثق لجميع النتائج الحرجة والعالية.':'After your team remediates findings, I re-test to verify each fix is effective and no regressions were introduced. Full verified closure for all critical and high findings.',t:isAr?'تأكيد الإصلاح الموثق':'Verified fix confirmation'}
+  ];
+  procs.forEach((p,i)=>{const n=i+1;setEl('p'+n+'n',p.n);setEl('p'+n+'d',p.d);setEl('p'+n+'t',p.t);});
+
+  /* ── Testimonials ── */
+  setEl('test-t',isAr?'نتائج الارتباطات':'Engagement Outcomes');
+  setEl('test-s',isAr?'ملخصات مجهولة الهوية من ارتباطات حقيقية معتمدة — هويات العملاء محمية بموجب NDA.':'Anonymized summaries from real authorized engagements — client identities protected under NDA.');
+  const testis=[
+    {tx:isAr?'كشف التقييم عن ثغرة حقن SQL حرجة غير مصادق عليها تُعرّض 24 قاعدة بيانات داخلية — ثغرة كانت موجودة في بيئة الإنتاج لأكثر من 18 شهراً دون اكتشافها من فريق الأمن الداخلي.':'Assessment identified a critical unauthenticated SQL injection chain exposing 24 internal databases — a vulnerability present in production for over 18 months undetected.',who:isAr?'عميل في القطاع الحكومي':'Government Sector Client',eng:isAr?'تقييم تطبيق ويب خارجي · الربع الثالث 2024':'External Web Application Assessment · Q3 2024'},
+    {tx:isAr?'تم إثبات الاستيلاء الكامل على Active Directory خلال 4 ساعات من الوصول الأولي للشبكة — من موطئ قدم غير مصادق إلى Domain Admin — من خلال سلسلة Kerberoasting تجاوزت ضوابط المحيط الموجودة بالكامل.':'A full Active Directory compromise was demonstrated within 4 hours of initial network access — from unauthenticated foothold to Domain Admin — through a Kerberoasting chain bypassing perimeter controls entirely.',who:isAr?'عميل في القطاع المالي':'Financial Sector Client',eng:isAr?'عملية فريق أحمر داخلي · الربع الأول 2025':'Internal Red Team Operation · Q1 2025'},
+    {tx:isAr?'اكتُشفت عقدة Redis master مكشوفة علناً بدون مصادقة وبـ ACL غير مقيد خلال تقييم البنية التحتية الخارجية — 155 مفتاح إنتاجي حي بما في ذلك بيانات OTP كانت متاحة لأي مضيف متصل بالإنترنت.':'A publicly exposed Redis master node with no authentication and unrestricted ACL was discovered during an external infrastructure assessment — 155 live production keys including OTP metadata were accessible to any internet-connected host.',who:isAr?'عميل في قطاع التكنولوجيا':'Technology Sector Client',eng:isAr?'تقييم شبكة خارجية · الربع الثاني 2025':'External Network Assessment · Q2 2025'}
+  ];
+  testis.forEach((t,i)=>{const n=i+1;setEl('t'+n+'tx',t.tx);setEl('t'+n+'who',t.who);setEl('t'+n+'eng',t.eng);});
+
+  /* ── Contact Form ── */
+  setEl('cf-name-l',isAr?'الاسم':'Your Name');
+  setEl('cf-company-l',isAr?'الشركة / المنظمة':'Company / Organization');
+  setEl('cf-email-l',isAr?'البريد الإلكتروني':'Email Address');
+  setEl('cf-service-l',isAr?'الخدمة المطلوبة':'Service Required');
+  setEl('cf-msg-l',isAr?'وصف مختصر':'Brief Description');
+  setEl('cf-note-txt',isAr?'جميع الاستفسارات تُعالج بسرية تامة. لا يتم تخزين أي بيانات.':'All enquiries handled under strict confidentiality. No data is stored or shared.');
+  setEl('cf-submit-txt',isAr?'إرسال الاستفسار':'Send Enquiry');
+  setEl('cf-success-txt',isAr?'تم الإرسال — سأرد خلال 24 ساعة.':'Message sent — I\'ll respond within 24 hours.');
+  const services=isAr?['اختبار اختراق تطبيقات الويب والـ API','عملية فريق أحمر','تقييم أمن Active Directory','اختبار اختراق الشبكات','تقييم أمن السحابة','محاكاة الهندسة الاجتماعية','استشارة عامة']:['Web Application Penetration Testing','Red Team Operation','Active Directory Security Assessment','Network & Infrastructure Pentest','Cloud Security Assessment','Social Engineering Simulation','General Consultation'];
+  services.forEach((s,i)=>{const el=document.getElementById('cfs'+(i+1));if(el)el.textContent=s;});
+
+  /* ── Resume ── */
+  setEl('rv-label',isAr?'// متخصص أمن هجومي':'// Offensive Security Professional');
+  setEl('rv-title',isAr?'مختبر اختراق أول · مشغّل فريق أحمر · مستشار أمن هجومي':'Senior Penetration Tester · Red Team Operator · Offensive Security Consultant');
+  setEl('rv-c1',isAr?'البريد':'Email');setEl('rv-c2',isAr?'الهاتف':'Phone');setEl('rv-c3',isAr?'الموقع':'Base');setEl('rv-c3v',isAr?'العراق · عن بُعد عالمياً':'Iraq · Remote Worldwide');
+  setEl('rv-s1',isAr?'عميل مؤسسي':'Enterprise Clients');setEl('rv-s2',isAr?'سنوات خبرة':'Years Experience');setEl('rv-s3',isAr?'ثغرة موثقة':'Findings Reported');setEl('rv-s4',isAr?'أعلى CVSS':'Highest CVSS');
+  setEl('rv-summary',isAr?'مختبر اختراق أول ومستشار أمن هجومي متمرس يمتلك أكثر من 6 سنوات من الخبرة العملية في إجراء تقييمات أمنية شاملة لعملاء مؤسسيين في قطاعات المال والحكومة والرعاية الصحية والتكنولوجيا على مستوى عالمي. خبرة عميقة في عمليات الفريق الأحمر وهجمات Active Directory واستغلال تطبيقات الويب والـ API ومحاكاة الخصوم ضمن ارتباطات محمية بـ NDA.':'Results-driven Senior Penetration Tester and Offensive Security Consultant with 6+ years conducting full-scope security assessments for enterprise clients worldwide. Deep expertise in red team operations, Active Directory attack chains, web and API exploitation, and adversary simulation under NDA-protected engagements.');
+  setEl('rv-exp-title',isAr?'الخبرة المهنية':'Professional Experience');
+  setEl('rv-role',isAr?'مختبر اختراق أول ومستشار أمن هجومي':'Senior Penetration Tester & Offensive Security Consultant');
+  setEl('rv-org',isAr?'مستشار أمني مستقل · عن بُعد · عملاء حول العالم':'Independent Security Consultant · Remote · Worldwide Clients');
+  setEl('rv-find-title',isAr?'نماذج من نتائج التقييمات':'Selected Engagement Findings');
+  setEl('rv-find-note',isAr?'جميع النتائج مُعتمة وفق NDA · الملف الكامل متاح عند الطلب الرسمي':'All findings sanitized per NDA · Full portfolio available upon formal request');
+  setEl('rv-meth-title',isAr?'منهجية التقييم':'Assessment Methodology');
+  setEl('rv-sk-title',isAr?'الكفاءة التقنية':'Technical Proficiency');
+  setEl('rv-tools-title',isAr?'المنظومة التشغيلية':'Operational Stack');
+  setEl('rv-cert-title',isAr?'الشهادات المهنية':'Certifications');
+  setEl('rv-avail',isAr?'<strong>متاح</strong> لارتباطات جديدة':'<strong>Available</strong> for New Engagements');
+  setEl('rv-avail-note',isAr?'NDA · عقد رسمي · قواعد اشتباك\nعالمي · عن بُعد · مستوى مؤسسي':'NDA · Formal SOW · Rules of Engagement\nGlobal · Remote · Enterprise-Grade');
+  const rvFinds=isAr?['حقن SQL غير مصادق — 24 قاعدة بيانات داخلية مكشوفة','تجاوز المصادقة — الاستيلاء الجماعي على الحسابات','Kerberoasting — الاستيلاء على Domain Admin','DCSync — استخلاص جميع بيانات NTDS.dit','عقدة Redis Master مكشوفة — 155 مفتاح إنتاجي','SSRF أعمى — تمحور داخلي عبر Webhook','Stored XSS طفراتي يتجاوز DOMPurify']:['Unauthenticated SQL Injection — 24 Internal Databases Exposed','Auth Bypass Enabling Mass Account Takeover','Kerberoasting Chain — Full Domain Admin Compromise','DCSync Attack — Full NTDS.dit Credential Extraction','Unauthenticated Redis Master Node — 155 Production Keys Exposed','Blind SSRF via Webhook — Internal Network Pivot','Stored Mutation XSS Bypassing DOMPurify Sanitization'];
+  rvFinds.forEach((f,i)=>setEl('rvf'+(i+1),f));
+  const rvSkills=isAr?['اختبار تطبيقات الويب','Active Directory','عمليات الفريق الأحمر','الشبكات والبنية التحتية','أدوات مخصصة']:['Web App Pentesting','Active Directory','Red Team Ops','Network & Infra','Custom Tooling'];
+  rvSkills.forEach((s,i)=>setEl('rvsk'+(i+1),s));
+  const rvCerts=isAr?['مشغّل فريق أحمر معتمد','خبير ممارس في الأمن السيبراني','مستشار أمن سيبراني معتمد','عمليات SOC والأمن السيبراني','جمعية أمن نظم المعلومات']:['Certified Red Team Professional Operator','Certified Cybersecurity Expert Practitioner','Certified Cyber Security Consultant','SOC & Cyber Security Operations','Information Systems Security Association'];
+  rvCerts.forEach((c2,i)=>setEl('rvc'+(i+1),c2));
+  setEl('rv-foot-l',isAr?'جميع الارتباطات تحت NDA · مراجع متاحة عند الطلب':'All engagements under NDA · References available upon request');
+  setEl('rv-foot-r',isAr?'أيمن محمود جاسم · مختبر اختراق أول · 2025':'Ayman Mahmoud Jasim · Senior Penetration Tester · 2025');
+  /* CV nav button */
+  setEl('cv-txt',isAr?'السيرة الذاتية':'View CV');
+  setEl('btn3',isAr?'السيرة الذاتية':'View CV');
+
+  /* ── Footer ── */
+  setEl('ft-tagline',isAr?'أفضل دفاع يبدأ بفهم الهجوم.':'The best defense starts with understanding the offense.');
+  setEl('ft-nav-title',isAr?'التنقل':'Navigation');
+  setEl('ft-l1',isAr?'الخدمات':'Services');setEl('ft-l2',isAr?'منهجية الارتباط':'Engagement Process');
+  setEl('ft-l3',isAr?'نتائج التقييمات':'Assessment Findings');setEl('ft-l4',isAr?'البحث':'Research');setEl('ft-l5',isAr?'التواصل':'Contact');
+  setEl('ft-latest-title',isAr?'آخر نتيجة':'Latest Finding');
+  setEl('ft-finding-title',isAr?'عقدة Redis Master مكشوفة دون مصادقة':'Unauthenticated Redis Master Node Exposed');
+  setEl('ft-contact-title',isAr?'تواصل':'Contact');
+  setEl('ft-copy',isAr?'© 2025 AMN Security · أيمن محمود جاسم · جميع الحقوق محفوظة':'© 2025 AMN Security · Ayman Mahmoud Jasim · All Rights Reserved');
+  setEl('ft-nda',isAr?'جميع الارتباطات تحت NDA':'All Engagements Under NDA');
+
+  /* Update nav link for process */
+  const nl2=document.getElementById('nl2');
+  if(nl2)nl2.textContent=isAr?'منهجية الارتباط':'Process';
+
+  /* Update context in findings per language */
+  const findCtx=[
+    {id:'f2s',en:'URL parameter passed directly to SQL query without parameterization. Automated extraction confirmed 24 internal databases without any authentication on a government sector client — assessment conducted over 3 days.',ar:'معامل URL يُمرَّر مباشرةً لاستعلام SQL دون تعقيم. أكد الاستخراج الآلي 24 قاعدة بيانات داخلية دون مصادقة لدى عميل في القطاع الحكومي — تقييم أُجري خلال 3 أيام.'},
+    {id:'f11s',en:'Multiple service accounts with weak passwords and SPN registrations enumerated via BloodHound. Offline cracking of Kerberos TGS tickets yielded plaintext credentials, enabling full Domain Admin escalation within 2 hours — financial sector client, 300+ users.',ar:'حسابات خدمة متعددة بكلمات مرور ضعيفة وتسجيلات SPN مُعدَّدة عبر BloodHound. كسر تذاكر TGS أنتج بيانات اعتماد نصية مكّنت من الاستيلاء على Domain Admin خلال ساعتين — عميل في القطاع المالي، 300+ مستخدم.'},
+    {id:'f12s',en:'Over-privileged service account held DS-Replication-Get-Changes-All right. Exploited via Impacket secretsdump to extract all AD credentials including KRBTGT hash — enabling persistent Golden Ticket generation. Healthcare sector client.',ar:'حساب خدمة مُفرط الصلاحيات يمتلك حق DS-Replication. استُغل عبر Impacket secretsdump لاستخلاص جميع بيانات اعتماد AD بما في ذلك hash الـ KRBTGT — عميل في قطاع الرعاية الصحية.'}
+  ];
+  findCtx.forEach(f=>{const el=document.getElementById(f.id);if(el)el.textContent=isAr?f.ar:f.en;});
+
+  /* Update 'All (14)' filter button */
+  setEl('fb-all',isAr?'الكل (14)':'All (14)');
+
+  /* Update CV btn label */
+  const navCv=document.getElementById('nav-cv');
+  if(navCv){const span=navCv.querySelector('span');if(span)span.textContent=isAr?'السيرة الذاتية':'View CV';}
+
+  /* Update methodology nav */
+  const methId=document.getElementById('nl2');
+  if(methId)methId.href='#process';
+
+  /* Update section numbers in translations */
+  setEl('imp-s',isAr?'نتائج قابلة للقياس من تقييمات أمنية معتمدة حول العالم.':'Measurable outcomes from authorized assessments delivered worldwide.');
+
+  /* Update footer finding in AR */
+  const fFootTitle=document.getElementById('ft-finding-title');
+  if(fFootTitle)fFootTitle.textContent=isAr?'عقدة Redis Master مكشوفة دون مصادقة':'Unauthenticated Redis Master Node Exposed';
+
+  /* Update Mobile Nav links for new section */
+  document.querySelectorAll('#nm li a[href="#methodology"]').forEach(el=>el.setAttribute('href','#process'));
+
+  /* Update Trusted By in AR */
+  setEl('tb-label',isAr?'موثوق به عبر القطاعات':'Trusted Across Industries');
+
+  /* Update process section number */
+  const procNumEl=document.querySelector('#process .sec-n');
+  if(procNumEl)procNumEl.textContent='// 03';
+
+  /* Update Research section number - this is informational */
+
+  /* Update Testimonials section number */
+  const testNumEl=document.querySelector('#testimonials .sec-n');
+  if(testNumEl)testNumEl.textContent='// 08';
+
+  /* Update Contact section number */
+  const conNumEl=document.querySelector('#contact .sec-n');
+  if(conNumEl)conNumEl.textContent='// 09';
+
+  /* Update Impact section */
+  setEl('imp-t',isAr?'تأثير الارتباطات':'Engagement Impact');
+
+  /* Update fcta */
+  const fctaEl=document.getElementById('fcta-txt');
+  if(fctaEl)fctaEl.textContent=isAr?'توظيفي':'Hire Me';
+
+  /* Update Trusted By sectors */
+  ts.forEach((s,i)=>setEl('ts'+(i+1),s));
+
+  /* Update certifications label */
+  setEl('cert-label',isAr?'الشهادات المهنية':'Certifications');
+
+  /* ── Update cert full names per language ── */
   const certData=ar?{
     crpoFull:'مشغّل فريق أحمر معتمد',crpoDom:'الفريق الأحمر · محاكاة الخصوم',
     ccepFull:'خبير ممارس في الأمن السيبراني',ccepDom:'الأمن السيبراني · مستوى خبير',
@@ -1535,13 +2370,14 @@ function setLang(l){
     issaFull:'Information Systems Security Association',issaDom:'Professional Membership',
     r6Full:'Advanced Exploitation & Red Team Labs',r6Dom:'Continuous Development'
   };
-  const setC=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
-  setC('cert-crpo-full',certData.crpoFull);setC('cert-crpo-dom',certData.crpoDom);
-  setC('cert-ccep-full',certData.ccepFull);setC('cert-ccep-dom',certData.ccepDom);
-  setC('cert-ccsc-full',certData.ccscFull);setC('cert-ccsc-dom',certData.ccscDom);
-  setC('cert-cscso-full',certData.cscsoFull);setC('cert-cscso-dom',certData.ccscoDom);
-  setC('cert-issa-full',certData.issaFull);setC('cert-issa-dom',certData.issaDom);
-  setC('cert-r6-full',certData.r6Full);setC('cert-r6-dom',certData.r6Dom);
+  // setC removed — using setEl instead
+  setEl('cert-crpo-full',certData.crpoFull);setEl('cert-crpo-dom',certData.crpoDom);
+  setEl('cert-ccep-full',certData.ccepFull);setEl('cert-ccep-dom',certData.ccepDom);
+  setEl('cert-ccsc-full',certData.ccscFull);setEl('cert-ccsc-dom',certData.ccscDom);
+  setEl('cert-cscso-full',certData.cscsoFull);setEl('cert-cscso-dom',certData.ccscoDom);
+  setEl('cert-issa-full',certData.issaFull);setEl('cert-issa-dom',certData.issaDom);
+  setEl('cert-r6-full',certData.r6Full);setEl('cert-r6-dom',certData.r6Dom);
+  } catch(err){ console.error('setLang error:', err.message, err.stack); }
 }
 
 function buildFlow(steps){
@@ -1574,6 +2410,12 @@ const FLOWS={
     {cls:'fn-vuln',icon:'📨',label:'AS-REP Capture',sub:'Tickets without credentials'},
     {cls:'fn-exec',icon:'⚙',label:'Hash Cracking',sub:'9 of 17 cracked'},
     {cls:'fn-impact',icon:'🖥',label:'Server Access',sub:'Local admin on critical hosts'}
+  ]),
+  13:buildFlow([
+    {cls:'fn-entry',icon:'🌐',label:'Public Exposure',sub:'Redis 6379 open — no auth'},
+    {cls:'fn-vuln',icon:'⚡',label:'ACL +@all Confirmed',sub:'No password · No restrictions'},
+    {cls:'fn-exec',icon:'📦',label:'Cache Enumeration',sub:'155 keys · OTP metadata exposed'},
+    {cls:'fn-impact',icon:'☠',label:'Cache Poisoning Risk',sub:'Master node — write capable'}
   ])
 };
 
@@ -1602,6 +2444,29 @@ function openModal(id){
   document.getElementById('mbd').innerHTML=`
     ${FLOWS[id]||''}
     <div class="ms"><h4><i class="ti ti-route"></i>Attack Chain Summary</h4><p>${d.chain}</p></div>
+    ${id===13?`
+    <div class="ms"><h4><i class="ti ti-terminal-2"></i>Technical Evidence</h4>
+      <div class="redis-tags">
+        ${(d.tags||[]).map(t=>`<span class="redis-tag">${t}</span>`).join('')}
+      </div>
+      <div class="evidence-block">
+        <div class="evidence-label"><i class="ti ti-terminal" style="font-size:.75rem"></i>ACL LIST — Permission Audit</div>
+        <div class="evidence-code"><span class="cmd">$ redis-cli ACL LIST</span>
+<span class="result">1) </span><span class="highlight">"user default on nopass</span> sanitize-payload ~* &* <span class="highlight">+@all"</span></div>
+      </div>
+      <div class="evidence-block">
+        <div class="evidence-label"><i class="ti ti-terminal" style="font-size:.75rem"></i>ROLE — Node Type Confirmation</div>
+        <div class="evidence-code"><span class="cmd">$ redis-cli ROLE</span>
+<span class="result">1) </span><span class="highlight">"master"</span>
+<span class="result">2) (integer) 0
+3) (empty array)</span></div>
+      </div>
+      <div class="evidence-block">
+        <div class="evidence-label"><i class="ti ti-terminal" style="font-size:.75rem"></i>DBSIZE — Production Cache Scope</div>
+        <div class="evidence-code"><span class="cmd">$ redis-cli DBSIZE</span>
+<span class="highlight">(integer) 155</span></div>
+      </div>
+    </div>`:''}
     <div class="ms"><h4><i class="ti ti-list-numbers"></i>Exploitation Steps</h4><ol class="msteps">${d.steps.map(s=>`<li>${s}</li>`).join('')}</ol></div>
     <div class="ms"><h4><i class="ti ti-alert-triangle"></i>Technical Impact</h4><p>${d.impact}</p></div>
     <div class="ms"><h4><i class="ti ti-briefcase"></i>Business Impact</h4><p>${d.business}</p></div>
@@ -1628,18 +2493,81 @@ document.querySelectorAll('.fb').forEach(b=>{
 /* CURSOR */
 const dot=document.getElementById('dot'),ring=document.getElementById('ring');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
-(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=Math.round(rx)+'px';ring.style.top=Math.round(ry)+'px';requestAnimationFrame(anim)})();
+document.addEventListener('mousemove',e=>{try{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';}catch(err){}});
+try{(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=Math.round(rx)+'px';ring.style.top=Math.round(ry)+'px';requestAnimationFrame(anim)})();}catch(err){}
 document.querySelectorAll('a,button,.svc,.ops-tool,.skc,.find-card,.ach-c,.res-c,.meth-item,.cert-pill,.tg').forEach(el=>{
   el.addEventListener('mouseenter',()=>{dot.classList.add('on');ring.classList.add('on')});
   el.addEventListener('mouseleave',()=>{dot.classList.remove('on');ring.classList.remove('on')});
 });
 
-/* NAV scroll */
+/* NAV scroll + progress bar */
 window.addEventListener('scroll',()=>{
+  try{
   document.getElementById('nav').classList.toggle('sc',scrollY>20);
   document.getElementById('fcta').classList.toggle('vis',scrollY>500);
+  // Scroll progress bar
+  const docH=document.documentElement.scrollHeight-window.innerHeight;
+  const pct=docH>0?(scrollY/docH*100):0;
+  document.getElementById('scroll-bar').style.width=pct+'%';
+  }catch(err){}
 });
+
+/* ══ RESUME MODAL ══ */
+function openResume(){
+  document.getElementById('resumeOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeResume(e){
+  if(e.target===document.getElementById('resumeOverlay'))closeResumeD();
+}
+function closeResumeD(){
+  document.getElementById('resumeOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+function printResume(){
+  const modal=document.getElementById('resumeModal');
+  const win=window.open('','_blank');
+  const fonts='<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">';
+  win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>CV — Ayman Mahmoud Jasim</title>'+fonts+'<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Outfit,sans-serif;background:#f2efe9;color:#13161c}</style></head><body>'+modal.innerHTML+'</body></html>');
+  win.document.close();
+  setTimeout(()=>win.print(),500);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeResumeD();closeModD();}});
+
+/* ══ CONTACT FORM ══ */
+async function submitForm(e){
+  e.preventDefault();
+  const btn=document.getElementById('cf-submit');
+  const txt=document.getElementById('cf-submit-txt');
+  const orig=txt.textContent;
+  btn.disabled=true;
+  txt.textContent=lang==='ar'?'جاري الإرسال...':'Sending...';
+
+  const name=document.getElementById('cf-name').value;
+  const company=document.getElementById('cf-company').value;
+  const email=document.getElementById('cf-email').value;
+  const service=document.getElementById('cf-service').value;
+  const msg=document.getElementById('cf-msg').value;
+
+  // Use mailto fallback (no backend needed, no security risk)
+  const subject=encodeURIComponent('Engagement Enquiry — AMN Security');
+  const body=encodeURIComponent(
+    'Name: '+name+'\n'+
+    'Company: '+(company||'—')+'\n'+
+    'Email: '+email+'\n'+
+    'Service: '+(service||'—')+'\n\n'+
+    'Message:\n'+msg+'\n\n'+
+    '---\nSent via AMN Security website'
+  );
+  window.location.href='mailto:ayman.mahmoudoffsec@gmail.com?subject='+subject+'&body='+body;
+
+  setTimeout(()=>{
+    document.getElementById('cf-success').style.display='flex';
+    btn.disabled=false;
+    txt.textContent=orig;
+    document.getElementById('conForm').reset();
+  },800);
+}
 
 /* NAV burger */
 document.getElementById('burger').addEventListener('click',()=>document.getElementById('nm').classList.toggle('open'));
@@ -1660,19 +2588,27 @@ document.querySelectorAll('.sk-fill').forEach(b=>bobs.observe(b));
 /* PARTICLES */
 /* Mouse glow movement */
 (function(){
-  const glow=document.getElementById('mouse-glow');
-  let visible=false;
-  document.addEventListener('mousemove',e=>{
-    glow.style.left=e.clientX+'px';
-    glow.style.top=e.clientY+'px';
-    if(!visible){glow.style.opacity='1';visible=true}
-  });
-  document.addEventListener('mouseleave',()=>{glow.style.opacity='0';visible=false});
+  try{
+    const glow=document.getElementById('mouse-glow');
+    if(!glow) return;
+    let visible=false;
+    document.addEventListener('mousemove',e=>{
+      try{
+        glow.style.left=e.clientX+'px';
+        glow.style.top=e.clientY+'px';
+        if(!visible){glow.style.opacity='1';visible=true}
+      }catch(err){}
+    });
+    document.addEventListener('mouseleave',()=>{try{glow.style.opacity='0';visible=false;}catch(err){}});
+  }catch(err){}
 })();
 
 (function(){
+  try{
   const c=document.getElementById('particles');
+  if(!c) return;
   const ctx=c.getContext('2d');
+  if(!ctx) return;
   let W,H,pts=[];
   function resize(){W=c.width=innerWidth;H=c.height=innerHeight;pts=Array.from({length:35},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,r:Math.random()*.9+.3}))}
   resize();window.addEventListener('resize',resize);
@@ -1692,6 +2628,7 @@ document.querySelectorAll('.sk-fill').forEach(b=>bobs.observe(b));
     requestAnimationFrame(draw);
   }
   draw();
+  }catch(err){}
 })();
 </script>
 </body>
