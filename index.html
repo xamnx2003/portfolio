@@ -16,8 +16,101 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ayman Mahmoud Jasim — Offensive Security Consultant">
 <meta name="twitter:description" content="Senior Penetration Tester with 6+ years. Red team operations, Active Directory attacks, web application pentesting.">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Ayman Mahmoud Jasim","jobTitle":"Senior Penetration Tester & Offensive Security Consultant","description":"Offensive security specialist with 6+ years of enterprise penetration testing and red team operations.","email":"ayman.mahmoudoffsec@gmail.com","telephone":"+9647877716669","address":{"@type":"PostalAddress","addressCountry":"IQ"},"knowsAbout":["Penetration Testing","Red Team Operations","Active Directory Security","Web Application Security","Cloud Security","Offensive Security"],"brand":{"@type":"Brand","name":"AMN Security"}}</script>
-<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&family=IBM+Plex+Sans+Arabic:wght@300;400;600;700&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Ayman Mahmoud Jasim","jobTitle":"Senior Penetration Tester & Offensive Security Consultant","description":"Offensive security specialist with 6+ years of enterprise penetration testing and red team operations.","email":"ayman.mahmoudoffsec@gmail.com","telephone":"+9647877716669","address":{"@type":"PostalAddress","addressCountry":"IQ"},"knowsAbout":["Penetration Testing","Red Team Operations","Active Directory Security","Web Application Security","Cloud Security","Offensive Security"],"brand":{"@type":"Brand","name":"AMN Security"}}
+/* ════════════════════════════════════════════════
+   ① CROSSHAIR CURSOR with lag
+════════════════════════════════════════════════ */
+(function(){
+  try{
+    if(window.innerWidth<=900||'ontouchstart' in window)return;
+    var ch=document.getElementById('crosshair');
+    var label=document.getElementById('ch-label');
+    if(!ch)return;
+    var cx=window.innerWidth/2,cy=window.innerHeight/2;
+    var tx=cx,ty=cy;
+    var hovering='';
+
+    /* Crosshair label shows element type on hover */
+    document.addEventListener('mouseover',function(e){
+      try{
+        var t=e.target;
+        if(t.closest('.find-card'))hovering='FINDING';
+        else if(t.closest('.svc'))hovering='SERVICE';
+        else if(t.closest('.testi-card'))hovering='RECORD';
+        else if(t.closest('button')||t.closest('a'))hovering='ENGAGE';
+        else hovering='';
+        if(label)label.textContent=hovering;
+      }catch(er){}
+    });
+
+    document.addEventListener('mousemove',function(e){
+      tx=e.clientX;ty=e.clientY;
+    });
+
+    (function loop(){
+      cx+=(tx-cx)*0.14;
+      cy+=(ty-cy)*0.14;
+      ch.style.transform='translate(calc('+Math.round(cx*10)/10+'px - 50%),calc('+Math.round(cy*10)/10+'px - 50%))';
+      requestAnimationFrame(loop);
+    })();
+
+    document.body.style.cursor='none';
+  }catch(err){}
+})();
+
+/* ════════════════════════════════════════════════
+   ② COMBINATION LOCK number morphing
+   Replaces standard count-up on [data-count] elements
+════════════════════════════════════════════════ */
+(function(){
+  try{
+    var CHARS='0123456789';
+    function morphTo(el,target,suffix){
+      if(el.dataset.done)return;
+      el.dataset.done='1';
+      el.classList.add('morphing');
+      var duration=900;
+      var start=performance.now();
+      var len=String(target).length;
+
+      function tick(now){
+        var p=Math.min((now-start)/duration,1);
+        if(p<1){
+          /* Random digit scramble */
+          var scramble='';
+          for(var i=0;i<len;i++){
+            scramble+=CHARS[Math.floor(Math.random()*10)];
+          }
+          el.textContent=scramble+(p>0.7?suffix:'');
+          requestAnimationFrame(tick);
+        } else {
+          el.textContent=target+suffix;
+          el.classList.remove('morphing');
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    /* Override the count-up observer */
+    var mobs=new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(!entry.isIntersecting)return;
+        var el=entry.target;
+        var target=parseInt(el.dataset.count||0);
+        var suffix=el.dataset.suf||'';
+        morphTo(el,target,suffix);
+        mobs.unobserve(el);
+      });
+    },{threshold:0.5});
+
+    document.querySelectorAll('[data-count]').forEach(function(el){
+      mobs.observe(el);
+    });
+  }catch(err){}
+})();
+
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&family=IBM+Plex+Sans+Arabic:wght@300;400;600;700&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
 /* ══════════════════════════════════════════════
@@ -98,7 +191,7 @@ body.ar .tl-pts li{font-size:.85rem;line-height:2;color:var(--tx2-ar)}
   background:rgba(4,6,10,.94);backdrop-filter:blur(14px);
   align-items:center;justify-content:center;padding:1.5rem;
 }
-.resume-overlay.open{display:flex}
+.resume-overlay.open{display:flex!important}
 .resume-modal{
   background:#f2efe9;color:#13161c;
   border-radius:14px;max-width:860px;width:100%;
@@ -1193,15 +1286,733 @@ body.ar .footer-badge{font-family:var(--ar);font-size:.6rem;letter-spacing:0;tex
   .rv-stats{flex-wrap:wrap}
   .rv-stat{min-width:90px}
 }
+
+
+/* ════════════════════════════════════════════════════
+   REAL DESIGN SYSTEM — Dossier / Classification Aesthetic
+   One accent. Serif authority. Stamped evidence.
+════════════════════════════════════════════════════ */
+
+:root{
+  --bg:#0a0a0b;
+  --bg2:#0d0d0e;
+  --s1:#131314;
+  --s2:#191a1a;
+  --s3:#222324;
+  --a0:#c1121f;
+  --a1:#8a6d3b;
+  --a2:#5c6470;
+  --a3:#c1121f;
+  --a4:#8a6d3b;
+  --tx:#ece7dc;
+  --tx2:#9a978d;
+  --tx3:#5c5a54;
+  --tx-ar:#ece7dc;
+  --tx2-ar:#9a978d;
+  --bd:rgba(236,231,220,0.09);
+  --bda:rgba(193,18,31,0.35);
+  --f:'Inter',sans-serif;
+  --fd:'Fraunces',serif;
+  --mono:'Fira Code',monospace;
+}
+
+/* Kill the AI-default tells: custom cursor, particles, ambient glow */
+#particles,#mouse-glow,#dot,#ring{display:none!important}
+body,a,button,.lb,.view-btn,.mc,.f-links a,.cf-submit,.nav-mid a{cursor:pointer!important}
+
+/* Hero name — solid ink, no gradient shimmer gimmick */
+.hero-name{letter-spacing:-.015em}
+.hero-name .hl:nth-child(3) .hli{
+  background:none!important;-webkit-text-fill-color:var(--a0)!important;
+  color:var(--a0)!important;font-style:italic;
+  animation:slideUp .75s cubic-bezier(.16,1,.3,1) .35s both!important;
+}
+.hero-title{font-family:var(--mono)}
+
+/* Hero atmosphere — single warm wash, no rainbow ellipses */
+.hero-mesh{
+  background:radial-gradient(ellipse 60% 50% at 50% 20%,rgba(193,18,31,.05) 0%,transparent 70%)!important;
+}
+.hero-grid{
+  background-image:linear-gradient(var(--bd) 1px,transparent 1px),linear-gradient(90deg,var(--bd) 1px,transparent 1px)!important;
+}
+.scan{background:linear-gradient(90deg,transparent,rgba(193,18,31,.25),transparent)!important}
+
+/* Logo — quiet, no breathing glow */
+.logo-letters{filter:none!important}
+.logo:hover .logo-letters{filter:none!important}
+.logo:hover .logo-name{text-shadow:none!important}
+
+/* Nav — flat glass, hairline only */
+nav{background:rgba(10,10,11,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--bd)}
+nav.sc{background:rgba(10,10,11,.97)}
+.nav-mid a{color:var(--tx2)}
+.nav-mid a:hover{color:var(--tx)}
+.cta-nav{border-radius:3px;background:transparent;border:1px solid var(--bd);box-shadow:none}
+.cta-nav:hover{background:rgba(236,231,220,.04);border-color:var(--tx2);transform:none}
+#nav-cv{color:var(--tx2)!important;border-color:var(--bd)!important;background:transparent!important}
+#nav-cv:hover{color:var(--tx)!important;border-color:var(--tx2)!important}
+
+/* Buttons — one confident solid, one quiet outline */
+.btn-p{background:var(--a0);color:var(--tx);border-radius:3px;box-shadow:none}
+.btn-p:hover{background:#9c0e19;transform:none;box-shadow:none}
+.btn-g{border-radius:3px;border:1px solid var(--bd);background:transparent}
+.btn-g:hover{background:rgba(236,231,220,.04);border-color:var(--tx2);transform:none}
+
+/* Stats card — ledger, not glass slab */
+.hero-stats-card{background:var(--s1);border:1px solid var(--bd);border-radius:4px;box-shadow:none}
+.hsc-item:hover{background:rgba(236,231,220,.03)}
+.hsc-item::before{background:var(--a0)}
+.hsc-v{font-family:var(--fd);color:var(--tx)}
+
+/* Cert strip — neutral credentials, no color circus */
+.cert-pill{background:var(--s1);border:1px solid var(--bd);border-radius:4px;box-shadow:none}
+.cert-pill:hover{border-color:var(--tx2);background:var(--s1);transform:none}
+.cert-icon-wrap{border-radius:3px}
+.cert-icon-wrap.ci-green,.cert-icon-wrap.ci-cyan,.cert-icon-wrap.ci-purple,.cert-icon-wrap.ci-amber{
+  background:transparent;border-color:var(--bd);color:var(--tx2);box-shadow:none;
+}
+
+/* Section eyebrows — classification tag, not neon label */
+.sec-n{
+  font-family:var(--mono);border:1px solid var(--bd);padding:.18rem .55rem;
+  border-radius:2px;color:var(--tx2);background:transparent;
+}
+.sec-ln{background:var(--bd)}
+.sec-t{font-family:var(--fd);letter-spacing:-.01em}
+
+/* Services — flat institutional grid, no rainbow scan */
+.svc-grid{background:var(--bd);border:1px solid var(--bd);border-radius:6px}
+.svc{background:var(--s1);box-shadow:none}
+.svc:hover{background:var(--s2);box-shadow:none}
+.svc::after{display:none}
+.svc-ico{background:transparent;border:1px solid var(--bd);border-radius:4px;color:var(--tx2);box-shadow:none}
+.svc:hover .svc-ico{background:transparent;border-color:var(--a0);color:var(--a0);transform:none}
+.svc-name{font-family:var(--fd)}
+.stag{background:transparent;border:1px solid var(--bd);border-radius:2px}
+.svc:hover .stag{border-color:var(--bd);color:var(--tx2);background:transparent;box-shadow:none}
+
+/* Methodology — quiet list, accent only as a marker */
+.meth-no{color:var(--a0)}
+.meth-item:hover{background:rgba(236,231,220,.025)}
+.meth-nm{font-family:var(--fd)}
+.meth-badge{border:1px solid var(--bd);border-radius:2px;background:transparent}
+.ops-tool{background:var(--s1);border:1px solid var(--bd);border-radius:4px;box-shadow:none}
+.ops-tool:hover{border-color:var(--tx2);background:var(--s1);transform:none;box-shadow:none}
+.ops-tool-ic{color:var(--tx2)}
+
+/* Process — sequence is real, keep numbers, kill color glow */
+.process-grid{background:var(--bd);border:1px solid var(--bd);border-radius:6px}
+.proc-item{background:var(--s1);box-shadow:none}
+.proc-item:hover{background:var(--s2)}
+.proc-connector{display:none}
+.proc-icon{background:transparent;border:1px solid var(--bd);border-radius:4px;color:var(--tx2);box-shadow:none}
+.proc-item:hover .proc-icon{border-color:var(--a0);color:var(--a0);transform:none}
+.proc-name{font-family:var(--fd)}
+.proc-tag{background:transparent;border:1px solid var(--bd);color:var(--tx2);border-radius:2px;box-shadow:none}
+
+/* Skills — accent only in the fill bar, nowhere else */
+.sk-grid{background:var(--bd);border:1px solid var(--bd);border-radius:6px}
+.skc{background:var(--s1);box-shadow:none}
+.skc:hover{background:var(--s2)}
+.skc::after{display:none}
+.sk-nm{font-family:var(--fd)}
+.sk-fill{background:var(--a0)!important;animation:none!important}
+.tg{background:transparent;border:1px solid var(--bd);border-radius:2px}
+.tg:hover{background:transparent;border-color:var(--tx2);color:var(--tx);box-shadow:none}
+
+/* Timeline */
+.tl::before{background:var(--bd)}
+.tl-dot{background:var(--a0);box-shadow:none}
+.tl-role{font-family:var(--fd)}
+.tl-per{color:var(--a0)}
+
+/* Findings — the evidentiary core: stamp treatment, sharp edges */
+.find-note{border:1px solid var(--bd);background:transparent;border-radius:4px}
+.find-note i{color:var(--a0)}
+.fb{border-radius:2px}
+.fb.on,.fb:hover{border-color:var(--tx2);color:var(--tx);background:rgba(236,231,220,.04)}
+
+.find-card{background:var(--s1);border:1px solid var(--bd);border-radius:4px;box-shadow:none}
+.find-card::before{display:none}
+.find-card::after{display:none}
+.find-card:hover{border-color:var(--tx2);background:var(--s1);box-shadow:none;transform:none}
+
+/* Severity badges — actual rubber-stamp construction */
+.fc-sev{
+  font-family:var(--mono);border-radius:2px;position:relative;
+  transform:rotate(-1.4deg);background:transparent!important;
+  border:1.5px solid currentColor;padding:.18rem .5rem .18rem .56rem;
+}
+.fc-sev::after{
+  content:'';position:absolute;inset:2px;border:1px solid currentColor;opacity:.45;border-radius:1px;pointer-events:none;
+}
+.sc{color:var(--a0)}
+.sh{color:var(--a1)}
+.sad{color:var(--a2)}
+
+.fc-type{background:transparent;border:1px solid var(--bd);color:var(--tx2);border-radius:2px}
+.fc-env,.fc-context{background:transparent;border:1px solid var(--bd);color:var(--tx3);border-radius:2px}
+.fc-cvss span{color:var(--a0)}
+.fc-cvss.h span{color:var(--a1)}
+.fc-cvss.ad span{color:var(--a2)}
+.fc-stat{border-radius:2px}
+.sr{background:transparent;color:var(--tx2);border:1px solid var(--bd)}
+.sm{background:transparent;color:var(--a1);border:1px solid rgba(138,109,59,.3)}
+#f14st{background:transparent!important;color:var(--a1)!important;border:1px solid rgba(138,109,59,.3)!important}
+.view-btn{color:var(--a0)}
+
+/* Modal — the dossier file itself */
+.mov{background:rgba(5,5,6,.92)}
+.mb{background:var(--s1);border:1px solid var(--bd);border-radius:6px;box-shadow:0 30px 60px rgba(0,0,0,.6)}
+.mc{color:var(--tx2)}
+.mc:hover{color:var(--tx)}
+.ms h4{color:var(--a0)}
+.msteps li::before{background:transparent;border:1px solid var(--bd);color:var(--tx2);border-radius:2px}
+
+/* Attack flow — quiet evidence chain */
+.attack-flow{background:transparent;border:1px solid var(--bd);border-radius:4px}
+.attack-flow-title{color:var(--tx2)}
+.flow-node{border-radius:2px}
+.fn-entry{background:transparent;color:var(--tx2);border-color:var(--bd)}
+.fn-vuln{background:transparent;color:var(--a0);border-color:rgba(193,18,31,.3)}
+.fn-exec{background:transparent;color:var(--a1);border-color:rgba(138,109,59,.3)}
+.fn-impact{background:transparent;color:var(--tx);border-color:var(--tx2)}
+.flow-step:not(:last-child)::after{background:var(--bd)}
+
+/* Research — neutral, no purple bloom */
+.res-c{background:var(--s1);border:1px solid var(--bd);border-radius:4px;box-shadow:none}
+.res-c:hover{border-color:var(--tx2);background:var(--s1);box-shadow:none;transform:none}
+.res-c::after{border:1px solid var(--bd);color:var(--tx3);background:transparent}
+.res-ic{color:var(--tx2)}
+.res-nm{font-family:var(--fd)}
+
+/* Achievements */
+.ach-c{background:var(--s1);border:1px solid var(--bd);border-radius:4px;box-shadow:none}
+.ach-c:hover{border-color:var(--tx2);background:var(--s1);box-shadow:none}
+.ach-v{font-family:var(--fd);background:none!important;-webkit-text-fill-color:var(--a0)!important;color:var(--a0)!important;filter:none!important}
+.ach-ic{color:var(--bd)}
+
+/* Trusted by — neutral chips */
+.trusted-strip{background:var(--bg2);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+.tsector{background:var(--s1);border:1px solid var(--bd);border-radius:4px;box-shadow:none}
+.tsector:hover{background:var(--s1);border-color:var(--tx2);transform:none;box-shadow:none}
+.tsector-icon{background:transparent;border:1px solid var(--bd);border-radius:3px;color:var(--tx2)}
+
+/* Testimonials — case-file summaries */
+.testi-card{background:var(--s1);border:1px solid var(--bd);border-radius:4px;box-shadow:none}
+.testi-card::before{display:none}
+.testi-card:hover{background:var(--s1);border-color:var(--tx2);box-shadow:none;transform:none}
+.testi-quote{background:transparent;border:1px solid var(--bd);color:var(--tx2);border-radius:3px}
+.testi-who{font-family:var(--fd)}
+.testi-dot{background:var(--a0);box-shadow:none}
+.testi-cvss{background:transparent;border:1px solid var(--bd);color:var(--a0)}
+.testi-cvss.crit{background:transparent;color:var(--a0);border-color:rgba(193,18,31,.3)}
+.testi-cvss.ad{background:transparent;color:var(--a2);border-color:var(--bd)}
+
+/* Contact form — flat fields, no inset gimmick */
+.con-form .cf-input{background:var(--s1);border:1px solid var(--bd);border-radius:3px;box-shadow:none}
+.cf-input:focus{border-color:var(--tx2);box-shadow:none}
+.con-card{background:var(--s1);border:1px solid var(--bd);border-radius:4px;box-shadow:none}
+.con-card-top{background:var(--bg2);border-bottom:1px solid var(--bd)}
+.cl:hover{color:var(--tx);background:rgba(236,231,220,.03)}
+.av-dot{background:var(--a0);box-shadow:none}
+
+/* Footer */
+footer{background:var(--bg2);border-top:1px solid var(--bd)}
+footer::before{display:none}
+.footer-top{border-bottom:1px solid var(--bd)}
+.footer-finding{background:var(--s1);border:1px solid var(--bd);border-radius:3px}
+.footer-finding-cvss{color:var(--a0)}
+.footer-badge{border:1px solid var(--bd);border-radius:2px}
+
+/* Scroll bar + floating CTA — solid, no rainbow glow */
+#scroll-bar{background:var(--a0);box-shadow:none}
+.fcta{background:var(--a0);color:var(--tx);box-shadow:none;border-radius:3px;animation:none!important}
+.fcta:hover{background:#9c0e19}
+
+/* Divider — hairline, not glow */
+.div{background:var(--bd);height:1px;border-top:none}
+
+
+/* ════════════════════════════════════════════════════
+   SIGNATURE — Classification System
+   The one bold thing this page is remembered by.
+════════════════════════════════════════════════════ */
+
+/* Classification banner — full bleed, solid, unmissable */
+.classband{
+  background:var(--a0);
+  padding:.5rem 1rem;
+  position:relative;z-index:250;
+  overflow:hidden;
+}
+.classband-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;justify-content:center;gap:.9rem;
+  font-family:var(--mono);font-size:.56rem;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:#fff;text-align:center;flex-wrap:wrap;
+}
+.cb-mark{font-size:.5rem;opacity:.7;flex-shrink:0}
+
+/* Hero stats card → case file header */
+.hero-stats-card{position:relative;margin-top:.4rem}
+.hsc-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.6rem 1.2rem;
+  background:var(--bg);
+  border-bottom:1px solid var(--bda);
+  font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--tx3);
+}
+.hsc-stamp{
+  color:var(--a0);font-weight:700;
+  border:1px solid currentColor;padding:.08rem .4rem;border-radius:2px;
+  transform:rotate(-2deg);
+}
+
+/* TLP strip on findings */
+.tlp-strip{
+  display:flex;align-items:center;gap:.8rem;
+  margin-bottom:1.6rem;padding-bottom:.9rem;
+  border-bottom:2px solid var(--a0);
+}
+.tlp-tag{
+  font-family:var(--mono);font-weight:700;font-size:.62rem;letter-spacing:.1em;
+  background:var(--a0);color:#fff;padding:.25rem .65rem;border-radius:2px;
+}
+.tlp-txt{font-family:var(--mono);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--tx2)}
+
+/* ── TYPOGRAPHY — push real contrast, not timid ── */
+.hero-name{
+  font-size:clamp(3.6rem,10vw,8.5rem)!important;
+  font-weight:700;line-height:.85;
+}
+.hero-title{
+  font-size:.7rem!important;letter-spacing:.16em!important;
+  color:var(--tx3)!important;
+}
+.sec-t{font-size:clamp(1.9rem,4.5vw,3.1rem)!important;font-weight:600}
+.fc-title{font-family:var(--fd)!important;font-size:1.02rem!important;font-weight:600}
+.testi-who{font-size:.86rem}
+
+/* ── DECLASSIFICATION SCANNER — scroll-scrubbed, reversible reveal ── */
+.scan-line{
+  position:fixed;top:46vh;left:0;right:0;height:1px;z-index:40;
+  pointer-events:none;
+  background:linear-gradient(90deg,transparent,var(--a0) 12%,var(--a0) 88%,transparent);
+  box-shadow:0 0 14px rgba(193,18,31,.55),0 0 32px rgba(193,18,31,.18);
+}
+.scan-readout{
+  position:absolute;right:1.6rem;top:-9px;
+  font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;
+  color:var(--a0);background:var(--bg);padding:.12rem .45rem;
+  border:1px solid var(--bda);border-radius:2px;white-space:nowrap;
+}
+@media(max-width:900px){.scan-line{display:none}}
+
+.find-card{position:relative;--reveal:1}
+.find-card .fc-title{position:relative;display:inline-block}
+.find-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--a0);
+  transform:scaleX(var(--reveal));transform-origin:left;
+  display:block!important;
+}
+/* Title redaction bar — recedes precisely as the scan line passes through it */
+.fc-title::after{
+  content:'';position:absolute;inset:-2px -4px;
+  background:var(--tx);
+  transform:scaleX(calc(1 - var(--reveal)));transform-origin:right;
+  pointer-events:none;
+}
+
+.sec-t{--reveal:1;opacity:var(--reveal);filter:blur(calc((1 - var(--reveal)) * 5px))}
+
+/* Stamp rotation variance — organic, not uniform */
+.find-card:nth-of-type(odd) .fc-sev{transform:rotate(-1.4deg)}
+.find-card:nth-of-type(even) .fc-sev{transform:rotate(1.1deg)}
+
+/* Hero asymmetry — stats card pinned, offset, clipped corner */
+@media(min-width:901px){
+  .hi{grid-template-columns:1.3fr .7fr}
+  .hero-stats-card{
+    clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%);
+    margin-top:1.2rem;
+  }
+}
+
+/* Mobile classband */
+@media(max-width:768px){
+  .classband-inner{font-size:.5rem;letter-spacing:.1em;gap:.5rem}
+  .hero-name{font-size:clamp(2.6rem,11vw,4.2rem)!important}
+}
+
+
+/* ════════════════════════════════════════════════════
+   INTAKE RITUAL — first encounter, not a normal page load
+════════════════════════════════════════════════════ */
+.intake{
+  position:fixed;inset:0;z-index:900;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  padding:1.5rem;
+  /* failsafe: self-destructs even if JS never runs */
+  animation:intakeFailsafe .01s linear 3.4s forwards;
+}
+@keyframes intakeFailsafe{to{opacity:0;visibility:hidden;pointer-events:none}}
+.intake.hide{opacity:0;transition:opacity .55s ease;pointer-events:none}
+.intake-box{max-width:420px;width:100%;text-align:center}
+.intake-line{
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--tx2);margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:.4rem;
+}
+.intake-line.small{font-size:.54rem;color:var(--tx3);margin-top:1rem;margin-bottom:0}
+.intake-dots::after{content:'';animation:intakeDots 1.2s steps(4) infinite}
+@keyframes intakeDots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+.intake-bar{height:2px;background:var(--bd);border-radius:1px;overflow:hidden}
+.intake-fill{height:100%;width:0%;background:var(--a0);transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+.intake-stamp{
+  font-family:var(--mono);font-weight:700;font-size:.85rem;letter-spacing:.16em;
+  color:var(--a0);border:2px solid var(--a0);display:inline-block;
+  padding:.5rem 1.2rem;margin-top:1.6rem;border-radius:2px;
+  transform:scale(1.4) rotate(-3deg);opacity:0;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .3s;
+}
+.intake-stamp.show{transform:scale(1) rotate(-3deg);opacity:1}
+
+/* ════════════════════════════════════════════════════
+   CASE FILE TAB RAIL — alternate navigation paradigm
+════════════════════════════════════════════════════ */
+.case-tabs{
+  position:fixed;left:0;top:50%;transform:translateY(-50%);
+  z-index:120;display:flex;flex-direction:column;gap:.45rem;
+}
+.ct-tab{
+  writing-mode:vertical-rl;text-orientation:mixed;
+  font-family:var(--mono);font-size:.52rem;letter-spacing:.16em;
+  color:var(--tx2);text-decoration:none;
+  background:var(--s1);border:1px solid var(--bd);border-left:none;
+  padding:.9rem .42rem;border-radius:0 4px 4px 0;
+  box-shadow:2px 0 10px rgba(0,0,0,.35);
+  transition:padding-left .25s,color .25s,border-color .25s,background .25s;
+}
+.ct-tab:hover{padding-left:.7rem;color:var(--tx);border-color:var(--tx2)}
+.ct-tab.active{color:var(--a0);border-color:var(--bda);padding-left:.75rem;background:var(--s2)}
+@media(max-width:1100px){.case-tabs{display:none}}
+[dir="rtl"] .case-tabs{left:auto;right:0}
+[dir="rtl"] .ct-tab{border-left:1px solid var(--bd);border-right:none;border-radius:4px 0 0 4px;box-shadow:-2px 0 10px rgba(0,0,0,.35)}
+
+
+/* ════════════════════════════════════════════════════
+   LUXURY RECALIBRATION — oxblood & brass, not alarm-red
+   Tactile depth over flat austerity.
+════════════════════════════════════════════════════ */
+
+:root{
+  --bg:#0c0a09;
+  --bg2:#110d0c;
+  --s1:#171311;
+  --s2:#1e1815;
+  --s3:#27201c;
+  --a0:#8a2632;
+  --a1:#b08a4e;
+  --a2:#6b5d4f;
+  --a3:#8a2632;
+  --a4:#b08a4e;
+  --tx:#efe6d8;
+  --tx2:#a89a85;
+  --tx3:#615650;
+  --tx-ar:#efe6d8;
+  --tx2-ar:#a89a85;
+  --bd:rgba(239,230,216,0.08);
+  --bda:rgba(138,38,50,0.4);
+  --gold:#c9a45c;
+}
+
+/* ── Paper grain — refined, scoped only to key surfaces ── */
+.find-card,.testi-card,.svc,.proc-item,.cert-pill,.hero-stats-card,.con-card,.ach-c,.res-c,.tsector,.ops-tool{
+  position:relative;
+}
+.find-card::after,.testi-card::after{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── Gold foil hairlines — the one metallic touch, used sparingly ── */
+.classband{background:var(--a0);border-top:1px solid rgba(201,164,92,.4);border-bottom:1px solid rgba(201,164,92,.4)}
+.classband-inner{color:#f3e9d8}
+.cb-mark{color:var(--gold)}
+.tlp-strip{border-bottom:2px solid var(--gold)}
+.tlp-tag{background:var(--gold);color:#1a1410}
+.div{background:linear-gradient(90deg,transparent,var(--bd) 15%,rgba(201,164,92,.18) 50%,var(--bd) 85%,transparent)}
+
+/* ── Severity stamps — gold inset ring, oxblood outer ── */
+.fc-sev::after{border-color:var(--gold)!important;opacity:.55}
+.hsc-stamp{border-color:var(--gold);color:var(--gold)}
+.hsc-header{border-bottom-color:rgba(201,164,92,.3)}
+
+/* ── Hero name — letterpress emboss instead of flat fill ── */
+.hero-name .hl:nth-child(3) .hli{
+  color:var(--a0)!important;-webkit-text-fill-color:var(--a0)!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.04),0 -1px 0 rgba(0,0,0,.5);
+}
+
+/* ── Scanner — oxblood beam with gold edge glints ── */
+.scan-line{
+  background:linear-gradient(90deg,transparent,var(--gold) 8%,var(--a0) 25%,var(--a0) 75%,var(--gold) 92%,transparent)!important;
+  box-shadow:0 0 14px rgba(138,38,50,.5),0 0 26px rgba(201,164,92,.12)!important;
+}
+.scan-readout{color:var(--gold);border-color:rgba(201,164,92,.35)}
+
+/* ── Case tabs — leather-tab depth, gold seal on active ── */
+.ct-tab{box-shadow:2px 0 12px rgba(0,0,0,.5),inset -1px 0 0 rgba(201,164,92,.05)}
+.ct-tab.active{color:var(--gold);border-color:rgba(201,164,92,.4)}
+.ct-tab.active::before{
+  content:'';position:absolute;width:5px;height:5px;border-radius:50%;
+  background:var(--gold);box-shadow:0 0 6px rgba(201,164,92,.6);
+  top:6px;left:50%;transform:translateX(-50%);
+}
+.ct-tab{position:relative}
+
+/* ── Intake ritual — wax seal, not a rectangle stamp ── */
+.intake-stamp{
+  width:92px;height:92px;border-radius:50%;
+  border:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.56rem;line-height:1.3;padding:0;
+  background:radial-gradient(circle at 35% 30%,rgba(201,164,92,.08),transparent 70%);
+  transform:scale(1.5) rotate(-8deg);
+}
+.intake-stamp.show{transform:scale(1) rotate(-8deg)}
+.intake-stamp::before{
+  content:'';position:absolute;inset:6px;border:1px solid rgba(201,164,92,.4);border-radius:50%;
+}
+.intake-fill{background:linear-gradient(90deg,var(--a0),var(--gold))}
+
+/* ── Findings stat numbers, achievements — brass not alarm-red ── */
+.fc-cvss span{color:var(--gold)}
+.ach-v{color:var(--gold)!important;-webkit-text-fill-color:var(--gold)!important}
+.hsc-v{color:var(--tx)}
+.tl-per{color:var(--gold)}
+
+/* ── Buttons — oxblood solid, restrained ── */
+.btn-p{background:var(--a0)}
+.btn-p:hover{background:#7a1f2a}
+.fcta{background:var(--a0)}
+.fcta:hover{background:#7a1f2a}
+
+/* ── Testimonial quote mark — gold flourish ── */
+.testi-quote{border-color:rgba(201,164,92,.3);color:var(--gold)}
+.testi-dot{background:var(--gold)}
+
+/* ── Mobile: keep grain off for performance ── */
+@media(max-width:768px){
+  .find-card::after,.testi-card::after{display:none}
+}
+
+
+/* ════════════════════════════════════════════════
+   PREMIUM EXPERIENCE CSS
+════════════════════════════════════════════════ */
+
+/* ④ Word redaction reveal — per-word overlay */
+.wrd{
+  display:inline-block;position:relative;
+  transform:translateY(calc((1 - var(--reveal,0)) * 6px));
+  opacity:var(--reveal,0);
+  transition:none;
+}
+.wrd::after{
+  content:'';position:absolute;inset:-2px -3px;
+  background:var(--bg);
+  transform:scaleX(calc(1 - var(--reveal,0)));
+  transform-origin:right;
+  pointer-events:none;
+}
+/* When section fully above scanner — all words fully revealed */
+.sec-t[style*="--reveal:1"] .wrd,
+.sec-t[style*="--reveal: 1"] .wrd{opacity:1;transform:none}
+
+/* ③ Dossier HUD */
+.dossier-hud{
+  position:fixed;bottom:1.8rem;right:1.8rem;z-index:140;
+  font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;
+  color:var(--tx3);text-align:right;
+  pointer-events:none;
+}
+@media(max-width:900px){.dossier-hud{display:none}}
+.dossier-hud-file{color:var(--tx2);margin-bottom:.4rem;letter-spacing:.12em}
+.dossier-hud-bar{
+  height:1px;width:120px;background:var(--bd);margin-left:auto;
+  border-radius:1px;overflow:hidden;position:relative;
+}
+.dossier-hud-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--a0),var(--gold));
+  transition:width .4s cubic-bezier(.4,0,.2,1);
+}
+
+/* ⑥ Access log — terminal flicker on card hover */
+.access-log{
+  position:absolute;bottom:.7rem;right:.8rem;
+  font-family:var(--mono);font-size:.46rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);opacity:0;pointer-events:none;
+  animation:none;
+}
+.find-card:hover .access-log{
+  animation:accessFlicker .7s steps(1) forwards;
+}
+@keyframes accessFlicker{
+  0%{opacity:0;content:''}
+  10%{opacity:1}  15%{opacity:0}  22%{opacity:1}
+  30%{opacity:0}  40%{opacity:1}  50%{opacity:0}
+  65%{opacity:1}  75%{opacity:0}  90%{opacity:1}
+  100%{opacity:1}
+}
+
+/* ⑦ DECLASSIFIED section stamp */
+.declass-stamp{
+  position:absolute;top:2.5rem;right:2rem;z-index:5;
+  font-family:var(--mono);font-size:.7rem;font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--a0);border:2px solid currentColor;padding:.35rem .9rem;
+  border-radius:2px;opacity:0;transform:rotate(-12deg) scale(.85);
+  transition:opacity .3s,transform .3s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:none;
+}
+.declass-stamp.show{opacity:.18;transform:rotate(-12deg) scale(1)}
+.declass-stamp.fade{opacity:0;transform:rotate(-12deg) scale(1.05)}
+
+/* Hero stats card — parallax ready */
+.hero-stats-card{will-change:transform;transition:transform .12s linear}
+
+/* Smooth scroll hint on desktop */
+html{scroll-behavior:auto!important}
+
+/* ════════════════════════════════════════════════
+   ① CROSSHAIR CURSOR
+════════════════════════════════════════════════ */
+#crosshair{
+  position:fixed;pointer-events:none;z-index:9997;
+  top:0;left:0;will-change:transform;
+  transform:translate(-50%,-50%);
+}
+.ch-h{position:absolute;top:50%;left:50%;
+  width:28px;height:1px;transform:translate(-50%,-50%);
+  background:linear-gradient(90deg,transparent,var(--gold) 30%,var(--gold) 70%,transparent);
+  opacity:.7;
+}
+.ch-v{position:absolute;top:50%;left:50%;
+  width:1px;height:28px;transform:translate(-50%,-50%);
+  background:linear-gradient(180deg,transparent,var(--gold) 30%,var(--gold) 70%,transparent);
+  opacity:.7;
+}
+.ch-h::before,.ch-h::after,.ch-v::before,.ch-v::after{
+  content:'';position:absolute;width:3px;height:3px;
+  border-radius:50%;background:var(--gold);
+  top:50%;transform:translateY(-50%);opacity:.9;
+  box-shadow:0 0 5px rgba(201,164,92,.6);
+}
+.ch-h::before{left:-1px;transform:translate(-50%,-50%)}
+.ch-h::after{right:-1px;transform:translate(50%,-50%)}
+.ch-v::before{top:-1px;left:50%;transform:translate(-50%,-50%)}
+.ch-v::after{bottom:-1px;left:50%;top:auto;transform:translate(-50%,50%)}
+.ch-label{
+  position:absolute;top:14px;left:14px;
+  font-family:var(--mono);font-size:.44rem;letter-spacing:.1em;
+  color:var(--gold);opacity:.55;white-space:nowrap;
+  text-transform:uppercase;
+}
+@media(max-width:900px){#crosshair{display:none}}
+
+/* ════════════════════════════════════════════════
+   ③ CORNER TARGETING BRACKETS
+════════════════════════════════════════════════ */
+.corner-bracket{
+  position:fixed;z-index:130;pointer-events:none;
+  width:22px;height:22px;opacity:.35;
+  animation:bracketPulse 3.5s ease-in-out infinite;
+}
+.corner-bracket::before,.corner-bracket::after{
+  content:'';position:absolute;background:var(--gold);
+}
+.corner-bracket::before{width:100%;height:1px;top:0;left:0}
+.corner-bracket::after{width:1px;height:100%;top:0;left:0}
+
+#cb-tl{top:18px;left:18px}
+#cb-tr{top:18px;right:18px;transform:scaleX(-1)}
+#cb-bl{bottom:18px;left:18px;transform:scaleY(-1)}
+#cb-br{bottom:18px;right:18px;transform:scale(-1)}
+
+#cb-tr{animation-delay:.4s}
+#cb-bl{animation-delay:.8s}
+#cb-br{animation-delay:1.2s}
+
+@keyframes bracketPulse{
+  0%,100%{opacity:.2}
+  50%{opacity:.55}
+}
+@media(max-width:900px){.corner-bracket{display:none}}
+
+/* ② COMBINATION LOCK — number morphing on trigger */
+[data-count]{
+  font-variant-numeric:tabular-nums;
+  transition:filter .1s;
+}
+[data-count].morphing{
+  filter:blur(1.5px);
+  color:var(--gold)!important;
+  -webkit-text-fill-color:var(--gold)!important;
+}
+
 </style>
 </head>
 <body>
 
 <div id="scroll-bar"></div>
+<div class="scan-line" id="scan-line">
+  <span class="scan-readout" id="scan-readout">SCAN 0%</span>
+</div>
+
+<!-- ═══ INTAKE RITUAL — first-second entry experience ═══ -->
+<div class="intake" id="intake">
+  <div class="intake-box">
+    <div class="intake-line"><span id="intake-l1">REQUESTING ACCESS — FILE: ASF-ENGAGEMENT-001</span><span class="intake-dots"></span></div>
+    <div class="intake-bar"><div class="intake-fill" id="intake-fill"></div></div>
+    <div class="intake-line small"><span id="intake-l2">VERIFYING CLEARANCE LEVEL...</span></div>
+    <div class="intake-stamp" id="intake-stamp"><span id="intake-stamp-txt">ACCESS<br>GRANTED</span></div>
+  </div>
+</div>
+
+<!-- ═══ CASE FILE TAB RAIL — alternate navigation ═══ -->
+<nav class="case-tabs" id="caseTabs">
+  <a href="#services" class="ct-tab" data-sec="services"><span id="ct1">SERVICES</span></a>
+  <a href="#methodology" class="ct-tab" data-sec="methodology"><span id="ct2">METHOD</span></a>
+  <a href="#process" class="ct-tab" data-sec="process"><span id="ct3">PROCESS</span></a>
+  <a href="#findings" class="ct-tab" data-sec="findings"><span id="ct4">FINDINGS</span></a>
+  <a href="#research" class="ct-tab" data-sec="research"><span id="ct5">RESEARCH</span></a>
+  <a href="#testimonials" class="ct-tab" data-sec="testimonials"><span id="ct6">RECORD</span></a>
+  <a href="#contact" class="ct-tab" data-sec="contact"><span id="ct7">CONTACT</span></a>
+</nav>
 
 <!-- PARTICLES -->
 <canvas id="particles"></canvas>
 <div id="mouse-glow"></div>
+
+<!-- CROSSHAIR CURSOR -->
+<div id="crosshair">
+  <div class="ch-h"></div>
+  <div class="ch-v"></div>
+  <div class="ch-label" id="ch-label"></div>
+</div>
+
+<!-- CORNER TARGETING BRACKETS -->
+<div class="corner-bracket" id="cb-tl"></div>
+<div class="corner-bracket" id="cb-tr"></div>
+<div class="corner-bracket" id="cb-bl"></div>
+<div class="corner-bracket" id="cb-br"></div>
 
 <div id="dot"></div>
 <div id="ring"></div>
@@ -1239,7 +2050,7 @@ body.ar .footer-badge{font-family:var(--ar);font-size:.6rem;letter-spacing:0;tex
       <button class="lb on" id="ben" onclick="setLang('en')">EN</button>
       <button class="lb" id="bar" onclick="setLang('ar')">AR</button>
     </div>
-    <button class="cta-nav" onclick="openResume()" style="background:rgba(0,217,255,.08);border-color:rgba(0,217,255,.2);color:var(--a1)" id="nav-cv">
+    <button class="cta-nav" onclick="openResume()" style="background:rgba(0,217,255,.08);border-color:rgba(0,217,255,.2);color:var(--a1);cursor:pointer" id="nav-cv">
       <i class="ti ti-file-cv"></i><span id="cv-txt">View CV</span>
     </button>
     <a class="cta-nav" href="#contact" id="nav-hire">
@@ -1248,6 +2059,21 @@ body.ar .footer-badge{font-family:var(--ar);font-size:.6rem;letter-spacing:0;tex
     <button class="burger" id="burger"><i class="ti ti-menu-2"></i></button>
   </div>
 </nav>
+
+<!-- ═══ CLASSIFICATION BANNER — signature element ═══ -->
+<div class="classband">
+  <div class="classband-inner">
+    <span class="cb-mark">●</span>
+    <span id="cb-txt">SANITIZED FOR PUBLIC RELEASE — CLIENT IDENTITIES REDACTED PER NDA — DISTRIBUTION: UNRESTRICTED</span>
+    <span class="cb-mark">●</span>
+  </div>
+</div>
+
+<!-- ═══ DOSSIER HUD ═══ -->
+<div class="dossier-hud" id="dossierHud">
+  <div class="dossier-hud-file" id="hudFile">FILE: -- / --</div>
+  <div class="dossier-hud-bar"><div class="dossier-hud-fill" id="hudProgress"></div></div>
+</div>
 
 <!-- ═══════════ HERO ═══════════ -->
 <div class="hero">
@@ -1270,10 +2096,14 @@ body.ar .footer-badge{font-family:var(--ar);font-size:.6rem;letter-spacing:0;tex
       <div class="hero-btns">
         <a class="btn btn-p" href="#findings"><i class="ti ti-clipboard-list"></i><span id="btn1">Assessment Findings</span></a>
         <a class="btn btn-g" href="#contact"><i class="ti ti-send"></i><span id="btn2">Engage Services</span></a>
-        <button class="btn" onclick="openResume()" style="background:transparent;color:var(--a1);border:1px solid rgba(0,217,255,.25);cursor:none"><i class="ti ti-file-cv"></i><span id="btn3">View CV</span></button>
+        <button class="btn" onclick="openResume()" style="background:transparent;color:var(--a1);border:1px solid rgba(0,217,255,.25);cursor:pointer"><i class="ti ti-file-cv"></i><span id="btn3">View CV</span></button>
       </div>
     </div>
     <div class="hero-stats-card rv">
+      <div class="hsc-header">
+        <span>FILE: ASF-ENGAGEMENT-001</span>
+        <span class="hsc-stamp">ACTIVE</span>
+      </div>
       <div class="hsc-item"><span class="hsc-v" data-count="150" data-suf="+">0</span><span class="hsc-l" id="hs1">Clients Worldwide</span></div>
       <div class="hsc-item"><span class="hsc-v" data-count="6" data-suf="+">0</span><span class="hsc-l" id="hs2">Years Experience</span></div>
       <div class="hsc-item"><span class="hsc-v" data-count="300" data-suf="+">0</span><span class="hsc-l" id="hs3">Findings Reported</span></div>
@@ -1540,6 +2370,10 @@ body.ar .footer-badge{font-family:var(--ar);font-size:.6rem;letter-spacing:0;tex
     <div class="sec-eye rv"><span class="sec-n">// 05</span><div class="sec-ln"></div></div>
     <h2 class="sec-t rv" id="find-t">Sanitized Assessment Findings</h2>
     <p class="sec-s rv" id="find-s">A curated sample from 300+ findings across authorized engagements worldwide.</p>
+  </div>
+  <div class="tlp-strip">
+    <span class="tlp-tag">TLP:AMBER</span>
+    <span class="tlp-txt" id="tlp-txt">SANITIZED ASSESSMENT FINDINGS — LIMITED DISCLOSURE</span>
   </div>
   <div class="find-note rv">
     <i class="ti ti-lock"></i>
@@ -2326,6 +3160,8 @@ function setLang(l){
 
   /* Update Trusted By in AR */
   setEl('tb-label',isAr?'موثوق به عبر القطاعات':'Trusted Across Industries');
+  setEl('cb-txt',isAr?'مُعتَّم للنشر العام — هويات العملاء محمية وفق NDA — التوزيع: غير مقيّد':'SANITIZED FOR PUBLIC RELEASE — CLIENT IDENTITIES REDACTED PER NDA — DISTRIBUTION: UNRESTRICTED');
+  setEl('tlp-txt',isAr?'نتائج تقييم مُعتَّمة — إفشاء محدود':'SANITIZED ASSESSMENT FINDINGS — LIMITED DISCLOSURE');
 
   /* Update process section number */
   const procNumEl=document.querySelector('#process .sec-n');
@@ -2514,15 +3350,21 @@ window.addEventListener('scroll',()=>{
 
 /* ══ RESUME MODAL ══ */
 function openResume(){
-  document.getElementById('resumeOverlay').classList.add('open');
-  document.body.style.overflow='hidden';
+  try{
+    var ov=document.getElementById('resumeOverlay');
+    if(ov){ov.style.display='flex';ov.classList.add('open');}
+    document.body.style.overflow='hidden';
+  }catch(err){console.error('openResume:',err);}
 }
 function closeResume(e){
-  if(e.target===document.getElementById('resumeOverlay'))closeResumeD();
+  try{if(e.target===document.getElementById('resumeOverlay'))closeResumeD();}catch(err){}
 }
 function closeResumeD(){
-  document.getElementById('resumeOverlay').classList.remove('open');
-  document.body.style.overflow='';
+  try{
+    var ov=document.getElementById('resumeOverlay');
+    if(ov){ov.classList.remove('open');ov.style.display='';}
+    document.body.style.overflow='';
+  }catch(err){}
 }
 function printResume(){
   const modal=document.getElementById('resumeModal');
@@ -2574,12 +3416,287 @@ document.getElementById('burger').addEventListener('click',()=>document.getEleme
 
 /* SCROLL REVEAL */
 const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');obs.unobserve(x.target)}})},{threshold:.06});
+document.querySelectorAll('.find-card').forEach(el=>el.classList.add('rv'));
 document.querySelectorAll('.rv,.rvl,.rvr').forEach(el=>obs.observe(el));
+
+/* ══ PREMIUM BROWSE EXPERIENCE — replaces individual scanner block ══ */
+
+/* ════════════════════════════════════════════════════════════
+   PREMIUM BROWSE EXPERIENCE
+   ① Lerp smooth scroll — inertial damping (desktop)
+   ② Magnetic section snap — dossier navigation
+   ③ Dossier HUD — live file counter
+   ④ Word-by-word redaction reveal — heading level
+   ⑤ Parallax depth on hero stats card
+   ⑥ Access log hover effect on finding cards
+   ⑦ DECLASSIFIED stamp flash on section enter
+════════════════════════════════════════════════════════════ */
+
+(function(){
+try{
+
+var isMobile = window.innerWidth <= 900 || ('ontouchstart' in window);
+
+/* ── ① LERP SMOOTH SCROLL (desktop only) ── */
+var lerpActive = !isMobile;
+var currentY = window.scrollY;
+var targetY  = window.scrollY;
+var rafLoop  = false;
+var snapTimer= null;
+var scrolling= false;
+
+function lerp(a,b,t){return a+(b-a)*t}
+
+function getSections(){
+  return Array.prototype.slice.call(document.querySelectorAll('section.sec[id]'));
+}
+
+function getNearestSection(y){
+  var secs=getSections(); var best=secs[0]; var bestDist=Infinity;
+  var vh=window.innerHeight;
+  for(var i=0;i<secs.length;i++){
+    var top=secs[i].getBoundingClientRect().top+window.scrollY;
+    var dist=Math.abs(y-top+vh*0.1);
+    if(dist<bestDist){bestDist=dist;best=secs[i];}
+  }
+  return best;
+}
+
+function snapToSection(){
+  try{
+    var nearest=getNearestSection(targetY);
+    if(!nearest)return;
+    var snapY=nearest.getBoundingClientRect().top+window.scrollY-80;
+    snapY=Math.max(0,Math.min(snapY,document.documentElement.scrollHeight-window.innerHeight));
+    var dist=Math.abs(targetY-snapY);
+    if(dist<window.innerHeight*0.35){
+      targetY=snapY;
+      /* Flash the scan line gold when snapping */
+      flashScan();
+      /* Update HUD with section name */
+      updateHUD(nearest);
+    }
+  }catch(e){}
+}
+
+function flashScan(){
+  try{
+    var sl=document.getElementById('scan-line');
+    if(!sl)return;
+    sl.style.opacity='0';
+    sl.style.transition='opacity .08s';
+    setTimeout(function(){sl.style.opacity='1';sl.style.transition='opacity .25s';},80);
+  }catch(e){}
+}
+
+if(lerpActive){
+  window.addEventListener('wheel',function(e){
+    e.preventDefault();
+    var maxS=document.documentElement.scrollHeight-window.innerHeight;
+    targetY+=e.deltaY*1.1;
+    targetY=Math.max(0,Math.min(targetY,maxS));
+    scrolling=true;
+    clearTimeout(snapTimer);
+    snapTimer=setTimeout(function(){scrolling=false;snapToSection();},220);
+  },{passive:false,capture:true});
+}
+
+function lerpTick(){
+  try{
+    if(lerpActive){
+      currentY=lerp(currentY,targetY,.09);
+      if(Math.abs(currentY-targetY)>0.3){
+        window.scrollTo(0,currentY);
+      } else {
+        currentY=targetY;
+        window.scrollTo(0,currentY);
+      }
+    } else {
+      currentY=window.scrollY;
+      targetY=window.scrollY;
+    }
+    runScannerFrame();
+  }catch(e){}
+  requestAnimationFrame(lerpTick);
+}
+
+/* ── ② DOSSIER HUD ── */
+var hud=document.getElementById('dossierHud');
+var hudFile=document.getElementById('hudFile');
+var hudProgress=document.getElementById('hudProgress');
+var hudTotal=document.getElementById('hudTotal');
+var allSections=getSections();
+var totalSecs=allSections.length;
+if(hudTotal)hudTotal.textContent=String(totalSecs).padStart(2,'0');
+
+var secLabels={
+  services:'SERVICES',methodology:'METHODOLOGY',process:'PROCESS',
+  skills:'CAPABILITIES',experience:'EXPERIENCE',findings:'FINDINGS',
+  research:'RESEARCH',impact:'IMPACT',testimonials:'RECORD',contact:'CONTACT'
+};
+
+function updateHUD(activeEl){
+  if(!hud||!hudFile)return;
+  try{
+    var id=activeEl?activeEl.id:'';
+    var label=secLabels[id]||id.toUpperCase();
+    var idx=allSections.indexOf(activeEl)+1;
+    hudFile.textContent='FILE: '+String(idx).padStart(2,'0')+' / '+String(totalSecs).padStart(2,'0')+'  —  '+label;
+    var pct=Math.round((idx/totalSecs)*100);
+    if(hudProgress)hudProgress.style.width=pct+'%';
+  }catch(e){}
+}
+
+/* ── ③ SCANNER FRAME (merged with lerp loop) ── */
+var scanTargets=Array.prototype.slice.call(document.querySelectorAll('.find-card,.sec-t'));
+var tabs=Array.prototype.slice.call(document.querySelectorAll('.ct-tab'));
+var sectionMap=tabs.map(function(t){
+  var el=document.getElementById(t.dataset.sec);
+  return el?{id:t.dataset.sec,el:el,tab:t}:null;
+}).filter(Boolean);
+var readout=document.getElementById('scan-readout');
+
+function runScannerFrame(){
+  try{
+    if(isMobile)return;
+    var scanY=window.innerHeight*0.46;
+    var maxScroll=document.documentElement.scrollHeight-window.innerHeight;
+    var pct=maxScroll>0?Math.round((window.scrollY/maxScroll)*100):0;
+    var activeLabel='';var activeEl=null;
+
+    for(var s=0;s<sectionMap.length;s++){
+      var r2=sectionMap[s].el.getBoundingClientRect();
+      if(r2.top<=scanY&&r2.bottom>=scanY){
+        activeLabel=secLabels[sectionMap[s].id]||sectionMap[s].id.toUpperCase();
+        activeEl=sectionMap[s].el;
+        sectionMap[s].tab.classList.add('active');
+      }else{sectionMap[s].tab.classList.remove('active');}
+    }
+    if(readout)readout.textContent=(activeLabel?'FILE: '+activeLabel+' — ':'')+'SCAN '+pct+'%';
+    if(activeEl)updateHUD(activeEl);
+
+    for(var i=0;i<scanTargets.length;i++){
+      var el=scanTargets[i];var r=el.getBoundingClientRect();var rv;
+      if(r.bottom<=scanY)rv=1;
+      else if(r.top>=scanY)rv=0;
+      else rv=(scanY-r.top)/(r.height||1);
+      if(rv<0)rv=0;if(rv>1)rv=1;
+      el.style.setProperty('--reveal',rv.toFixed(3));
+    }
+  }catch(e){}
+}
+
+/* ── ④ WORD-BY-WORD REDACTION REVEAL on .sec-t ── */
+try{
+  document.querySelectorAll('.sec-t').forEach(function(el){
+    if(el.dataset.wordSplit)return;
+    el.dataset.wordSplit='1';
+    var text=el.textContent.trim();
+    if(!text)return;
+    var words=text.split(/\s+/);
+    el.innerHTML=words.map(function(w,i){
+      var delay=(i*0.055).toFixed(3);
+      return '<span class="wrd" style="--wi:'+i+';--wd:'+delay+'s">'+w+'</span>';
+    }).join(' ');
+  });
+}catch(e){}
+
+/* ── ⑤ PARALLAX on hero stats card (desktop) ── */
+if(!isMobile){
+  try{
+    var statsCard=document.querySelector('.hero-stats-card');
+    var hero=document.querySelector('.hero');
+    if(statsCard&&hero){
+      window.addEventListener('scroll',function(){
+        try{
+          var heroR=hero.getBoundingClientRect();
+          if(heroR.bottom<0||heroR.top>window.innerHeight)return;
+          var prog=1-(heroR.bottom/heroR.height);
+          statsCard.style.transform='translateY('+Math.round(prog*22)+'px)';
+        }catch(e){}
+      },{passive:true});
+    }
+  }catch(e){}
+}
+
+/* ── ⑥ ACCESS LOG HOVER on finding cards ── */
+try{
+  document.querySelectorAll('.find-card').forEach(function(card){
+    var log=document.createElement('div');
+    log.className='access-log';
+    log.textContent='ACCESSING FILE...';
+    card.appendChild(log);
+  });
+}catch(e){}
+
+/* ── ⑦ DECLASSIFIED STAMP on section enter ── */
+try{
+  var stampObs=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(!entry.isIntersecting)return;
+      try{
+        var sec=entry.target;
+        if(sec.dataset.stamped)return;
+        sec.dataset.stamped='1';
+        var stamp=document.createElement('div');
+        stamp.className='declass-stamp';
+        stamp.textContent='DECLASSIFIED';
+        sec.appendChild(stamp);
+        requestAnimationFrame(function(){
+          stamp.classList.add('show');
+          setTimeout(function(){stamp.classList.add('fade');},700);
+          setTimeout(function(){try{sec.removeChild(stamp);}catch(e){}},1400);
+        });
+      }catch(e){}
+      stampObs.unobserve(sec);
+    });
+  },{threshold:0.15});
+  document.querySelectorAll('section.sec[id]').forEach(function(s){stampObs.observe(s);});
+}catch(e){}
+
+/* Start loop */
+requestAnimationFrame(lerpTick);
+
+}catch(err){console.error('premium experience:',err);}
+})();
+
+
+/* ══ INTAKE RITUAL — runs once per session ══ */
+(function(){
+  try{
+    var intake=document.getElementById('intake');
+    if(!intake) return;
+    if(sessionStorage.getItem('amn_intake_seen')==='1'){
+      intake.style.display='none';
+      return;
+    }
+    var fill=document.getElementById('intake-fill');
+    var stamp=document.getElementById('intake-stamp');
+    var prevOverflow=document.body.style.overflow;
+    document.body.style.overflow='hidden';
+    setTimeout(function(){try{if(fill)fill.style.width='100%';}catch(e){}},60);
+    setTimeout(function(){try{if(stamp)stamp.classList.add('show');}catch(e){}},1000);
+    setTimeout(function(){
+      try{
+        intake.classList.add('hide');
+        document.body.style.overflow=prevOverflow||'';
+        sessionStorage.setItem('amn_intake_seen','1');
+        setTimeout(function(){try{intake.style.display='none';}catch(e){}},650);
+      }catch(e){}
+    },1600);
+  }catch(err){
+    try{
+      var intake=document.getElementById('intake');
+      if(intake) intake.style.display='none';
+      document.body.style.overflow='';
+    }catch(e){}
+  }
+})();
 
 /* COUNT UP */
 const cobs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)cu(x.target)})},{threshold:.5});
 document.querySelectorAll('[data-count]').forEach(el=>cobs.observe(el));
-function cu(el){if(el.dataset.done)return;el.dataset.done=1;const t=parseInt(el.dataset.count),s=el.dataset.suf||'';let c=0;const st=t/55;const tm=setInterval(()=>{c=Math.min(c+st,t);el.textContent=Math.floor(c)+s;if(c>=t)clearInterval(tm)},18)}
+function cu(el){if(el.dataset.done)return;/* morphTo handles this now */}
 
 /* SKILL BARS */
 const bobs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){setTimeout(()=>{x.target.style.width=x.target.dataset.w+'%'},250);bobs.unobserve(x.target)}})},{threshold:.3});
