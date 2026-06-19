@@ -1598,19 +1598,8 @@ footer::before{display:none}
 .testi-who{font-size:.86rem}
 
 /* ── DECLASSIFICATION SCANNER — scroll-scrubbed, reversible reveal ── */
-.scan-line{
-  position:fixed;top:46vh;left:0;right:0;height:1px;z-index:40;
-  pointer-events:none;
-  background:linear-gradient(90deg,transparent,var(--a0) 12%,var(--a0) 88%,transparent);
-  box-shadow:0 0 14px rgba(193,18,31,.55),0 0 32px rgba(193,18,31,.18);
-}
-.scan-readout{
-  position:absolute;right:1.6rem;top:-9px;
-  font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;
-  color:var(--a0);background:var(--bg);padding:.12rem .45rem;
-  border:1px solid var(--bda);border-radius:2px;white-space:nowrap;
-}
-@media(max-width:900px){.scan-line{display:none}}
+.scan-line{display:none!important}
+.scan-readout{display:none!important}
 
 .find-card{position:relative;--reveal:1}
 .find-card .fc-title{position:relative;display:inline-block}
@@ -1686,23 +1675,28 @@ footer::before{display:none}
    CASE FILE TAB RAIL — alternate navigation paradigm
 ════════════════════════════════════════════════════ */
 .case-tabs{
-  position:fixed;left:0;top:50%;transform:translateY(-50%);
-  z-index:120;display:flex;flex-direction:column;gap:.45rem;
+  position:fixed;left:0;right:0;top:62px;z-index:120;
+  display:flex;flex-direction:row;gap:0;
+  background:rgba(12,10,9,.94);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--bd);padding:0 1.5rem;
+  transform:none;overflow-x:auto;scrollbar-width:none;
 }
+.case-tabs::-webkit-scrollbar{display:none}
 .ct-tab{
-  writing-mode:vertical-rl;text-orientation:mixed;
-  font-family:var(--mono);font-size:.52rem;letter-spacing:.16em;
-  color:var(--tx2);text-decoration:none;
-  background:var(--s1);border:1px solid var(--bd);border-left:none;
-  padding:.9rem .42rem;border-radius:0 4px 4px 0;
-  box-shadow:2px 0 10px rgba(0,0,0,.35);
-  transition:padding-left .25s,color .25s,border-color .25s,background .25s;
+  writing-mode:horizontal-tb;text-orientation:mixed;
+  font-family:var(--mono);font-size:.5rem;letter-spacing:.14em;
+  color:var(--tx3);text-decoration:none;
+  background:transparent;border:none;
+  border-bottom:2px solid transparent;border-radius:0;
+  padding:.55rem .9rem;box-shadow:none;white-space:nowrap;
+  transition:color .2s,border-color .2s;
 }
-.ct-tab:hover{padding-left:.7rem;color:var(--tx);border-color:var(--tx2)}
-.ct-tab.active{color:var(--a0);border-color:var(--bda);padding-left:.75rem;background:var(--s2)}
-@media(max-width:1100px){.case-tabs{display:none}}
-[dir="rtl"] .case-tabs{left:auto;right:0}
-[dir="rtl"] .ct-tab{border-left:1px solid var(--bd);border-right:none;border-radius:4px 0 0 4px;box-shadow:-2px 0 10px rgba(0,0,0,.35)}
+.ct-tab:hover{color:var(--tx2);border-bottom-color:var(--bd)}
+.ct-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.ct-tab.active::before{display:none}
+@media(max-width:900px){.case-tabs{display:none}}
+[dir="rtl"] .case-tabs{flex-direction:row-reverse}
+[dir="rtl"] .ct-tab{border-left:none;border-right:none;border-radius:0;box-shadow:none}
 
 
 /* ════════════════════════════════════════════════════
@@ -1759,21 +1753,10 @@ footer::before{display:none}
   text-shadow:0 1px 0 rgba(255,255,255,.04),0 -1px 0 rgba(0,0,0,.5);
 }
 
-/* ── Scanner — oxblood beam with gold edge glints ── */
-.scan-line{
-  background:linear-gradient(90deg,transparent,var(--gold) 8%,var(--a0) 25%,var(--a0) 75%,var(--gold) 92%,transparent)!important;
-  box-shadow:0 0 14px rgba(138,38,50,.5),0 0 26px rgba(201,164,92,.12)!important;
-}
-.scan-readout{color:var(--gold);border-color:rgba(201,164,92,.35)}
+/* scan-line styled above — no override needed */
 
 /* ── Case tabs — leather-tab depth, gold seal on active ── */
-.ct-tab{box-shadow:2px 0 12px rgba(0,0,0,.5),inset -1px 0 0 rgba(201,164,92,.05)}
-.ct-tab.active{color:var(--gold);border-color:rgba(201,164,92,.4)}
-.ct-tab.active::before{
-  content:'';position:absolute;width:5px;height:5px;border-radius:50%;
-  background:var(--gold);box-shadow:0 0 6px rgba(201,164,92,.6);
-  top:6px;left:50%;transform:translateX(-50%);
-}
+.ct-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
 .ct-tab{position:relative}
 
 /* ── Intake ritual — wax seal, not a rectangle stamp ── */
