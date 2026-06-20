@@ -3397,7 +3397,13 @@ document.querySelectorAll('.fb').forEach(b=>{
     this.classList.add('on');
     const f=this.dataset.f;
     document.querySelectorAll('.find-card').forEach(c=>{
-      (f==='all'||c.dataset.cats.includes(f))?c.classList.remove('hid'):c.classList.add('hid');
+      const show=(f==='all'||c.dataset.cats.includes(f));
+      if(show){
+        c.classList.remove('hid');
+        c.classList.add('on'); /* force-reveal — don't wait for scroll intersection */
+      } else {
+        c.classList.add('hid');
+      }
     });
     /* Layout height just changed — resync the custom scroll system to avoid stale position */
     try{
