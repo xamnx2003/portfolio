@@ -2363,7 +2363,7 @@ html{scroll-behavior:auto!important}
     <p id="find-note">The findings below represent <strong>a curated sample</strong> from authorized penetration testing engagements. All client identities and infrastructure details are fully sanitized per confidentiality agreements. <strong>Full portfolio available under NDA upon formal request.</strong></p>
   </div>
   <div class="filt rv">
-    <button class="fb on" data-f="all" id="fb-all">All (13)</button>
+    <button class="fb on" data-f="all" id="fb-all">All (18)</button>
     <button class="fb" data-f="webapp" id="fb-w">Web App</button>
     <button class="fb" data-f="api" id="fb-api">API</button>
     <button class="fb" data-f="network" id="fb-n">Network</button>
@@ -3399,6 +3399,12 @@ document.querySelectorAll('.fb').forEach(b=>{
     document.querySelectorAll('.find-card').forEach(c=>{
       (f==='all'||c.dataset.cats.includes(f))?c.classList.remove('hid'):c.classList.add('hid');
     });
+    /* Layout height just changed — resync the custom scroll system to avoid stale position */
+    try{
+      requestAnimationFrame(function(){
+        if(typeof window.amnSyncScroll==='function')window.amnSyncScroll();
+      });
+    }catch(e){}
   });
 });
 
@@ -3517,6 +3523,15 @@ var isMobile = window.innerWidth <= 900 || ('ontouchstart' in window);
 var lerpActive = !isMobile;
 var currentY = window.scrollY;
 var targetY  = window.scrollY;
+
+window.amnSyncScroll=function(){
+  try{
+    var maxS=document.documentElement.scrollHeight-window.innerHeight;
+    if(maxS<0)maxS=0;
+    if(targetY>maxS)targetY=maxS;
+    if(currentY>maxS)currentY=maxS;
+  }catch(e){}
+};
 var rafLoop  = false;
 var snapTimer= null;
 var scrolling= false;
@@ -3580,6 +3595,11 @@ if(lerpActive){
 function lerpTick(){
   try{
     if(lerpActive){
+      var maxS=document.documentElement.scrollHeight-window.innerHeight;
+      if(maxS<0)maxS=0;
+      /* Clamp every frame — protects against stale targets after filter/layout changes */
+      if(targetY>maxS)targetY=maxS;
+      if(currentY>maxS)currentY=maxS;
       currentY=lerp(currentY,targetY,.09);
       if(Math.abs(currentY-targetY)>0.3){
         window.scrollTo(0,currentY);
