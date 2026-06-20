@@ -3506,6 +3506,12 @@ document.getElementById('burger').addEventListener('click',()=>document.getEleme
 const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');obs.unobserve(x.target)}})},{threshold:.06});
 document.querySelectorAll('.find-card').forEach(el=>el.classList.add('rv'));
 document.querySelectorAll('.rv,.rvl,.rvr').forEach(el=>obs.observe(el));
+/* Safety net: force-reveal anything still stuck invisible after 3s, regardless of cause */
+setTimeout(function(){
+  try{
+    document.querySelectorAll('.rv:not(.on),.rvl:not(.on),.rvr:not(.on)').forEach(function(el){el.classList.add('on');});
+  }catch(e){}
+},3000);
 
 /* ══ PREMIUM BROWSE EXPERIENCE — replaces individual scanner block ══ */
 
@@ -3594,7 +3600,8 @@ if(lerpActive){
     targetY=Math.max(0,Math.min(targetY,maxS));
     scrolling=true;
     clearTimeout(snapTimer);
-    snapTimer=setTimeout(function(){scrolling=false;snapToSection();},220);
+    snapTimer=setTimeout(function(){scrolling=false;},220);
+    /* Magnetic section snap removed — it fought scrolling within tall sections like Findings */
   },{passive:false,capture:true});
 }
 
