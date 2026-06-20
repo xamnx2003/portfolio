@@ -2527,10 +2527,51 @@ html{scroll-behavior:auto!important}
       </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════
-         ADD CARD HERE
-         Paste new finding card HTML above this line
-    ════════════════════════════════════════════ -->
+    <!-- ═══ ADD CARD HERE ═══ -->
+
+    <div class="find-card ad-card" data-cats="ad" data-id="14">
+      <div class="fc-top"><span class="fc-ref">ASF-015</span><span class="fc-sev sad">AD Critical</span></div>
+      <div><span class="fc-type"><i class="ti ti-shield-lock" style="font-size:.55rem"></i>Pass-the-Hash</span><span class="fc-env">AD · Internal</span></div>
+      <div class="fc-title" id="f15t">NTLM Pass-the-Hash Enabling Lateral Movement to Domain Controller</div>
+      <div class="fc-short" id="f15s">Captured NTLM hash of a privileged service account via Responder on the internal network. Hash relayed without cracking to authenticate directly to the Domain Controller, achieving full DC access within 25 minutes of network entry.</div>
+      <div class="fc-bot">
+        <div class="fc-meta"><span class="fc-cvss ad"><span>9.8</span> CVSS</span><span class="fc-context">Financial sector · Internal AD</span><span class="fc-stat sm" id="f15st">Mitigated</span></div>
+        <button class="view-btn" onclick="openModal(14)" id="vb15">View Details <i class="ti ti-arrow-right" style="font-size:.58rem"></i></button>
+      </div>
+    </div>
+
+    <div class="find-card ad-card" data-cats="ad" data-id="15">
+      <div class="fc-top"><span class="fc-ref">ASF-016</span><span class="fc-sev sad">AD High</span></div>
+      <div><span class="fc-type"><i class="ti ti-key" style="font-size:.55rem"></i>Golden Ticket</span><span class="fc-env">AD · Internal</span></div>
+      <div class="fc-title" id="f16t">Golden Ticket Forged via Stolen KRBTGT Hash — Persistent Domain Access</div>
+      <div class="fc-short" id="f16s">Following KRBTGT hash extraction via DCSync, forged Golden Ticket granting persistent Kerberos authentication as any domain user. Ticket remained valid 10 hours post password reset, demonstrating full persistence even after incident response.</div>
+      <div class="fc-bot">
+        <div class="fc-meta"><span class="fc-cvss ad"><span>9.6</span> CVSS</span><span class="fc-context">Gov sector · Red Team</span><span class="fc-stat sm" id="f16st">Mitigated</span></div>
+        <button class="view-btn" onclick="openModal(15)" id="vb16">View Details <i class="ti ti-arrow-right" style="font-size:.58rem"></i></button>
+      </div>
+    </div>
+
+    <div class="find-card ad-card" data-cats="ad" data-id="16">
+      <div class="fc-top"><span class="fc-ref">ASF-017</span><span class="fc-sev sad">AD High</span></div>
+      <div><span class="fc-type"><i class="ti ti-users" style="font-size:.55rem"></i>ACL Abuse</span><span class="fc-env">AD · Internal</span></div>
+      <div class="fc-title" id="f17t">Abusive ACL Misconfiguration Granting WriteDACL Over Domain Admins Group</div>
+      <div class="fc-short" id="f17s">BloodHound analysis revealed a regular domain user holding WriteDACL rights over the Domain Admins group. Exploited to grant the compromised account full GenericAll rights, then added it to Domain Admins — zero detection from existing monitoring.</div>
+      <div class="fc-bot">
+        <div class="fc-meta"><span class="fc-cvss ad"><span>8.8</span> CVSS</span><span class="fc-context">Tech sector · Internal AD</span><span class="fc-stat sr" id="f17st">Remediated</span></div>
+        <button class="view-btn" onclick="openModal(16)" id="vb17">View Details <i class="ti ti-arrow-right" style="font-size:.58rem"></i></button>
+      </div>
+    </div>
+
+    <div class="find-card ad-card" data-cats="ad" data-id="17">
+      <div class="fc-top"><span class="fc-ref">ASF-018</span><span class="fc-sev sad">AD High</span></div>
+      <div><span class="fc-type"><i class="ti ti-certificate" style="font-size:.55rem"></i>AD CS Abuse</span><span class="fc-env">AD · Internal</span></div>
+      <div class="fc-title" id="f18t">AD Certificate Services ESC1 — Low-Privilege User Obtains Domain Admin Certificate</div>
+      <div class="fc-short" id="f18s">Misconfigured certificate template (ESC1) allowed any authenticated user to request a certificate for an arbitrary UPN including Domain Admins. Used Certipy to request and authenticate as a DA account, bypassing all traditional credential controls.</div>
+      <div class="fc-bot">
+        <div class="fc-meta"><span class="fc-cvss ad"><span>9.1</span> CVSS</span><span class="fc-context">Healthcare sector · AD CS</span><span class="fc-stat sr" id="f18st">Remediated</span></div>
+        <button class="view-btn" onclick="openModal(17)" id="vb18">View Details <i class="ti ti-arrow-right" style="font-size:.58rem"></i></button>
+      </div>
+    </div>
 
   </div>
 </section>
@@ -2788,7 +2829,7 @@ en:{
   expPts:['Conducted <strong>150+ authorized security assessments</strong> for enterprise clients in finance, government, healthcare, and technology sectors worldwide under formal NDA and rules of engagement','Delivered full-scope <strong>red team operations</strong> simulating APT actors from reconnaissance to full domain compromise','Executed comprehensive <strong>Active Directory attack chains</strong>: Kerberoasting, DCSync, BloodHound-guided privilege escalation to Domain Admin','Performed advanced web and API assessments covering OWASP Top 10, GraphQL, OAuth abuse, JWT attacks, and business logic flaws','Identified <strong>multiple CVSS 9.0–9.8 findings</strong> in production systems preventing real data breaches','Engineered custom <strong>Python and Bash automation tooling</strong> reducing assessment overhead by ~40%','Delivered executive and technical reports with <strong>CVSS v3.1 scoring</strong>, PoC evidence, and risk-prioritized remediation roadmaps','Conducted phishing simulations and social engineering campaigns measuring organizational security awareness maturity'],
   findT:'Sanitized Assessment Findings',findS:'A curated sample from 300+ findings across authorized engagements worldwide.',
   findNote:'The findings below represent <strong>a curated sample</strong> from authorized penetration testing engagements. All client identities and infrastructure details are fully sanitized per confidentiality agreements. <strong>Full portfolio available under NDA upon formal request.</strong>',
-  fbAll:'All (14)',fbW:'Web App',fbAPI:'API',fbN:'Network',fbAD:'Active Directory',
+  fbAll:'All (18)',fbW:'Web App',fbAPI:'API',fbN:'Network',fbAD:'Active Directory',
   finds:[
     {t:'Authenticated DOM XSS Leading to Full Account Takeover',s:'innerHTML sink in file import interface injects live HTML inside authenticated form, bypassing CSRF and enabling full account ownership transfer.',st:'Remediated'},
     {t:'Unauthenticated SQL Injection — 24 Internal Databases Exposed',s:'URL parameter passed directly to SQL query without parameterization. 24 internal databases fully accessible without any authentication on a government sector client.',st:'Remediated'},
@@ -2803,7 +2844,11 @@ en:{
     {t:'Kerberoasting Attack Chain Leading to Domain Admin Compromise',s:'Multiple service accounts with weak passwords and SPN registrations. Offline TGS ticket cracking yielded plaintext credentials and full DA escalation.',st:'Mitigated'},
     {t:'DCSync Attack Enabling Full NTDS.dit Credential Extraction',s:'Over-privileged service account held DS-Replication rights. All AD credentials including KRBTGT hash extracted via Impacket secretsdump.',st:'Mitigated'},
     {t:'AS-REP Roasting Exposing Pre-Authentication Disabled Accounts',s:'17 domain accounts with Kerberos pre-auth disabled. Offline cracking yielded 9 plaintext passwords including accounts with local admin rights.',st:'Remediated'},
-    {t:'Unauthenticated Redis Master Node Exposed — Full Cache Read Access with Unrestricted ACL',s:'Redis master node accessible from the public internet with no authentication and ACL configured as +@all. 155 live production keys confirmed including OTP metadata and sensitive user data.',st:'Reported'}
+    {t:'Unauthenticated Redis Master Node Exposed — Full Cache Read Access with Unrestricted ACL',s:'Redis master node accessible from the public internet with no authentication and ACL configured as +@all. 155 live production keys confirmed including OTP metadata and sensitive user data.',st:'Reported'},
+    {t:'NTLM Pass-the-Hash Enabling Lateral Movement to Domain Controller',s:'Captured NTLM hash via Responder, relayed live to authenticate directly to the Domain Controller — full DC access within 25 minutes of network entry.',st:'Mitigated'},
+    {t:'Golden Ticket Forged via Stolen KRBTGT Hash — Persistent Domain Access',s:'Forged Golden Ticket granting persistent Kerberos authentication as any domain user. Ticket remained valid 10 hours post password reset.',st:'Mitigated'},
+    {t:'Abusive ACL Misconfiguration Granting WriteDACL Over Domain Admins Group',s:'Low-privilege user held WriteDACL over Domain Admins group — exploited to self-escalate with zero detection from existing monitoring.',st:'Remediated'},
+    {t:'AD Certificate Services ESC1 — Low-Privilege User Obtains Domain Admin Certificate',s:'Misconfigured certificate template allowed any user to request a certificate for an arbitrary UPN including Domain Admins, bypassing all credential controls.',st:'Remediated'}
   ],
   resT:'Research & Lab Environment',resS:'Active offensive security research and self-maintained lab infrastructure.',
   res:[
@@ -2864,7 +2909,7 @@ ar:{
   expPts:['أجرى <strong>أكثر من 150 تقييم أمني معتمد</strong> لعملاء مؤسسيين في قطاعات المال والحكومة والرعاية الصحية والتكنولوجيا عالمياً تحت اتفاقيات سرية وقواعد اشتباك رسمية','نفّذ عمليات <strong>فريق أحمر شاملة</strong> تحاكي خصوم APT من الاستطلاع إلى الاستيلاء الكامل على النطاق','أجرى سلاسل هجوم <strong>Active Directory</strong> شاملة: Kerberoasting وDCSync وتصعيد الصلاحيات إلى Domain Admin بتوجيه BloodHound','نفّذ تقييمات متقدمة لتطبيقات الويب والـ API تغطي OWASP Top 10 وGraphQL وإساءة استخدام OAuth وهجمات JWT','اكتشف <strong>ثغرات CVSS 9.0–9.8</strong> في أنظمة إنتاجية، منعت خروقات بيانات حقيقية واضطرابات أعمال جوهرية','طوّر أدوات أتمتة مخصصة بـ <strong>Python وBash</strong> قلّصت عبء التقييمات بنحو 40%','أعدّ تقارير تنفيذية وتقنية مع تسجيل <strong>CVSS v3.1</strong> وأدلة PoC وخرائط معالجة مُرتبة حسب الأولوية','أجرى محاكاة تصيد احتيالي وحملات هندسة اجتماعية لقياس نضج الوعي الأمني المؤسسي'],
   findT:'نتائج التقييمات الأمنية المعتمدة',findS:'عينة مختارة من أكثر من 300 نتيجة موثقة عبر ارتباطات معتمدة حول العالم.',
   findNote:'النتائج أدناه تمثّل <strong>عينة مختارة</strong> من اختبارات اختراق معتمدة حقيقية. جميع هويات العملاء وتفاصيل البنية التحتية مُعتمة كلياً وفق اتفاقيات السرية. <strong>الملف الكامل متاح تحت NDA عند الطلب الرسمي.</strong>',
-  fbAll:'الكل (14)',fbW:'تطبيقات ويب',fbAPI:'API',fbN:'شبكات',fbAD:'Active Directory',
+  fbAll:'الكل (18)',fbW:'تطبيقات ويب',fbAPI:'API',fbN:'شبكات',fbAD:'Active Directory',
   finds:[
     {t:'DOM XSS مصادق عليه يُفضي إلى استيلاء كامل على الحساب',s:'وسيلة عرض innerHTML في واجهة استيراد الملفات تُحقن بـ HTML نشط داخل نموذج مصادق، متجاوزةً CSRF ومُمكِّنةً نقل ملكية الحساب.',st:'تم المعالجة'},
     {t:'حقن SQL غير مصادق — كشف 24 قاعدة بيانات داخلية',s:'معامل URL يُمرَّر مباشرةً لاستعلام SQL دون تعقيم. 24 قاعدة بيانات داخلية استُخرجت دون أي مصادقة لدى عميل حكومي.',st:'تم المعالجة'},
@@ -2879,7 +2924,11 @@ ar:{
     {t:'هجوم Kerberoasting يُفضي إلى الاستيلاء على صلاحيات Domain Admin',s:'حسابات خدمة متعددة بكلمات مرور ضعيفة وتسجيلات SPN. كسر تذاكر TGS يُنتج بيانات اعتماد نصية تُمكِّن من تصعيد الصلاحيات إلى DA خلال ساعتين.',st:'تخفيف'},
     {t:'هجوم DCSync لاستخلاص جميع بيانات اعتماد NTDS.dit',s:'حساب خدمة يمتلك حق DS-Replication-Get-Changes-All. استُخدم Impacket secretsdump لاستخلاص جميع بيانات اعتماد AD بما فيها hash الـ KRBTGT.',st:'تخفيف'},
     {t:'AS-REP Roasting يكشف حسابات معطّلة المصادقة المسبقة',s:'17 حساب نطاق مُكتشَف مع تعطيل المصادقة المسبقة لـ Kerberos. كسر ردود AS-REP أنتج 9 كلمات مرور نصية، منها حسابان بصلاحيات إدارة محلية على خوادم حرجة.',st:'تم المعالجة'},
-    {t:'عقدة Redis الرئيسية مكشوفة دون مصادقة — وصول كامل لذاكرة التخزين المؤقت للإنتاج',s:'عقدة Redis master متاحة من الإنترنت العام دون مصادقة وبـ ACL مُهيَّأ كـ +@all. تأكيد 155 مفتاحاً إنتاجياً حياً بما يشمل بيانات مستخدمين حساسة وبيانات OTP.',st:'تم الإبلاغ'}
+    {t:'عقدة Redis الرئيسية مكشوفة دون مصادقة — وصول كامل لذاكرة التخزين المؤقت للإنتاج',s:'عقدة Redis master متاحة من الإنترنت العام دون مصادقة وبـ ACL مُهيَّأ كـ +@all. تأكيد 155 مفتاحاً إنتاجياً حياً بما يشمل بيانات مستخدمين حساسة وبيانات OTP.',st:'تم الإبلاغ'},
+    {t:'Pass-the-Hash عبر NTLM يُمكّن من التحرك الجانبي إلى Domain Controller',s:'التقاط hash لـ NTLM عبر Responder، وإعادة توجيهه حياً للمصادقة المباشرة على Domain Controller — وصول كامل خلال 25 دقيقة من دخول الشبكة.',st:'تخفيف'},
+    {t:'Golden Ticket مُزوَّر عبر سرقة hash الـ KRBTGT — وصول دائم للنطاق',s:'تزوير Golden Ticket يمنح مصادقة Kerberos دائمة كأي مستخدم نطاق. التذكرة بقيت صالحة 10 ساعات بعد إعادة تعيين كلمة المرور.',st:'تخفيف'},
+    {t:'سوء تهيئة ACL يمنح WriteDACL على مجموعة Domain Admins',s:'مستخدم منخفض الصلاحيات يمتلك WriteDACL على مجموعة Domain Admins — استُغل للتصعيد الذاتي دون أي اكتشاف من أنظمة المراقبة.',st:'تم المعالجة'},
+    {t:'استغلال AD Certificate Services ESC1 — مستخدم منخفض الصلاحيات يحصل على شهادة Domain Admin',s:'قالب شهادة سيء التهيئة سمح لأي مستخدم بطلب شهادة بـ UPN عشوائي يشمل Domain Admins، متجاوزاً كل ضوابط بيانات الاعتماد.',st:'تم المعالجة'}
     /* ADD AR TRANSLATION HERE */
   ],
   resT:'البحث والبيئة المختبرية',resS:'بحث أمن هجومي نشط وبنية تحتية مختبرية ذاتية لتطوير القدرات باستمرار.',
@@ -2943,6 +2992,50 @@ const MD=[
     remediation:'<strong>1.</strong> Bind Redis to localhost or internal interface only: <code>bind 127.0.0.1</code><br><strong>2.</strong> Enforce authentication: <code>requirepass &lt;strong_password&gt;</code><br><strong>3.</strong> Define restrictive ACL rules per service account — avoid +@all<br><strong>4.</strong> Apply firewall rules blocking all external access to port 6379<br><strong>5.</strong> Enable Protected Mode to reject external connections when no auth is configured'
   }
   /* ADD MODAL DATA HERE */
+  ,{
+    ref:'ASF-015',risk:'AD Critical',type:'Pass-the-Hash',
+    eng:'Internal Active Directory Assessment',env:'Production',
+    surface:'NTLM Authentication / SMB',cvss:'9.8',status:'Mitigated',
+    tags:['NTLM Relay','Hash Capture','Lateral Movement'],
+    chain:'A Responder instance was deployed on the internal segment, capturing the NTLM hash of a privileged service account via LLMNR/NBT-NS poisoning. The hash was relayed in real time using ntlmrelayx without offline cracking, achieving direct SMB authentication to the Domain Controller within 25 minutes of initial network access.',
+    steps:['Deployed Responder to listen for LLMNR/NBT-NS broadcast requests on the internal VLAN','Captured NTLM hash of a privileged service account from a broadcast authentication attempt','Relayed the captured hash live via ntlmrelayx targeting the Domain Controller SMB service','Achieved authenticated SMB session on the DC without ever cracking the password','Used the relayed session to extract local SAM hashes and confirm DC-level access','Demonstrated full administrative file system access on the Domain Controller'],
+    impact:'<strong>Direct administrative access to the Domain Controller</strong> achieved without any password cracking. The relay attack required no prior credentials — only passive presence on the internal network segment.',
+    business:'Full domain compromise achievable by any attacker with internal network access, including a compromised workstation or rogue device. No user interaction or phishing required — the attack is entirely passive until the relay step.',
+    remediation:'<strong>1.</strong> Disable LLMNR and NBT-NS via Group Policy<br><strong>2.</strong> Enable SMB Signing on all domain systems<br><strong>3.</strong> Implement Extended Protection for Authentication (EPA)<br><strong>4.</strong> Segment privileged service account authentication to dedicated VLANs<br><strong>5.</strong> Deploy network monitoring for LLMNR/NBT-NS broadcast anomalies'
+  },
+  {
+    ref:'ASF-016',risk:'AD High',type:'Golden Ticket',
+    eng:'Internal Red Team Operation',env:'Production',
+    surface:'Kerberos KDC / KRBTGT',cvss:'9.6',status:'Mitigated',
+    tags:['Golden Ticket','KRBTGT Compromise','Persistence'],
+    chain:'Following successful DCSync extraction of the KRBTGT account hash, a Golden Ticket was forged using Impacket ticketer granting Kerberos TGTs for any domain user including Domain Admins, with arbitrary group memberships and a 10-year validity window — entirely independent of actual account passwords.',
+    steps:['Extracted KRBTGT NTLM hash via prior DCSync compromise','Forged a Golden Ticket using ticketer.py specifying arbitrary SID history and group memberships','Injected the forged ticket into a clean session using Pass-the-Ticket technique','Authenticated to multiple domain resources as a fabricated Domain Admin identity','Reset the targeted account password as part of incident response simulation','Confirmed the forged ticket remained valid and authenticated successfully 10 hours after the password reset'],
+    impact:'<strong>Persistent, password-independent domain access</strong> that survives standard incident response procedures including password resets. Detection requires KRBTGT password rotation (twice, with replication delay) — a step frequently missed in real-world IR.',
+    business:'Demonstrates that a single DCSync compromise creates near-permanent backdoor access regardless of subsequent remediation efforts, unless the specific KRBTGT double-reset procedure is followed precisely.',
+    remediation:'<strong>1.</strong> Rotate KRBTGT password twice with 24h+ between resets to invalidate all forged tickets<br><strong>2.</strong> Restrict DS-Replication-Get-Changes-All rights to only Domain Controllers<br><strong>3.</strong> Deploy Kerberos ticket lifetime anomaly detection (Microsoft ATA / Defender for Identity)<br><strong>4.</strong> Implement Tier-0 administrative isolation per Microsoft ESAE model'
+  },
+  {
+    ref:'ASF-017',risk:'AD High',type:'ACL Abuse',
+    eng:'Internal Active Directory Assessment',env:'Production',
+    surface:'Active Directory ACLs / DACL',cvss:'8.8',status:'Remediated',
+    tags:['ACL Misconfiguration','Privilege Escalation','BloodHound'],
+    chain:'BloodHound graph analysis of the domain\'s access control structure revealed a low-privilege user account held WriteDACL rights over the Domain Admins security group — a misconfiguration left over from a prior delegation that was never cleaned up. This permission was abused to grant the account full GenericAll rights, then self-add to Domain Admins.',
+    steps:['Ran SharpHound collector to gather full domain ACL and group membership graph','Queried BloodHound for "Shortest Path to Domain Admins" from the compromised low-privilege account','Identified WriteDACL right held by the account over the Domain Admins group object','Used dacledit (Impacket) to grant the compromised account GenericAll over Domain Admins','Added the compromised account directly into the Domain Admins group','Verified full domain administrative access via authenticated LDAP bind'],
+    impact:'<strong>Zero-exploit privilege escalation</strong> — no vulnerability was exploited, only a forgotten delegation right. The path from initial low-privilege compromise to Domain Admin required no malware, no credential theft beyond the initial foothold.',
+    business:'Demonstrates how legacy delegation and stale permissions silently accumulate critical risk over time. This class of finding is invisible to vulnerability scanners and requires dedicated AD permission auditing.',
+    remediation:'<strong>1.</strong> Conduct quarterly BloodHound-based ACL audits identifying all paths to Tier-0 groups<br><strong>2.</strong> Remove all non-essential WriteDACL/GenericAll/GenericWrite rights on privileged groups<br><strong>3.</strong> Implement formal delegation review and expiration process<br><strong>4.</strong> Enable SACL auditing on Domain Admins group for any ACL modification attempts'
+  },
+  {
+    ref:'ASF-018',risk:'AD High',type:'AD CS Abuse',
+    eng:'Internal Active Directory Assessment',env:'Production',
+    surface:'AD Certificate Services / ESC1',cvss:'9.1',status:'Remediated',
+    tags:['ADCS ESC1','Certificate Abuse','Privilege Escalation'],
+    chain:'Active Directory Certificate Services enumeration via Certipy identified a vulnerable certificate template (classic ESC1 misconfiguration) permitting any authenticated domain user to request a client authentication certificate while specifying an arbitrary Subject Alternative Name — including the UPN of a Domain Admin account.',
+    steps:['Enumerated certificate templates and their permissions using Certipy find','Identified a template with ENROLLEE_SUPPLIES_SUBJECT flag enabled and client authentication EKU','Confirmed the template was enrollable by Domain Users with no manager approval required','Requested a certificate specifying the UPN of a known Domain Admin account using Certipy req','Used the issued certificate to authenticate via PKINIT and obtain a TGT for the Domain Admin identity','Confirmed full domain administrative access using the forged identity\'s Kerberos ticket'],
+    impact:'<strong>Complete authentication bypass</strong> for any privileged account, achieved entirely through certificate misissuance — no password, hash, or interactive session with the target account was ever required.',
+    business:'AD CS misconfigurations are frequently overlooked because certificate services are rarely included in standard AD hardening reviews. A single ESC1-vulnerable template can undermine the entire domain\'s privilege model.',
+    remediation:'<strong>1.</strong> Remove ENROLLEE_SUPPLIES_SUBJECT from all client-authentication-capable templates<br><strong>2.</strong> Require manager approval for sensitive certificate templates<br><strong>3.</strong> Run Certipy or PKI Health Check audits regularly against all CAs<br><strong>4.</strong> Restrict template enrollment rights to only the specific roles requiring them'
+  }
 ];
 
 let lang='en';
@@ -3121,7 +3214,7 @@ function setLang(l){
   findCtx.forEach(f=>{const el=document.getElementById(f.id);if(el)el.textContent=isAr?f.ar:f.en;});
 
   /* Update 'All (14)' filter button */
-  setEl('fb-all',isAr?'الكل (14)':'All (14)');
+  setEl('fb-all',isAr?'الكل (18)':'All (18)');
 
   /* Update CV btn label */
   const navCv=document.getElementById('nav-cv');
@@ -3679,7 +3772,29 @@ requestAnimationFrame(lerpTick);
 /* COUNT UP */
 const cobs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)cu(x.target)})},{threshold:.5});
 document.querySelectorAll('[data-count]').forEach(el=>cobs.observe(el));
-function cu(el){if(el.dataset.done)return;/* morphTo handles this now */}
+function cu(el){
+  if(el.dataset.done)return;
+  el.dataset.done='1';
+  var target=parseInt(el.dataset.count||0);
+  var suffix=el.dataset.suf||'';
+  var CHARS='0123456789';
+  var len=String(target).length;
+  var start=performance.now();
+  var duration=900;
+  el.classList.add('morphing');
+  function tick(now){
+    var p=Math.min((now-start)/duration,1);
+    if(p<1){
+      var s='';for(var i=0;i<len;i++)s+=CHARS[Math.floor(Math.random()*10)];
+      el.textContent=s+(p>0.7?suffix:'');
+      requestAnimationFrame(tick);
+    } else {
+      el.textContent=target+suffix;
+      el.classList.remove('morphing');
+    }
+  }
+  requestAnimationFrame(tick);
+}
 
 /* SKILL BARS */
 const bobs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){setTimeout(()=>{x.target.style.width=x.target.dataset.w+'%'},250);bobs.unobserve(x.target)}})},{threshold:.3});
