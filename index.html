@@ -1844,7 +1844,7 @@ footer::before{display:none}
 .hero-stats-card{will-change:transform;transition:transform .12s linear}
 
 /* Smooth scroll hint on desktop */
-html{scroll-behavior:auto!important}
+/* Native smooth scroll restored — no JS scroll hijacking anymore */
 
 /* ════════════════════════════════════════════════
    ① CROSSHAIR CURSOR
@@ -3503,103 +3503,25 @@ try{
 
 var isMobile = window.innerWidth <= 900 || ('ontouchstart' in window);
 
-/* ── ① LERP SMOOTH SCROLL (desktop only) ── */
-var lerpActive = !isMobile;
-var currentY = window.scrollY;
-var targetY  = window.scrollY;
-
-window.amnSyncScroll=function(){
-  try{
-    var maxS=document.documentElement.scrollHeight-window.innerHeight;
-    if(maxS<0)maxS=0;
-    if(targetY>maxS)targetY=maxS;
-    if(currentY>maxS)currentY=maxS;
-  }catch(e){}
-};
-var rafLoop  = false;
-var snapTimer= null;
-var scrolling= false;
-
-function lerp(a,b,t){return a+(b-a)*t}
+/* ── Native scroll — no wheel hijacking, no scroll-position control.
+     This was the root cause of repeated "cards not showing on desktop"
+     bugs: custom scrollTo() fought the browser's real scroll height,
+     especially as content grew (more findings, filters). Removed
+     entirely. The browser's own scroll is already smooth and correct. ── */
+window.amnSyncScroll=function(){ /* kept as no-op for any old callers */ };
 
 function getSections(){
   return Array.prototype.slice.call(document.querySelectorAll('section.sec[id]'));
 }
 
-function getNearestSection(y){
-  var secs=getSections(); var best=secs[0]; var bestDist=Infinity;
-  var vh=window.innerHeight;
-  for(var i=0;i<secs.length;i++){
-    var top=secs[i].getBoundingClientRect().top+window.scrollY;
-    var dist=Math.abs(y-top+vh*0.1);
-    if(dist<bestDist){bestDist=dist;best=secs[i];}
+var scannerTicking=false;
+function onNativeScroll(){
+  if(!scannerTicking){
+    scannerTicking=true;
+    requestAnimationFrame(function(){runScannerFrame();scannerTicking=false;});
   }
-  return best;
 }
-
-function snapToSection(){
-  try{
-    var nearest=getNearestSection(targetY);
-    if(!nearest)return;
-    var snapY=nearest.getBoundingClientRect().top+window.scrollY-80;
-    snapY=Math.max(0,Math.min(snapY,document.documentElement.scrollHeight-window.innerHeight));
-    var dist=Math.abs(targetY-snapY);
-    if(dist<window.innerHeight*0.35){
-      targetY=snapY;
-      /* Flash the scan line gold when snapping */
-      flashScan();
-      /* Update HUD with section name */
-      updateHUD(nearest);
-    }
-  }catch(e){}
-}
-
-function flashScan(){
-  try{
-    var sl=document.getElementById('scan-line');
-    if(!sl)return;
-    sl.style.opacity='0';
-    sl.style.transition='opacity .08s';
-    setTimeout(function(){sl.style.opacity='1';sl.style.transition='opacity .25s';},80);
-  }catch(e){}
-}
-
-if(lerpActive){
-  window.addEventListener('wheel',function(e){
-    e.preventDefault();
-    var maxS=document.documentElement.scrollHeight-window.innerHeight;
-    targetY+=e.deltaY*1.1;
-    targetY=Math.max(0,Math.min(targetY,maxS));
-    scrolling=true;
-    clearTimeout(snapTimer);
-    snapTimer=setTimeout(function(){scrolling=false;},220);
-    /* Magnetic section snap removed — it fought scrolling within tall sections like Findings */
-  },{passive:false,capture:true});
-}
-
-function lerpTick(){
-  try{
-    if(lerpActive){
-      var maxS=document.documentElement.scrollHeight-window.innerHeight;
-      if(maxS<0)maxS=0;
-      /* Clamp every frame — protects against stale targets after filter/layout changes */
-      if(targetY>maxS)targetY=maxS;
-      if(currentY>maxS)currentY=maxS;
-      currentY=lerp(currentY,targetY,.09);
-      if(Math.abs(currentY-targetY)>0.3){
-        window.scrollTo(0,currentY);
-      } else {
-        currentY=targetY;
-        window.scrollTo(0,currentY);
-      }
-    } else {
-      currentY=window.scrollY;
-      targetY=window.scrollY;
-    }
-    runScannerFrame();
-  }catch(e){}
-  requestAnimationFrame(lerpTick);
-}
+window.addEventListener('scroll',onNativeScroll,{passive:true});
 
 /* ── ② DOSSIER HUD ── */
 var hud=document.getElementById('dossierHud');
@@ -3707,8 +3629,8 @@ try{
   document.querySelectorAll('section.sec[id]').forEach(function(s){stampObs.observe(s);});
 }catch(e){}
 
-/* Start loop */
-requestAnimationFrame(lerpTick);
+/* Initial scanner run — subsequent updates happen via native scroll listener */
+runScannerFrame();
 
 }catch(err){console.error('premium experience:',err);}
 })();
