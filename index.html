@@ -1597,27 +1597,17 @@ footer::before{display:none}
 .fc-title{font-family:var(--fd)!important;font-size:1.02rem!important;font-weight:600}
 .testi-who{font-size:.86rem}
 
-/* ── DECLASSIFICATION SCANNER — scroll-scrubbed, reversible reveal ── */
+/* ── Scanner removed entirely — was causing stuck redaction overlays ── */
 .scan-line{display:none!important}
 .scan-readout{display:none!important}
 
-.find-card{position:relative;--reveal:1}
+.find-card{position:relative}
 .find-card .fc-title{position:relative;display:inline-block}
 .find-card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:3px;
   background:var(--a0);
-  transform:scaleX(var(--reveal));transform-origin:left;
   display:block!important;
 }
-/* Title redaction bar — recedes precisely as the scan line passes through it */
-.fc-title::after{
-  content:'';position:absolute;inset:-2px -4px;
-  background:var(--tx);
-  transform:scaleX(calc(1 - var(--reveal)));transform-origin:right;
-  pointer-events:none;
-}
-
-.sec-t{--reveal:1;opacity:var(--reveal);filter:blur(calc((1 - var(--reveal)) * 5px))}
 
 /* Stamp rotation variance — organic, not uniform */
 .find-card:nth-of-type(odd) .fc-sev{transform:rotate(-1.4deg)}
@@ -1799,24 +1789,6 @@ footer::before{display:none}
 /* ════════════════════════════════════════════════
    PREMIUM EXPERIENCE CSS
 ════════════════════════════════════════════════ */
-
-/* ④ Word redaction reveal — per-word overlay */
-.wrd{
-  display:inline-block;position:relative;
-  transform:translateY(calc((1 - var(--reveal,0)) * 6px));
-  opacity:var(--reveal,0);
-  transition:none;
-}
-.wrd::after{
-  content:'';position:absolute;inset:-2px -3px;
-  background:var(--bg);
-  transform:scaleX(calc(1 - var(--reveal,0)));
-  transform-origin:right;
-  pointer-events:none;
-}
-/* When section fully above scanner — all words fully revealed */
-.sec-t[style*="--reveal:1"] .wrd,
-.sec-t[style*="--reveal: 1"] .wrd{opacity:1;transform:none}
 
 /* ③ Dossier HUD */
 .dossier-hud{
@@ -3656,59 +3628,31 @@ function updateHUD(activeEl){
   }catch(e){}
 }
 
-/* ── ③ SCANNER FRAME (merged with lerp loop) ── */
-var scanTargets=Array.prototype.slice.call(document.querySelectorAll('.find-card,.sec-t'));
+/* ── ③ SCANNER FRAME (merged with lerp loop) — tab tracking + HUD only, no reveal mechanic ── */
 var tabs=Array.prototype.slice.call(document.querySelectorAll('.ct-tab'));
 var sectionMap=tabs.map(function(t){
   var el=document.getElementById(t.dataset.sec);
   return el?{id:t.dataset.sec,el:el,tab:t}:null;
 }).filter(Boolean);
-var readout=document.getElementById('scan-readout');
 
 function runScannerFrame(){
   try{
     if(isMobile)return;
     var scanY=window.innerHeight*0.46;
-    var maxScroll=document.documentElement.scrollHeight-window.innerHeight;
-    var pct=maxScroll>0?Math.round((window.scrollY/maxScroll)*100):0;
-    var activeLabel='';var activeEl=null;
+    var activeEl=null;
 
     for(var s=0;s<sectionMap.length;s++){
       var r2=sectionMap[s].el.getBoundingClientRect();
       if(r2.top<=scanY&&r2.bottom>=scanY){
-        activeLabel=secLabels[sectionMap[s].id]||sectionMap[s].id.toUpperCase();
         activeEl=sectionMap[s].el;
         sectionMap[s].tab.classList.add('active');
       }else{sectionMap[s].tab.classList.remove('active');}
     }
-    if(readout)readout.textContent=(activeLabel?'FILE: '+activeLabel+' — ':'')+'SCAN '+pct+'%';
     if(activeEl)updateHUD(activeEl);
-
-    for(var i=0;i<scanTargets.length;i++){
-      var el=scanTargets[i];var r=el.getBoundingClientRect();var rv;
-      if(r.bottom<=scanY)rv=1;
-      else if(r.top>=scanY)rv=0;
-      else rv=(scanY-r.top)/(r.height||1);
-      if(rv<0)rv=0;if(rv>1)rv=1;
-      el.style.setProperty('--reveal',rv.toFixed(3));
-    }
   }catch(e){}
 }
 
-/* ── ④ WORD-BY-WORD REDACTION REVEAL on .sec-t ── */
-try{
-  document.querySelectorAll('.sec-t').forEach(function(el){
-    if(el.dataset.wordSplit)return;
-    el.dataset.wordSplit='1';
-    var text=el.textContent.trim();
-    if(!text)return;
-    var words=text.split(/\s+/);
-    el.innerHTML=words.map(function(w,i){
-      var delay=(i*0.055).toFixed(3);
-      return '<span class="wrd" style="--wi:'+i+';--wd:'+delay+'s">'+w+'</span>';
-    }).join(' ');
-  });
-}catch(e){}
+/* ── ④ Word-by-word reveal removed — was causing stuck/invisible section titles ── */
 
 /* ── ⑤ PARALLAX on hero stats card (desktop) ── */
 if(!isMobile){
