@@ -1922,6 +1922,9 @@ footer::before{display:none}
   -webkit-text-fill-color:var(--gold)!important;
 }
 
+/* find-cards ALWAYS visible — never hidden by reveal system */
+.find-card{opacity:1!important;transform:none!important}
+
 </style>
 </head>
 <body>
@@ -3474,11 +3477,10 @@ async function submitForm(e){
 /* NAV burger */
 document.getElementById('burger').addEventListener('click',()=>document.getElementById('nm').classList.toggle('open'));
 
-/* SCROLL REVEAL */
+/* SCROLL REVEAL — find-cards always visible; rv used only for other elements */
 const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');obs.unobserve(x.target)}})},{threshold:.06});
-document.querySelectorAll('.find-card').forEach(el=>el.classList.add('rv'));
 document.querySelectorAll('.rv,.rvl,.rvr').forEach(el=>obs.observe(el));
-/* Safety net: force-reveal anything still stuck invisible after 3s, regardless of cause */
+/* Safety net: force-reveal anything still stuck invisible after 3s */
 setTimeout(function(){
   try{
     document.querySelectorAll('.rv:not(.on),.rvl:not(.on),.rvr:not(.on)').forEach(function(el){el.classList.add('on');});
