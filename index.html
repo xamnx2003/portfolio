@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- AMN-VERSION: FINAL-AD-FIX-v3 -->
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
@@ -108,31 +107,6 @@
       mobs.observe(el);
     });
   }catch(err){}
-})();
-
-
-/* ═══ NUCLEAR AD-CARD JS FIX ═══ */
-(function nuclearFix(){
-  try{
-    console.log('AMN-VERSION: FINAL-AD-FIX-v3');
-    function revealAdCards(){
-      try{
-        document.querySelectorAll('.find-card.ad-card:not(.hid)').forEach(function(el){
-          el.style.setProperty('opacity','1','important');
-          el.style.setProperty('visibility','visible','important');
-          el.style.removeProperty('display');
-        });
-        document.querySelectorAll('.finds-grid').forEach(function(el){
-          el.style.setProperty('opacity','1','important');
-          el.style.setProperty('visibility','visible','important');
-        });
-      }catch(e){}
-    }
-    revealAdCards();
-    document.addEventListener('DOMContentLoaded', revealAdCards);
-    window.addEventListener('load', revealAdCards);
-    [100,300,700,1500,3000].forEach(function(t){ setTimeout(revealAdCards, t); });
-  }catch(e){}
 })();
 
 </script>
@@ -1951,12 +1925,6 @@ footer::before{display:none}
 /* find-cards ALWAYS visible — never hidden by reveal system */
 .find-card{opacity:1!important;transform:none!important}
 
-/* ═══ NUCLEAR AD-CARD FIX — ID-level specificity overrides everything ═══ */
-section#findings .find-card { opacity:1!important; visibility:visible!important; transform:none!important; }
-section#findings .find-card.ad-card { opacity:1!important; visibility:visible!important; transform:none!important; }
-section#findings .find-card.hid { display:none!important; opacity:0!important; visibility:hidden!important; }
-section#findings .find-card.ad-card.hid { display:none!important; opacity:0!important; visibility:hidden!important; }
-
 </style>
 </head>
 <body>
@@ -3465,9 +3433,7 @@ function printResume(){
   const modal=document.getElementById('resumeModal');
   const win=window.open('','_blank');
   const fonts='<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">';
-  win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>CV — Ayman Mahmoud Jasim</title>'+fonts+'<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Outfit,sans-serif;background:#f2efe9;color:#13161c}</style></head><body>'+modal.innerHTML+'
-<div id="ver-badge" style="position:fixed;bottom:4px;left:6px;z-index:9999;font-family:monospace;font-size:9px;color:rgba(201,164,92,.4);pointer-events:none;letter-spacing:.05em">AD-FIX-v3</div>
-</body></html>');
+  win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>CV — Ayman Mahmoud Jasim</title>'+fonts+'<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Outfit,sans-serif;background:#f2efe9;color:#13161c}</style></head><body>'+modal.innerHTML+'</body></html>');
   win.document.close();
   setTimeout(()=>win.print(),500);
 }
